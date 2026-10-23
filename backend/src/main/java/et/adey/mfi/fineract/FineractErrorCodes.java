@@ -35,18 +35,36 @@ public final class FineractErrorCodes {
             "error.msg.loan.must.be.active.fully.paid.or.overpaid",
             "A repayment can only be recorded on a disbursed (active) loan.");
 
+    /** Our stable code for "a client with this mobile number / national ID already exists". */
+    public static final String DUPLICATE_CLIENT = "DUPLICATE_CLIENT";
+
+    /** Fineract codes for unique-field clashes (it answers 403 with these; nothing is created). */
+    private static final Map<String, String> DUPLICATE_MESSAGES = Map.of(
+            "error.msg.client.duplicate.mobileNo", "A client with this mobile number already exists.",
+            "error.msg.client.duplicate.externalId", "A client with this national ID (externalId) already exists.");
+
+    /** Our message if Fineract refused because a unique client field is already taken. */
+    public static Optional<String> duplicateMessage(FineractError error) {
+        return firstKnown(error, DUPLICATE_MESSAGES);
+    }
+
     /** Our message if any of Fineract's error codes is a known wrong-state code. */
     public static Optional<String> wrongStateMessage(FineractError error) {
+        return firstKnown(error, WRONG_STATE_MESSAGES);
+    }
+
+    /** Looks at the top-level code first, then each field error's code. */
+    private static Optional<String> firstKnown(FineractError error, Map<String, String> messages) {
         if (error.userMessageGlobalisationCode() != null
-                && WRONG_STATE_MESSAGES.containsKey(error.userMessageGlobalisationCode())) {
-            return Optional.of(WRONG_STATE_MESSAGES.get(error.userMessageGlobalisationCode()));
+                && messages.containsKey(error.userMessageGlobalisationCode())) {
+            return Optional.of(messages.get(error.userMessageGlobalisationCode()));
         }
         return error.errorsOrEmpty().stream()
                 .map(FineractError.FieldError::userMessageGlobalisationCode)
                 // Map.of() throws on containsKey(null), and Fineract sometimes sends no code.
                 .filter(Objects::nonNull)
-                .filter(WRONG_STATE_MESSAGES::containsKey)
-                .map(WRONG_STATE_MESSAGES::get)
+                .filter(messages::containsKey)
+                .map(messages::get)
                 .findFirst();
     }
 }

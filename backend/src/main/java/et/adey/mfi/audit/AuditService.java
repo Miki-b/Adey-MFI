@@ -67,7 +67,27 @@ public class AuditService {
         }
     }
 
-    static AuditOutcome outcomeOf(RuntimeException e) {
+    /**
+     * Login attempts have no logged-in officer yet, so they are recorded with what we know:
+     * the username typed, and (on success) the user/staff/office. The IP goes into detail.
+     */
+    public void recordLogin(String username, Officer officer, String ip, AuditOutcome outcome, String reason) {
+        try {
+            repository.save(new AuditLogEntry(clock.instant(), truncateTo(username, 100),
+                    officer == null ? null : officer.userId(), officer == null ? null : officer.staffId(),
+                    officer == null ? null : officer.officeId(), AuditAction.LOGIN, null, null, null, outcome,
+                    truncate("ip=" + ip + (reason == null ? "" : "; " + reason))));
+        } catch (RuntimeException e) {
+            log.error("AUDIT WRITE FAILED: LOGIN {} by {}: {}", outcome, username, e.getMessage());
+        }
+    }
+
+    private static String truncateTo(String s, int max) {
+        return s == null || s.length() <= max ? s : s.substring(0, max);
+    }
+
+    /** Also used by IdempotencyService: DENIED/REJECTED = nothing happened, ERROR = maybe something did. */
+    public static AuditOutcome outcomeOf(RuntimeException e) {
         if (e instanceof AccessDeniedException || e instanceof AuthenticationFailedException) {
             return AuditOutcome.DENIED;
         }

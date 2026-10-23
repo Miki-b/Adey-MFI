@@ -64,6 +64,7 @@ public class DemoSeeder implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         log.info("=== Seeding demo data into Fineract ===");
         long cashId = ensurePaymentTypes();
+        ensureCodeValues("Gender", List.of("Male", "Female"));
         ensureOffices();
         long officerRole = ensureRole(SeedPlan.OFFICER_ROLE, "Adey MFI loan officer: clients, applications, repayments",
                 SeedPlan.OFFICER_PERMISSIONS);
@@ -108,6 +109,27 @@ public class DemoSeeder implements ApplicationRunner {
             }
         }
         return cashId;
+    }
+
+    /** Fineract ships the "Gender" code without values; client creation needs them. */
+    private void ensureCodeValues(String codeName, List<String> values) {
+        Optional<JsonNode> code = find(fineract.getJson("/codes"), "name", codeName);
+        if (code.isEmpty()) {
+            log.warn("Code '{}' not found; skipping its values", codeName);
+            return;
+        }
+        long codeId = code.get().path("id").asLong();
+        JsonNode existing = fineract.getJson("/codes/{id}/codevalues", codeId);
+        int position = 1;
+        for (String value : values) {
+            if (find(existing, "name", value).isEmpty()) {
+                fineract.postJson("/codes/{id}/codevalues",
+                        Map.of("name", value, "position", position, "isActive", true), codeId);
+                created++;
+                log.info("Code value {} / {} created", codeName, value);
+            }
+            position++;
+        }
     }
 
     private void ensureOffices() {

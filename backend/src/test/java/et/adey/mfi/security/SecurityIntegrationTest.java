@@ -99,10 +99,14 @@ class SecurityIntegrationTest {
 
     private final ObjectMapper json = TestJson.mapper();
 
+    @Autowired
+    private et.adey.mfi.auth.LoginAttemptLimiter loginLimiter;
+
     @BeforeEach
     void cleanDatabase() {
         auditLog.deleteAll();
         refreshTokens.deleteAll();
+        loginLimiter.reset(); // the context is shared: earlier failed logins must not lock this class out
     }
 
     // ---- Tokens --------------------------------------------------------------------------

@@ -29,6 +29,13 @@ public final class TestOfficers {
     public static final Officer TADESSE = new Officer(6, "tadesse", "Tadesse Bekele", 3, 2, "Bishoftu Branch",
             Set.of(Role.MANAGER));
 
+    /** Meron: loan officer, staff 4, Adama Branch (office 3). */
+    public static final Officer MERON = new Officer(7, "meron", "Meron Alemu", 4, 3, "Adama Branch",
+            Set.of(Role.OFFICER));
+    /** Selamawit: branch manager, staff 6, Adama Branch. */
+    public static final Officer SELAMAWIT = new Officer(9, "selamawit", "Selamawit Tesfaye", 6, 3, "Adama Branch",
+            Set.of(Role.MANAGER));
+
     /** Skips the token: puts the officer straight into the security context for one MockMvc request. */
     public static RequestPostProcessor as(Officer officer) {
         Jwt jwt = Jwt.withTokenValue("test").header("alg", "none").subject(officer.username())

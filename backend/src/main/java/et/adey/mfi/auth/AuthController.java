@@ -4,6 +4,7 @@ import et.adey.mfi.security.Officer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,8 +29,10 @@ public class AuthController {
     @Operation(summary = "Log in with Fineract username + password; returns access and refresh tokens")
     @SecurityRequirements // no bearer token needed
     @PostMapping("/login")
-    public TokenResponse login(@Valid @RequestBody LoginRequest request) {
-        return authService.login(request.username(), request.password());
+    public TokenResponse login(@Valid @RequestBody LoginRequest request, HttpServletRequest http) {
+        // getRemoteAddr = the direct caller. Behind a reverse proxy this would be the proxy's IP;
+        // then read X-Forwarded-For from a trusted proxy instead.
+        return authService.login(request.username(), request.password(), http.getRemoteAddr());
     }
 
     @Operation(summary = "Exchange a refresh token for a new token pair (the old refresh token stops working)")

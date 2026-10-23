@@ -9,6 +9,7 @@ public record FineractLoan(
         String accountNo,
         Long clientId,
         String clientName,
+        Long clientOfficeId,
         Long loanProductId,
         String loanProductName,
         Long loanOfficerId,

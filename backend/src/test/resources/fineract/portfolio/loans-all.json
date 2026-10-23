@@ -1,0 +1,2777 @@
+{
+ "totalFilteredRecords": 12,
+ "pageItems": [
+  {
+   "id": 1,
+   "accountNo": "000000001",
+   "status": {
+    "id": 300,
+    "code": "loanStatusType.active",
+    "value": "Active",
+    "pendingApproval": false,
+    "waitingForDisbursal": false,
+    "active": true,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 1,
+   "clientAccountNo": "000000001",
+   "clientName": "Yohannes Tekle",
+   "clientOfficeId": 2,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 1,
+   "loanOfficerName": "Derese, Samuel ",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 20000.0,
+   "approvedPrincipal": 20000.0,
+   "proposedPrincipal": 20000.0,
+   "netDisbursalAmount": 20000.0,
+   "termFrequency": 12,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 12,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     10,
+     23
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "approvedOnDate": [
+     2026,
+     10,
+     23
+    ],
+    "approvedByUsername": "mifos",
+    "approvedByFirstname": "App",
+    "approvedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     10,
+     23
+    ],
+    "actualDisbursementDate": [
+     2026,
+     10,
+     23
+    ],
+    "disbursedByUsername": "mifos",
+    "disbursedByFirstname": "App",
+    "disbursedByLastname": "Administrator",
+    "actualMaturityDate": [
+     2027,
+     10,
+     23
+    ],
+    "expectedMaturityDate": [
+     2027,
+     10,
+     23
+    ]
+   },
+   "summary": {
+    "currency": {
+     "code": "ETB",
+     "name": "Ethiopian Birr",
+     "decimalPlaces": 2,
+     "inMultiplesOf": 0,
+     "nameCode": "currency.ETB",
+     "displayLabel": "Ethiopian Birr [ETB]"
+    },
+    "totalPrincipal": 20000.0,
+    "totalCapitalizedIncome": 0.0,
+    "totalCapitalizedIncomeAdjustment": 0.0,
+    "principalDisbursed": 20000.0,
+    "principalAdjustments": 0.0,
+    "principalPaid": 3636.55,
+    "principalWrittenOff": 0.0,
+    "principalOutstanding": 16363.45,
+    "principalOverdue": 0,
+    "interestCharged": 2003.21,
+    "interestPaid": 830.65,
+    "interestWaived": 0.0,
+    "interestWrittenOff": 0.0,
+    "interestOutstanding": 1172.56,
+    "interestOverdue": 0,
+    "feeChargesCharged": 0.0,
+    "feeAdjustments": 0.0,
+    "feeChargesDueAtDisbursementCharged": 0.0,
+    "feeChargesPaid": 0.0,
+    "feeChargesWaived": 0.0,
+    "feeChargesWrittenOff": 0.0,
+    "feeChargesOutstanding": 0.0,
+    "feeChargesOverdue": 0,
+    "penaltyChargesCharged": 0.0,
+    "penaltyAdjustments": 0.0,
+    "penaltyChargesPaid": 0.0,
+    "penaltyChargesWaived": 0.0,
+    "penaltyChargesWrittenOff": 0.0,
+    "penaltyChargesOutstanding": 0.0,
+    "penaltyChargesOverdue": 0,
+    "totalExpectedRepayment": 22003.21,
+    "totalRepayment": 4467.2,
+    "totalExpectedCostOfLoan": 2003.21,
+    "totalCostOfLoan": 830.65,
+    "totalWaived": 0.0,
+    "totalWrittenOff": 0.0,
+    "totalOutstanding": 17536.01,
+    "totalOverdue": 0,
+    "totalRecovered": 0
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "loanProductCounter": 1,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 2,
+   "accountNo": "000000002",
+   "externalId": "SEED-L02",
+   "status": {
+    "id": 200,
+    "code": "loanStatusType.approved",
+    "value": "Approved",
+    "pendingApproval": false,
+    "waitingForDisbursal": true,
+    "active": false,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 3,
+   "clientAccountNo": "000000003",
+   "clientName": "Almaz Tadesse",
+   "clientExternalId": "SEED-C02",
+   "clientOfficeId": 2,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 1,
+   "loanOfficerName": "Derese, Samuel ",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 15000.0,
+   "approvedPrincipal": 15000.0,
+   "proposedPrincipal": 15000.0,
+   "netDisbursalAmount": 15000.0,
+   "termFrequency": 12,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 12,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     10,
+     20
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "approvedOnDate": [
+     2026,
+     10,
+     23
+    ],
+    "approvedByUsername": "mifos",
+    "approvedByFirstname": "App",
+    "approvedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     11,
+     1
+    ],
+    "actualMaturityDate": [
+     2027,
+     11,
+     1
+    ],
+    "expectedMaturityDate": [
+     2027,
+     11,
+     1
+    ]
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 3,
+   "accountNo": "000000003",
+   "externalId": "SEED-L03",
+   "status": {
+    "id": 200,
+    "code": "loanStatusType.approved",
+    "value": "Approved",
+    "pendingApproval": false,
+    "waitingForDisbursal": true,
+    "active": false,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 4,
+   "clientAccountNo": "000000004",
+   "clientName": "Kidist Wolde",
+   "clientExternalId": "SEED-C03",
+   "clientOfficeId": 2,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 2,
+   "loanOfficerName": "Girma, Hana",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 25000.0,
+   "approvedPrincipal": 25000.0,
+   "proposedPrincipal": 25000.0,
+   "netDisbursalAmount": 25000.0,
+   "termFrequency": 18,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 18,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     10,
+     12
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "approvedOnDate": [
+     2026,
+     10,
+     15
+    ],
+    "approvedByUsername": "mifos",
+    "approvedByFirstname": "App",
+    "approvedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     10,
+     27
+    ],
+    "actualMaturityDate": [
+     2028,
+     4,
+     27
+    ],
+    "expectedMaturityDate": [
+     2028,
+     4,
+     27
+    ]
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 4,
+   "accountNo": "000000004",
+   "externalId": "SEED-L04",
+   "status": {
+    "id": 500,
+    "code": "loanStatusType.rejected",
+    "value": "Rejected",
+    "pendingApproval": false,
+    "waitingForDisbursal": false,
+    "active": false,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 5,
+   "clientAccountNo": "000000005",
+   "clientName": "Yonas Mekonnen",
+   "clientExternalId": "SEED-C04",
+   "clientOfficeId": 2,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 2,
+   "loanOfficerName": "Girma, Hana",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 50000.0,
+   "approvedPrincipal": 50000.0,
+   "proposedPrincipal": 50000.0,
+   "netDisbursalAmount": 50000.0,
+   "termFrequency": 24,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 24,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     10,
+     10
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "rejectedOnDate": [
+     2026,
+     10,
+     13
+    ],
+    "rejectedByUsername": "mifos",
+    "rejectedByFirstname": "App",
+    "rejectedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     10,
+     22
+    ],
+    "closedOnDate": [
+     2026,
+     10,
+     13
+    ],
+    "closedByUsername": "mifos",
+    "closedByFirstname": "App",
+    "closedByLastname": "Administrator",
+    "actualMaturityDate": [
+     2028,
+     10,
+     22
+    ],
+    "expectedMaturityDate": [
+     2028,
+     10,
+     22
+    ],
+    "writeOffByUsername": "mifos",
+    "writeOffByFirstname": "App",
+    "writeOffByLastname": "Administrator"
+   },
+   "summary": {
+    "currency": {
+     "code": "ETB",
+     "name": "Ethiopian Birr",
+     "decimalPlaces": 2,
+     "inMultiplesOf": 0,
+     "nameCode": "currency.ETB",
+     "displayLabel": "Ethiopian Birr [ETB]"
+    },
+    "totalPrincipal": 0.0,
+    "totalCapitalizedIncome": 0.0,
+    "totalCapitalizedIncomeAdjustment": 0.0,
+    "principalDisbursed": 0.0,
+    "principalAdjustments": 0.0,
+    "principalPaid": 0.0,
+    "principalWrittenOff": 0.0,
+    "principalOutstanding": 0.0,
+    "principalOverdue": 0,
+    "interestCharged": 0.0,
+    "interestPaid": 0.0,
+    "interestWaived": 0.0,
+    "interestWrittenOff": 0.0,
+    "interestOutstanding": 0.0,
+    "interestOverdue": 0,
+    "feeChargesCharged": 0.0,
+    "feeAdjustments": 0.0,
+    "feeChargesDueAtDisbursementCharged": 0.0,
+    "feeChargesPaid": 0.0,
+    "feeChargesWaived": 0.0,
+    "feeChargesWrittenOff": 0.0,
+    "feeChargesOutstanding": 0.0,
+    "feeChargesOverdue": 0,
+    "penaltyChargesCharged": 0.0,
+    "penaltyAdjustments": 0.0,
+    "penaltyChargesPaid": 0.0,
+    "penaltyChargesWaived": 0.0,
+    "penaltyChargesWrittenOff": 0.0,
+    "penaltyChargesOutstanding": 0.0,
+    "penaltyChargesOverdue": 0,
+    "totalExpectedRepayment": 0.0,
+    "totalRepayment": 0.0,
+    "totalExpectedCostOfLoan": 0.0,
+    "totalCostOfLoan": 0.0,
+    "totalWaived": 0.0,
+    "totalWrittenOff": 0.0,
+    "totalOutstanding": 0.0,
+    "totalOverdue": 0,
+    "totalRecovered": 0
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 5,
+   "accountNo": "000000005",
+   "externalId": "SEED-L05",
+   "status": {
+    "id": 300,
+    "code": "loanStatusType.active",
+    "value": "Active",
+    "pendingApproval": false,
+    "waitingForDisbursal": false,
+    "active": true,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 6,
+   "clientAccountNo": "000000006",
+   "clientName": "Bethlehem Assefa",
+   "clientExternalId": "SEED-C05",
+   "clientOfficeId": 2,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 2,
+   "loanOfficerName": "Girma, Hana",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 10000.0,
+   "approvedPrincipal": 10000.0,
+   "proposedPrincipal": 10000.0,
+   "netDisbursalAmount": 10000.0,
+   "termFrequency": 6,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 6,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     10,
+     6
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "approvedOnDate": [
+     2026,
+     10,
+     7
+    ],
+    "approvedByUsername": "mifos",
+    "approvedByFirstname": "App",
+    "approvedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     10,
+     8
+    ],
+    "actualDisbursementDate": [
+     2026,
+     10,
+     8
+    ],
+    "disbursedByUsername": "mifos",
+    "disbursedByFirstname": "App",
+    "disbursedByLastname": "Administrator",
+    "actualMaturityDate": [
+     2027,
+     4,
+     8
+    ],
+    "expectedMaturityDate": [
+     2027,
+     4,
+     8
+    ]
+   },
+   "summary": {
+    "currency": {
+     "code": "ETB",
+     "name": "Ethiopian Birr",
+     "decimalPlaces": 2,
+     "inMultiplesOf": 0,
+     "nameCode": "currency.ETB",
+     "displayLabel": "Ethiopian Birr [ETB]"
+    },
+    "totalPrincipal": 10000.0,
+    "totalCapitalizedIncome": 0.0,
+    "totalCapitalizedIncomeAdjustment": 0.0,
+    "principalDisbursed": 10000.0,
+    "principalAdjustments": 0.0,
+    "principalPaid": 0.0,
+    "principalWrittenOff": 0.0,
+    "principalOutstanding": 10000.0,
+    "principalOverdue": 0,
+    "interestCharged": 531.51,
+    "interestPaid": 0.0,
+    "interestWaived": 0.0,
+    "interestWrittenOff": 0.0,
+    "interestOutstanding": 531.51,
+    "interestOverdue": 0,
+    "feeChargesCharged": 0.0,
+    "feeAdjustments": 0.0,
+    "feeChargesDueAtDisbursementCharged": 0.0,
+    "feeChargesPaid": 0.0,
+    "feeChargesWaived": 0.0,
+    "feeChargesWrittenOff": 0.0,
+    "feeChargesOutstanding": 0.0,
+    "feeChargesOverdue": 0,
+    "penaltyChargesCharged": 0.0,
+    "penaltyAdjustments": 0.0,
+    "penaltyChargesPaid": 0.0,
+    "penaltyChargesWaived": 0.0,
+    "penaltyChargesWrittenOff": 0.0,
+    "penaltyChargesOutstanding": 0.0,
+    "penaltyChargesOverdue": 0,
+    "totalExpectedRepayment": 10531.51,
+    "totalRepayment": 0.0,
+    "totalExpectedCostOfLoan": 531.51,
+    "totalCostOfLoan": 0.0,
+    "totalWaived": 0.0,
+    "totalWrittenOff": 0.0,
+    "totalOutstanding": 10531.51,
+    "totalOverdue": 0,
+    "totalRecovered": 0
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "loanProductCounter": 1,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 6,
+   "accountNo": "000000006",
+   "externalId": "SEED-L06",
+   "status": {
+    "id": 300,
+    "code": "loanStatusType.active",
+    "value": "Active",
+    "pendingApproval": false,
+    "waitingForDisbursal": false,
+    "active": true,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 8,
+   "clientAccountNo": "000000008",
+   "clientName": "Tigist Haile",
+   "clientExternalId": "SEED-C06",
+   "clientOfficeId": 3,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 4,
+   "loanOfficerName": "Alemu, Meron",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 20000.0,
+   "approvedPrincipal": 20000.0,
+   "proposedPrincipal": 20000.0,
+   "netDisbursalAmount": 20000.0,
+   "termFrequency": 12,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 12,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     5,
+     10
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "approvedOnDate": [
+     2026,
+     5,
+     12
+    ],
+    "approvedByUsername": "mifos",
+    "approvedByFirstname": "App",
+    "approvedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     5,
+     15
+    ],
+    "actualDisbursementDate": [
+     2026,
+     5,
+     15
+    ],
+    "disbursedByUsername": "mifos",
+    "disbursedByFirstname": "App",
+    "disbursedByLastname": "Administrator",
+    "actualMaturityDate": [
+     2027,
+     5,
+     15
+    ],
+    "expectedMaturityDate": [
+     2027,
+     5,
+     15
+    ]
+   },
+   "summary": {
+    "currency": {
+     "code": "ETB",
+     "name": "Ethiopian Birr",
+     "decimalPlaces": 2,
+     "inMultiplesOf": 0,
+     "nameCode": "currency.ETB",
+     "displayLabel": "Ethiopian Birr [ETB]"
+    },
+    "totalPrincipal": 20000.0,
+    "totalCapitalizedIncome": 0.0,
+    "totalCapitalizedIncomeAdjustment": 0.0,
+    "principalDisbursed": 20000.0,
+    "principalAdjustments": 0.0,
+    "principalPaid": 7901.51,
+    "principalWrittenOff": 0.0,
+    "principalOutstanding": 12098.49,
+    "principalOverdue": 0,
+    "interestCharged": 2003.21,
+    "interestPaid": 1266.49,
+    "interestWaived": 0.0,
+    "interestWrittenOff": 0.0,
+    "interestOutstanding": 736.72,
+    "interestOverdue": 0,
+    "feeChargesCharged": 0.0,
+    "feeAdjustments": 0.0,
+    "feeChargesDueAtDisbursementCharged": 0.0,
+    "feeChargesPaid": 0.0,
+    "feeChargesWaived": 0.0,
+    "feeChargesWrittenOff": 0.0,
+    "feeChargesOutstanding": 0.0,
+    "feeChargesOverdue": 0,
+    "penaltyChargesCharged": 0.0,
+    "penaltyAdjustments": 0.0,
+    "penaltyChargesPaid": 0.0,
+    "penaltyChargesWaived": 0.0,
+    "penaltyChargesWrittenOff": 0.0,
+    "penaltyChargesOutstanding": 0.0,
+    "penaltyChargesOverdue": 0,
+    "totalExpectedRepayment": 22003.21,
+    "totalRepayment": 9168.0,
+    "totalExpectedCostOfLoan": 2003.21,
+    "totalCostOfLoan": 1266.49,
+    "totalWaived": 0.0,
+    "totalWrittenOff": 0.0,
+    "totalOutstanding": 12835.21,
+    "totalOverdue": 0,
+    "totalRecovered": 0
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "loanProductCounter": 1,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 7,
+   "accountNo": "000000007",
+   "externalId": "SEED-L07",
+   "status": {
+    "id": 300,
+    "code": "loanStatusType.active",
+    "value": "Active",
+    "pendingApproval": false,
+    "waitingForDisbursal": false,
+    "active": true,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 9,
+   "clientAccountNo": "000000009",
+   "clientName": "Getachew Ayele",
+   "clientExternalId": "SEED-C07",
+   "clientOfficeId": 3,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 4,
+   "loanOfficerName": "Alemu, Meron",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 30000.0,
+   "approvedPrincipal": 30000.0,
+   "proposedPrincipal": 30000.0,
+   "netDisbursalAmount": 30000.0,
+   "termFrequency": 12,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 12,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     4,
+     5
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "approvedOnDate": [
+     2026,
+     4,
+     8
+    ],
+    "approvedByUsername": "mifos",
+    "approvedByFirstname": "App",
+    "approvedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     4,
+     10
+    ],
+    "actualDisbursementDate": [
+     2026,
+     4,
+     10
+    ],
+    "disbursedByUsername": "mifos",
+    "disbursedByFirstname": "App",
+    "disbursedByLastname": "Administrator",
+    "actualMaturityDate": [
+     2027,
+     4,
+     10
+    ],
+    "expectedMaturityDate": [
+     2027,
+     4,
+     10
+    ]
+   },
+   "summary": {
+    "currency": {
+     "code": "ETB",
+     "name": "Ethiopian Birr",
+     "decimalPlaces": 2,
+     "inMultiplesOf": 0,
+     "nameCode": "currency.ETB",
+     "displayLabel": "Ethiopian Birr [ETB]"
+    },
+    "totalPrincipal": 30000.0,
+    "totalCapitalizedIncome": 0.0,
+    "totalCapitalizedIncomeAdjustment": 0.0,
+    "principalDisbursed": 30000.0,
+    "principalAdjustments": 0.0,
+    "principalPaid": 5254.84,
+    "principalWrittenOff": 0.0,
+    "principalOutstanding": 24745.16,
+    "principalOverdue": 9075.62,
+    "interestCharged": 3004.8,
+    "interestPaid": 1245.96,
+    "interestWaived": 0.0,
+    "interestWrittenOff": 0.0,
+    "interestOutstanding": 1758.84,
+    "interestOverdue": 925.98,
+    "feeChargesCharged": 0.0,
+    "feeAdjustments": 0.0,
+    "feeChargesDueAtDisbursementCharged": 0.0,
+    "feeChargesPaid": 0.0,
+    "feeChargesWaived": 0.0,
+    "feeChargesWrittenOff": 0.0,
+    "feeChargesOutstanding": 0.0,
+    "feeChargesOverdue": 0.0,
+    "penaltyChargesCharged": 0.0,
+    "penaltyAdjustments": 0.0,
+    "penaltyChargesPaid": 0.0,
+    "penaltyChargesWaived": 0.0,
+    "penaltyChargesWrittenOff": 0.0,
+    "penaltyChargesOutstanding": 0.0,
+    "penaltyChargesOverdue": 0.0,
+    "totalExpectedRepayment": 33004.8,
+    "totalRepayment": 6500.8,
+    "totalExpectedCostOfLoan": 3004.8,
+    "totalCostOfLoan": 1245.96,
+    "totalWaived": 0.0,
+    "totalWrittenOff": 0.0,
+    "totalOutstanding": 26504.0,
+    "totalOverdue": 10001.6,
+    "totalRecovered": 0,
+    "overdueSinceDate": [
+     2026,
+     7,
+     10
+    ]
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "loanProductCounter": 1,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": true,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 8,
+   "accountNo": "000000008",
+   "externalId": "SEED-L08",
+   "status": {
+    "id": 600,
+    "code": "loanStatusType.closed.obligations.met",
+    "value": "Closed (obligations met)",
+    "pendingApproval": false,
+    "waitingForDisbursal": false,
+    "active": false,
+    "closedObligationsMet": true,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": true,
+    "overpaid": false
+   },
+   "clientId": 10,
+   "clientAccountNo": "000000010",
+   "clientName": "Mulu Gebre",
+   "clientExternalId": "SEED-C08",
+   "clientOfficeId": 3,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 4,
+   "loanOfficerName": "Alemu, Meron",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 8000.0,
+   "approvedPrincipal": 8000.0,
+   "proposedPrincipal": 8000.0,
+   "netDisbursalAmount": 8000.0,
+   "termFrequency": 6,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 6,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2025,
+     2,
+     20
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "approvedOnDate": [
+     2025,
+     2,
+     25
+    ],
+    "approvedByUsername": "mifos",
+    "approvedByFirstname": "App",
+    "approvedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2025,
+     3,
+     1
+    ],
+    "actualDisbursementDate": [
+     2025,
+     3,
+     1
+    ],
+    "disbursedByUsername": "mifos",
+    "disbursedByFirstname": "App",
+    "disbursedByLastname": "Administrator",
+    "closedOnDate": [
+     2025,
+     9,
+     1
+    ],
+    "actualMaturityDate": [
+     2025,
+     9,
+     1
+    ],
+    "expectedMaturityDate": [
+     2025,
+     9,
+     1
+    ]
+   },
+   "summary": {
+    "currency": {
+     "code": "ETB",
+     "name": "Ethiopian Birr",
+     "decimalPlaces": 2,
+     "inMultiplesOf": 0,
+     "nameCode": "currency.ETB",
+     "displayLabel": "Ethiopian Birr [ETB]"
+    },
+    "totalPrincipal": 8000.0,
+    "totalCapitalizedIncome": 0.0,
+    "totalCapitalizedIncomeAdjustment": 0.0,
+    "principalDisbursed": 8000.0,
+    "principalAdjustments": 0.0,
+    "principalPaid": 8000.0,
+    "principalWrittenOff": 0.0,
+    "principalOutstanding": 0.0,
+    "principalOverdue": 0,
+    "interestCharged": 425.22,
+    "interestPaid": 425.22,
+    "interestWaived": 0.0,
+    "interestWrittenOff": 0.0,
+    "interestOutstanding": 0.0,
+    "interestOverdue": 0,
+    "feeChargesCharged": 0.0,
+    "feeAdjustments": 0.0,
+    "feeChargesDueAtDisbursementCharged": 0.0,
+    "feeChargesPaid": 0.0,
+    "feeChargesWaived": 0.0,
+    "feeChargesWrittenOff": 0.0,
+    "feeChargesOutstanding": 0.0,
+    "feeChargesOverdue": 0,
+    "penaltyChargesCharged": 0.0,
+    "penaltyAdjustments": 0.0,
+    "penaltyChargesPaid": 0.0,
+    "penaltyChargesWaived": 0.0,
+    "penaltyChargesWrittenOff": 0.0,
+    "penaltyChargesOutstanding": 0.0,
+    "penaltyChargesOverdue": 0,
+    "totalExpectedRepayment": 8425.22,
+    "totalRepayment": 8425.22,
+    "totalExpectedCostOfLoan": 425.22,
+    "totalCostOfLoan": 425.22,
+    "totalWaived": 0.0,
+    "totalWrittenOff": 0.0,
+    "totalOutstanding": 0.0,
+    "totalOverdue": 0,
+    "totalRecovered": 0
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "loanProductCounter": 1,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 9,
+   "accountNo": "000000009",
+   "externalId": "SEED-L09",
+   "status": {
+    "id": 300,
+    "code": "loanStatusType.active",
+    "value": "Active",
+    "pendingApproval": false,
+    "waitingForDisbursal": false,
+    "active": true,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 11,
+   "clientAccountNo": "000000011",
+   "clientName": "Solomon Tefera",
+   "clientExternalId": "SEED-C09",
+   "clientOfficeId": 3,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 5,
+   "loanOfficerName": "Haile, Dawit",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 12000.0,
+   "approvedPrincipal": 12000.0,
+   "proposedPrincipal": 12000.0,
+   "netDisbursalAmount": 12000.0,
+   "termFrequency": 12,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 12,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     6,
+     25
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "approvedOnDate": [
+     2026,
+     6,
+     28
+    ],
+    "approvedByUsername": "mifos",
+    "approvedByFirstname": "App",
+    "approvedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     7,
+     1
+    ],
+    "actualDisbursementDate": [
+     2026,
+     7,
+     1
+    ],
+    "disbursedByUsername": "mifos",
+    "disbursedByFirstname": "App",
+    "disbursedByLastname": "Administrator",
+    "actualMaturityDate": [
+     2027,
+     7,
+     1
+    ],
+    "expectedMaturityDate": [
+     2027,
+     7,
+     1
+    ]
+   },
+   "summary": {
+    "currency": {
+     "code": "ETB",
+     "name": "Ethiopian Birr",
+     "decimalPlaces": 2,
+     "inMultiplesOf": 0,
+     "nameCode": "currency.ETB",
+     "displayLabel": "Ethiopian Birr [ETB]"
+    },
+    "totalPrincipal": 12000.0,
+    "totalCapitalizedIncome": 0.0,
+    "totalCapitalizedIncomeAdjustment": 0.0,
+    "principalDisbursed": 12000.0,
+    "principalAdjustments": 0.0,
+    "principalPaid": 0.0,
+    "principalWrittenOff": 0.0,
+    "principalOutstanding": 12000.0,
+    "principalOverdue": 2802.09,
+    "interestCharged": 1201.95,
+    "interestPaid": 0.0,
+    "interestWaived": 0.0,
+    "interestWrittenOff": 0.0,
+    "interestOutstanding": 1201.95,
+    "interestOverdue": 498.39,
+    "feeChargesCharged": 0.0,
+    "feeAdjustments": 0.0,
+    "feeChargesDueAtDisbursementCharged": 0.0,
+    "feeChargesPaid": 0.0,
+    "feeChargesWaived": 0.0,
+    "feeChargesWrittenOff": 0.0,
+    "feeChargesOutstanding": 0.0,
+    "feeChargesOverdue": 0.0,
+    "penaltyChargesCharged": 0.0,
+    "penaltyAdjustments": 0.0,
+    "penaltyChargesPaid": 0.0,
+    "penaltyChargesWaived": 0.0,
+    "penaltyChargesWrittenOff": 0.0,
+    "penaltyChargesOutstanding": 0.0,
+    "penaltyChargesOverdue": 0.0,
+    "totalExpectedRepayment": 13201.95,
+    "totalRepayment": 0.0,
+    "totalExpectedCostOfLoan": 1201.95,
+    "totalCostOfLoan": 0.0,
+    "totalWaived": 0.0,
+    "totalWrittenOff": 0.0,
+    "totalOutstanding": 13201.95,
+    "totalOverdue": 3300.48,
+    "totalRecovered": 0,
+    "overdueSinceDate": [
+     2026,
+     8,
+     1
+    ]
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "loanProductCounter": 1,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": true,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 10,
+   "accountNo": "000000010",
+   "externalId": "SEED-L10",
+   "status": {
+    "id": 100,
+    "code": "loanStatusType.submitted.and.pending.approval",
+    "value": "Submitted and pending approval",
+    "pendingApproval": true,
+    "waitingForDisbursal": false,
+    "active": false,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 12,
+   "clientAccountNo": "000000012",
+   "clientName": "Hirut Desta",
+   "clientExternalId": "SEED-C10",
+   "clientOfficeId": 3,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 5,
+   "loanOfficerName": "Haile, Dawit",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 40000.0,
+   "approvedPrincipal": 40000.0,
+   "proposedPrincipal": 40000.0,
+   "netDisbursalAmount": 40000.0,
+   "termFrequency": 24,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 24,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     10,
+     21
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     11,
+     2
+    ],
+    "actualMaturityDate": [
+     2028,
+     11,
+     2
+    ],
+    "expectedMaturityDate": [
+     2028,
+     11,
+     2
+    ]
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 11,
+   "accountNo": "000000011",
+   "externalId": "SEED-L12",
+   "status": {
+    "id": 300,
+    "code": "loanStatusType.active",
+    "value": "Active",
+    "pendingApproval": false,
+    "waitingForDisbursal": false,
+    "active": true,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 14,
+   "clientAccountNo": "000000014",
+   "clientName": "Meseret Bekele",
+   "clientExternalId": "SEED-C12",
+   "clientOfficeId": 3,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanOfficerId": 5,
+   "loanOfficerName": "Haile, Dawit",
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 18000.0,
+   "approvedPrincipal": 18000.0,
+   "proposedPrincipal": 18000.0,
+   "netDisbursalAmount": 18000.0,
+   "termFrequency": 12,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 12,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     3,
+     1
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "approvedOnDate": [
+     2026,
+     3,
+     3
+    ],
+    "approvedByUsername": "mifos",
+    "approvedByFirstname": "App",
+    "approvedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     3,
+     5
+    ],
+    "actualDisbursementDate": [
+     2026,
+     3,
+     5
+    ],
+    "disbursedByUsername": "mifos",
+    "disbursedByFirstname": "App",
+    "disbursedByLastname": "Administrator",
+    "actualMaturityDate": [
+     2027,
+     3,
+     5
+    ],
+    "expectedMaturityDate": [
+     2027,
+     3,
+     5
+    ]
+   },
+   "summary": {
+    "currency": {
+     "code": "ETB",
+     "name": "Ethiopian Birr",
+     "decimalPlaces": 2,
+     "inMultiplesOf": 0,
+     "nameCode": "currency.ETB",
+     "displayLabel": "Ethiopian Birr [ETB]"
+    },
+    "totalPrincipal": 18000.0,
+    "totalCapitalizedIncome": 0.0,
+    "totalCapitalizedIncomeAdjustment": 0.0,
+    "principalDisbursed": 18000.0,
+    "principalAdjustments": 0.0,
+    "principalPaid": 10107.49,
+    "principalWrittenOff": 0.0,
+    "principalOutstanding": 7892.51,
+    "principalOverdue": 0,
+    "interestCharged": 1802.89,
+    "interestPaid": 1444.19,
+    "interestWaived": 0.0,
+    "interestWrittenOff": 0.0,
+    "interestOutstanding": 358.7,
+    "interestOverdue": 0,
+    "feeChargesCharged": 0.0,
+    "feeAdjustments": 0.0,
+    "feeChargesDueAtDisbursementCharged": 0.0,
+    "feeChargesPaid": 0.0,
+    "feeChargesWaived": 0.0,
+    "feeChargesWrittenOff": 0.0,
+    "feeChargesOutstanding": 0.0,
+    "feeChargesOverdue": 0,
+    "penaltyChargesCharged": 0.0,
+    "penaltyAdjustments": 0.0,
+    "penaltyChargesPaid": 0.0,
+    "penaltyChargesWaived": 0.0,
+    "penaltyChargesWrittenOff": 0.0,
+    "penaltyChargesOutstanding": 0.0,
+    "penaltyChargesOverdue": 0,
+    "totalExpectedRepayment": 19802.89,
+    "totalRepayment": 11551.68,
+    "totalExpectedCostOfLoan": 1802.89,
+    "totalCostOfLoan": 1444.19,
+    "totalWaived": 0.0,
+    "totalWrittenOff": 0.0,
+    "totalOutstanding": 8251.21,
+    "totalOverdue": 0,
+    "totalRecovered": 0
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "loanProductCounter": 1,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  },
+  {
+   "id": 12,
+   "accountNo": "000000012",
+   "status": {
+    "id": 500,
+    "code": "loanStatusType.rejected",
+    "value": "Rejected",
+    "pendingApproval": false,
+    "waitingForDisbursal": false,
+    "active": false,
+    "closedObligationsMet": false,
+    "closedWrittenOff": false,
+    "closedRescheduled": false,
+    "closed": false,
+    "overpaid": false
+   },
+   "clientId": 7,
+   "clientAccountNo": "000000007",
+   "clientName": "Fikirte Mengistu",
+   "clientExternalId": "SEED-C13",
+   "clientOfficeId": 2,
+   "loanProductId": 1,
+   "loanProductName": "Small Business Loan",
+   "isLoanProductLinkedToFloatingRate": false,
+   "loanType": {
+    "id": 1,
+    "code": "accountType.individual",
+    "value": "Individual"
+   },
+   "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+   },
+   "principal": 45000.0,
+   "approvedPrincipal": 45000.0,
+   "proposedPrincipal": 45000.0,
+   "netDisbursalAmount": 45000.0,
+   "termFrequency": 24,
+   "termPeriodFrequencyType": {
+    "id": 2,
+    "code": "termFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "numberOfRepayments": 24,
+   "repaymentEvery": 1,
+   "repaymentFrequencyType": {
+    "id": 2,
+    "code": "repaymentFrequency.periodFrequencyType.months",
+    "value": "Months"
+   },
+   "interestRatePerPeriod": 18.0,
+   "interestRateFrequencyType": {
+    "id": 3,
+    "code": "interestRateFrequency.periodFrequencyType.years",
+    "value": "Per year"
+   },
+   "annualInterestRate": 18.0,
+   "isFloatingInterestRate": false,
+   "amortizationType": {
+    "id": 1,
+    "code": "amortizationType.equal.installments",
+    "value": "Equal installments"
+   },
+   "interestType": {
+    "id": 0,
+    "code": "interestType.declining.balance",
+    "value": "Declining Balance"
+   },
+   "interestCalculationPeriodType": {
+    "id": 1,
+    "code": "interestCalculationPeriodType.same.as.repayment.period",
+    "value": "Same as repayment period"
+   },
+   "allowPartialPeriodInterestCalculation": false,
+   "transactionProcessingStrategyCode": "mifos-standard-strategy",
+   "transactionProcessingStrategyName": "Penalties, Fees, Interest, Principal order",
+   "syncDisbursementWithMeeting": false,
+   "disallowExpectedDisbursements": false,
+   "timeline": {
+    "submittedOnDate": [
+     2026,
+     10,
+     23
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "rejectedOnDate": [
+     2026,
+     10,
+     23
+    ],
+    "rejectedByUsername": "mifos",
+    "rejectedByFirstname": "App",
+    "rejectedByLastname": "Administrator",
+    "expectedDisbursementDate": [
+     2026,
+     10,
+     23
+    ],
+    "closedOnDate": [
+     2026,
+     10,
+     23
+    ],
+    "closedByUsername": "mifos",
+    "closedByFirstname": "App",
+    "closedByLastname": "Administrator",
+    "actualMaturityDate": [
+     2028,
+     10,
+     23
+    ],
+    "expectedMaturityDate": [
+     2028,
+     10,
+     23
+    ],
+    "writeOffByUsername": "mifos",
+    "writeOffByFirstname": "App",
+    "writeOffByLastname": "Administrator"
+   },
+   "summary": {
+    "currency": {
+     "code": "ETB",
+     "name": "Ethiopian Birr",
+     "decimalPlaces": 2,
+     "inMultiplesOf": 0,
+     "nameCode": "currency.ETB",
+     "displayLabel": "Ethiopian Birr [ETB]"
+    },
+    "totalPrincipal": 0.0,
+    "totalCapitalizedIncome": 0.0,
+    "totalCapitalizedIncomeAdjustment": 0.0,
+    "principalDisbursed": 0.0,
+    "principalAdjustments": 0.0,
+    "principalPaid": 0.0,
+    "principalWrittenOff": 0.0,
+    "principalOutstanding": 0.0,
+    "principalOverdue": 0,
+    "interestCharged": 0.0,
+    "interestPaid": 0.0,
+    "interestWaived": 0.0,
+    "interestWrittenOff": 0.0,
+    "interestOutstanding": 0.0,
+    "interestOverdue": 0,
+    "feeChargesCharged": 0.0,
+    "feeAdjustments": 0.0,
+    "feeChargesDueAtDisbursementCharged": 0.0,
+    "feeChargesPaid": 0.0,
+    "feeChargesWaived": 0.0,
+    "feeChargesWrittenOff": 0.0,
+    "feeChargesOutstanding": 0.0,
+    "feeChargesOverdue": 0,
+    "penaltyChargesCharged": 0.0,
+    "penaltyAdjustments": 0.0,
+    "penaltyChargesPaid": 0.0,
+    "penaltyChargesWaived": 0.0,
+    "penaltyChargesWrittenOff": 0.0,
+    "penaltyChargesOutstanding": 0.0,
+    "penaltyChargesOverdue": 0,
+    "totalExpectedRepayment": 0.0,
+    "totalRepayment": 0.0,
+    "totalExpectedCostOfLoan": 0.0,
+    "totalCostOfLoan": 0.0,
+    "totalWaived": 0.0,
+    "totalWrittenOff": 0.0,
+    "totalOutstanding": 0.0,
+    "totalOverdue": 0,
+    "totalRecovered": 0
+   },
+   "feeChargesAtDisbursementCharged": 0.0,
+   "multiDisburseLoan": false,
+   "canDefineInstallmentAmount": false,
+   "canUseForTopup": false,
+   "isTopup": false,
+   "fraud": false,
+   "closureLoanId": 0,
+   "inArrears": false,
+   "isNPA": false,
+   "daysInMonthType": {
+    "id": 1,
+    "code": "DaysInMonthType.actual",
+    "value": "Actual"
+   },
+   "daysInYearType": {
+    "id": 1,
+    "code": "DaysInYearType.actual",
+    "value": "Actual"
+   },
+   "isInterestRecalculationEnabled": false,
+   "createStandingInstructionAtDisbursement": false,
+   "isVariableInstallmentsAllowed": false,
+   "minimumGap": 0,
+   "maximumGap": 0,
+   "isEqualAmortization": false,
+   "delinquent": {
+    "availableDisbursementAmount": 0,
+    "availableDisbursementAmountWithOverApplied": 0,
+    "pastDueDays": 0,
+    "nextPaymentAmount": 0,
+    "delinquentDays": 0,
+    "delinquentAmount": 0,
+    "lastPaymentAmount": 0,
+    "lastRepaymentAmount": 0,
+    "delinquentPrincipal": 0,
+    "delinquentInterest": 0,
+    "delinquentFee": 0,
+    "delinquentPenalty": 0
+   },
+   "enableInstallmentLevelDelinquency": false,
+   "chargedOff": false,
+   "allowFullTermForTranche": false,
+   "enableDownPayment": false,
+   "enableAutoRepaymentForDownPayment": false,
+   "repaymentStartDateType": {
+    "id": 1,
+    "code": "repaymentStartDateType.disbursementDate",
+    "value": "Disbursement Date"
+   },
+   "interestRecognitionOnDisbursementDate": false,
+   "loanScheduleType": {
+    "id": 0,
+    "code": "CUMULATIVE",
+    "value": "Cumulative"
+   },
+   "loanScheduleProcessingType": {
+    "id": 0,
+    "code": "HORIZONTAL",
+    "value": "Horizontal"
+   },
+   "chargeOffBehaviour": {
+    "id": "REGULAR",
+    "code": "chargeOffBehaviour.regular",
+    "value": "Regular"
+   },
+   "enableIncomeCapitalization": false,
+   "enableBuyDownFee": false,
+   "merchantBuyDownFee": false
+  }
+ ]
+}

@@ -1,0 +1,1897 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "description" : "Loan-officer API in front of Apache Fineract. Amounts are ETB with 2 decimals. Log in with POST /api/auth/login, then click Authorize and paste the accessToken.",
+    "title" : "Adey MFI backend",
+    "version" : "v1"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080",
+    "description" : "Local development"
+  } ],
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "paths" : {
+    "/api/auth/login" : {
+      "post" : {
+        "operationId" : "login",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TokenResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Log in with Fineract username + password; returns access and refresh tokens",
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/api/auth/logout" : {
+      "post" : {
+        "operationId" : "logout",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RefreshRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Log out: revoke the refresh token (the access token expires on its own within 15 min)",
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/api/auth/me" : {
+      "get" : {
+        "operationId" : "me",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OfficerResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The officer the access token belongs to",
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/api/auth/refresh" : {
+      "post" : {
+        "operationId" : "refresh",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RefreshRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TokenResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Exchange a refresh token for a new token pair (the old refresh token stops working)",
+        "tags" : [ "Auth" ]
+      }
+    },
+    "/api/clients" : {
+      "get" : {
+        "operationId" : "search",
+        "parameters" : [ {
+          "description" : "Part of the client's name. Case-sensitive (Fineract on PostgreSQL).",
+          "in" : "query",
+          "name" : "search",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "0-based page number",
+          "in" : "query",
+          "name" : "page",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0,
+            "minimum" : 0
+          }
+        }, {
+          "in" : "query",
+          "name" : "size",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 20,
+            "maximum" : 100,
+            "minimum" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PageResponseClientSummary"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Search clients (paged): an officer sees their own clients, a manager their whole office",
+        "tags" : [ "Clients" ]
+      },
+      "post" : {
+        "operationId" : "create",
+        "parameters" : [ {
+          "description" : "Optional. A unique id (e.g. a UUID) the app creates once per action and sends again on every retry. A retry with the same key and body returns the first response instead of running twice. Valid for 24 hours.",
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "3f0a9c5e-6f1b-4b8e-9d2a-7c1e0b5a4d33"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CreateClientRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ClientDetails"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Create a client in your office (officer: assigned to you; manager: choose staffId)",
+        "tags" : [ "Clients" ]
+      }
+    },
+    "/api/clients/{clientId}" : {
+      "get" : {
+        "operationId" : "get",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "clientId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ClientDetails"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Client details (403 if the client is not yours / not in your office)",
+        "tags" : [ "Clients" ]
+      },
+      "put" : {
+        "operationId" : "update",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "clientId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UpdateClientRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ClientDetails"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Edit a client's basic details (only the fields you send are changed)",
+        "tags" : [ "Clients" ]
+      }
+    },
+    "/api/clients/{clientId}/loans" : {
+      "get" : {
+        "operationId" : "clientLoans",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "clientId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/LoanSummary"
+                  }
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A client's loans with progress and next due installment",
+        "tags" : [ "Loans" ]
+      }
+    },
+    "/api/loan-products" : {
+      "get" : {
+        "operationId" : "list_3",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/LoanProductResponse"
+                  }
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "List loan products with their principal / repayment ranges",
+        "tags" : [ "Loan products" ]
+      }
+    },
+    "/api/loans" : {
+      "get" : {
+        "operationId" : "list",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "APPROVED", "ACTIVE", "CLOSED", "REJECTED" ]
+          }
+        }, {
+          "description" : "true = only loans with an installment past due, false = only loans without",
+          "in" : "query",
+          "name" : "inArrears",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        }, {
+          "in" : "query",
+          "name" : "clientId",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/LoanListItem"
+                  }
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Loans you may see, filtered. status=PENDING is the approval queue (oldest first); inArrears=true is the collection list (most days overdue first)",
+        "tags" : [ "Portfolio" ]
+      },
+      "post" : {
+        "operationId" : "submit",
+        "parameters" : [ {
+          "description" : "Optional. A unique id (e.g. a UUID) the app creates once per action and sends again on every retry. A retry with the same key and body returns the first response instead of running twice. Valid for 24 hours.",
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "3f0a9c5e-6f1b-4b8e-9d2a-7c1e0b5a4d33"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoanApplicationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoanStatusResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Submit a loan application (409 if the client already has a loan in progress)",
+        "tags" : [ "Loans" ]
+      }
+    },
+    "/api/loans/schedule-preview" : {
+      "post" : {
+        "operationId" : "previewSchedule",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SchedulePreviewRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SchedulePreviewResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Preview a repayment schedule without creating a loan",
+        "tags" : [ "Loans" ]
+      }
+    },
+    "/api/loans/{loanId}" : {
+      "get" : {
+        "operationId" : "get_1",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "loanId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoanDetails"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Loan details: totals, full schedule and transactions",
+        "tags" : [ "Loans" ]
+      }
+    },
+    "/api/loans/{loanId}/approve" : {
+      "post" : {
+        "operationId" : "approve",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "loanId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ApproveLoanRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoanStatusResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Approve a submitted application (branch manager only)",
+        "tags" : [ "Loans" ]
+      }
+    },
+    "/api/loans/{loanId}/disburse" : {
+      "post" : {
+        "operationId" : "disburse",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "loanId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DisburseLoanRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoanStatusResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Disburse (pay out) an approved loan; it becomes Active (branch manager only)",
+        "tags" : [ "Loans" ]
+      }
+    },
+    "/api/loans/{loanId}/reject" : {
+      "post" : {
+        "operationId" : "reject",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "loanId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RejectLoanRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoanStatusResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Reject a submitted application (branch manager only)",
+        "tags" : [ "Loans" ]
+      }
+    },
+    "/api/loans/{loanId}/repayments" : {
+      "post" : {
+        "operationId" : "repay",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "loanId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "description" : "Optional. A unique id (e.g. a UUID) the app creates once per action and sends again on every retry. A retry with the same key and body returns the first response instead of running twice. Valid for 24 hours.",
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "3f0a9c5e-6f1b-4b8e-9d2a-7c1e0b5a4d33"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RepaymentRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoanTransactionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Record a repayment; returns how it was split over principal/interest/fees/penalties",
+        "tags" : [ "Loans" ]
+      }
+    },
+    "/api/loans/{loanId}/undo-approval" : {
+      "post" : {
+        "operationId" : "undoApproval",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "loanId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UndoApprovalRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LoanStatusResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Undo an approval: back to pending, only before disbursement (branch manager only)",
+        "tags" : [ "Loans" ]
+      }
+    },
+    "/api/me/portfolio" : {
+      "get" : {
+        "operationId" : "portfolio",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Portfolio"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Dashboard: counts, outstanding, PAR1/PAR30, due today, overdue (+ per officer for managers)",
+        "tags" : [ "Portfolio" ]
+      }
+    },
+    "/api/offices" : {
+      "get" : {
+        "operationId" : "list_2",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/OfficeResponse"
+                  }
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "List all offices (branches)",
+        "tags" : [ "Offices" ]
+      }
+    },
+    "/api/payment-types" : {
+      "get" : {
+        "operationId" : "list_1",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/PaymentTypeResponse"
+                  }
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Payment types an officer can choose for disbursements and repayments",
+        "tags" : [ "Payment types" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Amounts" : {
+        "type" : "object",
+        "properties" : {
+          "currency" : {
+            "type" : "string"
+          },
+          "principalOutstanding" : {
+            "type" : "number"
+          },
+          "totalOverdue" : {
+            "type" : "number"
+          }
+        }
+      },
+      "ApproveLoanRequest" : {
+        "type" : "object",
+        "properties" : {
+          "approvedAmount" : {
+            "type" : "number",
+            "description" : "Approve less than requested. Defaults to the requested principal.",
+            "exclusiveMinimum" : 0
+          },
+          "approvedOnDate" : {
+            "type" : "string",
+            "format" : "date",
+            "description" : "ISO date. Defaults to today."
+          },
+          "note" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          }
+        }
+      },
+      "ClientDetails" : {
+        "type" : "object",
+        "properties" : {
+          "accountNo" : {
+            "type" : "string"
+          },
+          "activationDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "active" : {
+            "type" : "boolean"
+          },
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "displayName" : {
+            "type" : "string"
+          },
+          "externalId" : {
+            "type" : "string"
+          },
+          "firstName" : {
+            "type" : "string"
+          },
+          "gender" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "lastName" : {
+            "type" : "string"
+          },
+          "middleName" : {
+            "type" : "string"
+          },
+          "mobileNo" : {
+            "type" : "string"
+          },
+          "officeId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "officeName" : {
+            "type" : "string"
+          },
+          "staffId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "staffName" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string"
+          },
+          "submittedOnDate" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "ClientSummary" : {
+        "type" : "object",
+        "properties" : {
+          "accountNo" : {
+            "type" : "string"
+          },
+          "activationDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "active" : {
+            "type" : "boolean"
+          },
+          "displayName" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "officeName" : {
+            "type" : "string"
+          },
+          "staffName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CollectionItem" : {
+        "type" : "object",
+        "properties" : {
+          "accountNo" : {
+            "type" : "string"
+          },
+          "amount" : {
+            "type" : "number"
+          },
+          "clientId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "clientMobileNo" : {
+            "type" : "string"
+          },
+          "clientName" : {
+            "type" : "string"
+          },
+          "daysOverdue" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "dueDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "installment" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "loanId" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "Counts" : {
+        "type" : "object",
+        "properties" : {
+          "activeLoans" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "approvedNotDisbursed" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "clients" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "loansInArrears" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "pendingApplications" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "CreateClientRequest" : {
+        "type" : "object",
+        "properties" : {
+          "activate" : {
+            "type" : "boolean",
+            "description" : "Activate immediately (default true). Inactive clients cannot get loans."
+          },
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date",
+            "description" : "ISO date. The client must be at least 18 years old.",
+            "example" : "1990-05-17"
+          },
+          "externalId" : {
+            "type" : "string",
+            "description" : "National ID number (stored as Fineract externalId). Optional, must be unique.",
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "firstname" : {
+            "type" : "string",
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "gender" : {
+            "type" : "string",
+            "enum" : [ "MALE", "FEMALE" ]
+          },
+          "lastname" : {
+            "type" : "string",
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "mobileNo" : {
+            "type" : "string",
+            "description" : "Ethiopian mobile number, 10 digits starting 09 or 07",
+            "example" : "0911223344",
+            "minLength" : 1,
+            "pattern" : "^0[79][0-9]{8}$"
+          },
+          "staffId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Managers only: the loan officer (staff id) of your office to assign. Officers leave it empty; the client is assigned to them.",
+            "exclusiveMinimum" : 0
+          }
+        },
+        "required" : [ "dateOfBirth", "firstname", "gender", "lastname", "mobileNo" ]
+      },
+      "Dates" : {
+        "type" : "object",
+        "properties" : {
+          "approvedOn" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "closedOn" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "disbursedOn" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "expectedDisbursement" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "expectedMaturity" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "rejectedOn" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "submittedOn" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "DisburseLoanRequest" : {
+        "type" : "object",
+        "properties" : {
+          "actualDisbursementDate" : {
+            "type" : "string",
+            "format" : "date",
+            "description" : "ISO date. Defaults to today."
+          },
+          "note" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "paymentTypeId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "How the money was handed over (see GET /api/payment-types).",
+            "exclusiveMinimum" : 0
+          }
+        }
+      },
+      "Installment" : {
+        "type" : "object",
+        "properties" : {
+          "balanceAfter" : {
+            "type" : "number"
+          },
+          "complete" : {
+            "type" : "boolean"
+          },
+          "dueDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "fees" : {
+            "type" : "number"
+          },
+          "interest" : {
+            "type" : "number"
+          },
+          "number" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "outstanding" : {
+            "type" : "number"
+          },
+          "paid" : {
+            "type" : "number"
+          },
+          "penalties" : {
+            "type" : "number"
+          },
+          "principal" : {
+            "type" : "number"
+          },
+          "total" : {
+            "type" : "number"
+          }
+        }
+      },
+      "LoanApplicationRequest" : {
+        "type" : "object",
+        "properties" : {
+          "clientId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "exclusiveMinimum" : 0
+          },
+          "expectedDisbursementDate" : {
+            "type" : "string",
+            "format" : "date",
+            "description" : "ISO date. Defaults to today."
+          },
+          "numberOfRepayments" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 12,
+            "minimum" : 1
+          },
+          "principal" : {
+            "type" : "number",
+            "example" : 20000.0,
+            "exclusiveMinimum" : 0
+          },
+          "productId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "exclusiveMinimum" : 0
+          }
+        },
+        "required" : [ "clientId", "numberOfRepayments", "principal", "productId" ]
+      },
+      "LoanDetails" : {
+        "type" : "object",
+        "properties" : {
+          "accountNo" : {
+            "type" : "string"
+          },
+          "annualInterestRate" : {
+            "type" : "number"
+          },
+          "approvedPrincipal" : {
+            "type" : "number"
+          },
+          "clientId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "clientName" : {
+            "type" : "string"
+          },
+          "currency" : {
+            "type" : "string"
+          },
+          "dates" : {
+            "$ref" : "#/components/schemas/Dates"
+          },
+          "loanId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "loanOfficerId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "loanOfficerName" : {
+            "type" : "string"
+          },
+          "numberOfRepayments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "principal" : {
+            "type" : "number"
+          },
+          "productId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "productName" : {
+            "type" : "string"
+          },
+          "schedule" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Installment"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "SUBMITTED_AND_PENDING_APPROVAL", "APPROVED", "ACTIVE", "WITHDRAWN_BY_CLIENT", "REJECTED", "CLOSED", "WRITTEN_OFF", "RESCHEDULED", "OVERPAID", "UNKNOWN" ]
+          },
+          "statusLabel" : {
+            "type" : "string"
+          },
+          "summary" : {
+            "$ref" : "#/components/schemas/Summary"
+          },
+          "transactions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/LoanTransactionResponse"
+            }
+          }
+        }
+      },
+      "LoanListItem" : {
+        "type" : "object",
+        "properties" : {
+          "accountNo" : {
+            "type" : "string"
+          },
+          "clientId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "clientMobileNo" : {
+            "type" : "string"
+          },
+          "clientName" : {
+            "type" : "string"
+          },
+          "daysOverdue" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "inArrears" : {
+            "type" : "boolean"
+          },
+          "loanId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "loanOfficerName" : {
+            "type" : "string"
+          },
+          "nextDueAmount" : {
+            "type" : "number"
+          },
+          "nextDueDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "principal" : {
+            "type" : "number"
+          },
+          "principalOutstanding" : {
+            "type" : "number"
+          },
+          "productName" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "SUBMITTED_AND_PENDING_APPROVAL", "APPROVED", "ACTIVE", "WITHDRAWN_BY_CLIENT", "REJECTED", "CLOSED", "WRITTEN_OFF", "RESCHEDULED", "OVERPAID", "UNKNOWN" ]
+          },
+          "statusLabel" : {
+            "type" : "string"
+          },
+          "submittedOn" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "totalOverdue" : {
+            "type" : "number"
+          }
+        }
+      },
+      "LoanProductResponse" : {
+        "type" : "object",
+        "properties" : {
+          "amortization" : {
+            "type" : "string",
+            "enum" : [ "EQUAL_INSTALLMENTS", "EQUAL_PRINCIPAL", "UNKNOWN" ]
+          },
+          "annualInterestRate" : {
+            "type" : "number"
+          },
+          "currency" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "interestMethod" : {
+            "type" : "string",
+            "enum" : [ "DECLINING_BALANCE", "FLAT", "UNKNOWN" ]
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "principalDefault" : {
+            "type" : "number"
+          },
+          "principalMax" : {
+            "type" : "number"
+          },
+          "principalMin" : {
+            "type" : "number"
+          },
+          "repaymentEvery" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repaymentFrequency" : {
+            "type" : "string",
+            "enum" : [ "DAYS", "WEEKS", "MONTHS", "YEARS", "UNKNOWN" ]
+          },
+          "repaymentsDefault" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repaymentsMax" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "repaymentsMin" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "shortName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "LoanStatusResponse" : {
+        "type" : "object",
+        "properties" : {
+          "accountNo" : {
+            "type" : "string"
+          },
+          "loanId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "SUBMITTED_AND_PENDING_APPROVAL", "APPROVED", "ACTIVE", "WITHDRAWN_BY_CLIENT", "REJECTED", "CLOSED", "WRITTEN_OFF", "RESCHEDULED", "OVERPAID", "UNKNOWN" ]
+          },
+          "statusLabel" : {
+            "type" : "string"
+          }
+        }
+      },
+      "LoanSummary" : {
+        "type" : "object",
+        "properties" : {
+          "accountNo" : {
+            "type" : "string"
+          },
+          "annualInterestRate" : {
+            "type" : "number"
+          },
+          "inArrears" : {
+            "type" : "boolean"
+          },
+          "installmentsPaid" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "installmentsTotal" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "loanId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "nextDueAmount" : {
+            "type" : "number"
+          },
+          "nextDueDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "principal" : {
+            "type" : "number"
+          },
+          "principalOutstanding" : {
+            "type" : "number"
+          },
+          "productName" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "SUBMITTED_AND_PENDING_APPROVAL", "APPROVED", "ACTIVE", "WITHDRAWN_BY_CLIENT", "REJECTED", "CLOSED", "WRITTEN_OFF", "RESCHEDULED", "OVERPAID", "UNKNOWN" ]
+          },
+          "statusLabel" : {
+            "type" : "string"
+          },
+          "totalOutstanding" : {
+            "type" : "number"
+          }
+        }
+      },
+      "LoanTransactionResponse" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number"
+          },
+          "date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "feesPortion" : {
+            "type" : "number"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "interestPortion" : {
+            "type" : "number"
+          },
+          "outstandingBalanceAfter" : {
+            "type" : "number"
+          },
+          "overpaymentPortion" : {
+            "type" : "number"
+          },
+          "paymentType" : {
+            "type" : "string"
+          },
+          "penaltiesPortion" : {
+            "type" : "number"
+          },
+          "principalPortion" : {
+            "type" : "number"
+          },
+          "reversed" : {
+            "type" : "boolean"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "typeLabel" : {
+            "type" : "string"
+          }
+        }
+      },
+      "LoginRequest" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "username" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "password", "username" ]
+      },
+      "OfficeResponse" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "openingDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "parentId" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "OfficerResponse" : {
+        "type" : "object",
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "officeId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "officeName" : {
+            "type" : "string"
+          },
+          "roles" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "OFFICER", "MANAGER" ]
+            }
+          },
+          "staffId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "userId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "username" : {
+            "type" : "string"
+          }
+        }
+      },
+      "OfficerSummary" : {
+        "type" : "object",
+        "properties" : {
+          "activeLoans" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "clients" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "officerName" : {
+            "type" : "string"
+          },
+          "par30" : {
+            "type" : "number"
+          },
+          "principalOutstanding" : {
+            "type" : "number"
+          },
+          "staffId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "totalOverdue" : {
+            "type" : "number"
+          }
+        }
+      },
+      "PageResponseClientSummary" : {
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ClientSummary"
+            }
+          },
+          "page" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "size" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "totalElements" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "totalPages" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }
+      },
+      "Par" : {
+        "type" : "object",
+        "properties" : {
+          "par1" : {
+            "type" : "number"
+          },
+          "par1Principal" : {
+            "type" : "number"
+          },
+          "par30" : {
+            "type" : "number"
+          },
+          "par30Principal" : {
+            "type" : "number"
+          }
+        }
+      },
+      "PaymentTypeResponse" : {
+        "type" : "object",
+        "properties" : {
+          "cash" : {
+            "type" : "boolean"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Portfolio" : {
+        "type" : "object",
+        "properties" : {
+          "amounts" : {
+            "$ref" : "#/components/schemas/Amounts"
+          },
+          "asOf" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "counts" : {
+            "$ref" : "#/components/schemas/Counts"
+          },
+          "dueToday" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CollectionItem"
+            }
+          },
+          "dueTodayCount" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "officers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/OfficerSummary"
+            }
+          },
+          "overdue" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CollectionItem"
+            }
+          },
+          "overdueCount" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "par" : {
+            "$ref" : "#/components/schemas/Par"
+          },
+          "scope" : {
+            "$ref" : "#/components/schemas/Scope"
+          }
+        }
+      },
+      "RefreshRequest" : {
+        "type" : "object",
+        "properties" : {
+          "refreshToken" : {
+            "type" : "string",
+            "maxLength" : 200,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "refreshToken" ]
+      },
+      "RejectLoanRequest" : {
+        "type" : "object",
+        "properties" : {
+          "note" : {
+            "type" : "string",
+            "description" : "Why the application was rejected.",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "rejectedOnDate" : {
+            "type" : "string",
+            "format" : "date",
+            "description" : "ISO date. Defaults to today."
+          }
+        }
+      },
+      "RepaymentRequest" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "example" : 1833.6,
+            "exclusiveMinimum" : 0
+          },
+          "note" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "paymentTypeId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "How the client paid (see GET /api/payment-types).",
+            "exclusiveMinimum" : 0
+          },
+          "transactionDate" : {
+            "type" : "string",
+            "format" : "date",
+            "description" : "ISO date. Defaults to today."
+          }
+        },
+        "required" : [ "amount" ]
+      },
+      "SchedulePeriod" : {
+        "type" : "object",
+        "properties" : {
+          "balanceAfter" : {
+            "type" : "number"
+          },
+          "dueDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "interest" : {
+            "type" : "number"
+          },
+          "number" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "principal" : {
+            "type" : "number"
+          },
+          "total" : {
+            "type" : "number"
+          }
+        }
+      },
+      "SchedulePreviewRequest" : {
+        "type" : "object",
+        "properties" : {
+          "clientId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "exclusiveMinimum" : 0
+          },
+          "expectedDisbursementDate" : {
+            "type" : "string",
+            "format" : "date",
+            "description" : "ISO date (yyyy-MM-dd). Defaults to today.",
+            "example" : "2026-10-23"
+          },
+          "numberOfRepayments" : {
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 12,
+            "minimum" : 1
+          },
+          "principal" : {
+            "type" : "number",
+            "example" : 20000.0,
+            "exclusiveMinimum" : 0
+          },
+          "productId" : {
+            "type" : "integer",
+            "format" : "int64",
+            "exclusiveMinimum" : 0
+          }
+        },
+        "required" : [ "clientId", "numberOfRepayments", "principal", "productId" ]
+      },
+      "SchedulePreviewResponse" : {
+        "type" : "object",
+        "properties" : {
+          "currency" : {
+            "type" : "string"
+          },
+          "expectedDisbursementDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "installmentAmount" : {
+            "type" : "number"
+          },
+          "lastInstallmentAmount" : {
+            "type" : "number"
+          },
+          "numberOfRepayments" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "periods" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/SchedulePeriod"
+            }
+          },
+          "principal" : {
+            "type" : "number"
+          },
+          "totalInterest" : {
+            "type" : "number"
+          },
+          "totalRepayable" : {
+            "type" : "number"
+          }
+        }
+      },
+      "Scope" : {
+        "type" : "object",
+        "properties" : {
+          "officeId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "officeName" : {
+            "type" : "string"
+          },
+          "officerName" : {
+            "type" : "string"
+          },
+          "role" : {
+            "type" : "string"
+          },
+          "staffId" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "Summary" : {
+        "type" : "object",
+        "properties" : {
+          "inArrears" : {
+            "type" : "boolean"
+          },
+          "interestCharged" : {
+            "type" : "number"
+          },
+          "interestOutstanding" : {
+            "type" : "number"
+          },
+          "interestPaid" : {
+            "type" : "number"
+          },
+          "overdueSince" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "principalDisbursed" : {
+            "type" : "number"
+          },
+          "principalOutstanding" : {
+            "type" : "number"
+          },
+          "principalPaid" : {
+            "type" : "number"
+          },
+          "totalOutstanding" : {
+            "type" : "number"
+          },
+          "totalOverdue" : {
+            "type" : "number"
+          }
+        }
+      },
+      "TokenResponse" : {
+        "type" : "object",
+        "properties" : {
+          "accessToken" : {
+            "type" : "string"
+          },
+          "accessTokenExpiresAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "expiresIn" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "officer" : {
+            "$ref" : "#/components/schemas/OfficerResponse"
+          },
+          "refreshToken" : {
+            "type" : "string"
+          },
+          "refreshTokenExpiresAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "tokenType" : {
+            "type" : "string"
+          }
+        }
+      },
+      "UndoApprovalRequest" : {
+        "type" : "object",
+        "properties" : {
+          "note" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          }
+        }
+      },
+      "UpdateClientRequest" : {
+        "type" : "object",
+        "properties" : {
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "empty" : {
+            "type" : "boolean"
+          },
+          "externalId" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "firstname" : {
+            "type" : "string",
+            "maxLength" : 50,
+            "minLength" : 1
+          },
+          "gender" : {
+            "type" : "string",
+            "enum" : [ "MALE", "FEMALE" ]
+          },
+          "lastname" : {
+            "type" : "string",
+            "maxLength" : 50,
+            "minLength" : 1
+          },
+          "mobileNo" : {
+            "type" : "string",
+            "example" : "0911223344",
+            "pattern" : "^0[79][0-9]{8}$"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "bearerFormat" : "JWT",
+        "scheme" : "bearer",
+        "type" : "http"
+      }
+    }
+  }
+}

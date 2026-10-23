@@ -1,0 +1,453 @@
+{
+ "totalFilteredRecords": 7,
+ "pageItems": [
+  {
+   "id": 13,
+   "accountNo": "000000013",
+   "externalId": "SEED-C11",
+   "status": {
+    "id": 300,
+    "code": "clientStatusType.active",
+    "value": "Active"
+   },
+   "subStatus": {
+    "active": false,
+    "mandatory": false
+   },
+   "active": true,
+   "activationDate": [
+    2025,
+    1,
+    15
+   ],
+   "firstname": "Ermias",
+   "lastname": "Girma",
+   "displayName": "Ermias Girma",
+   "mobileNo": "0922200011",
+   "dateOfBirth": [
+    1989,
+    10,
+    18
+   ],
+   "gender": {},
+   "clientType": {},
+   "clientClassification": {},
+   "isStaff": false,
+   "officeId": 3,
+   "officeName": "Adama Branch",
+   "staffId": 5,
+   "staffName": "Haile, Dawit",
+   "timeline": {
+    "submittedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "activatedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "activatedByUsername": "mifos",
+    "activatedByFirstname": "App",
+    "activatedByLastname": "Administrator"
+   },
+   "legalForm": {
+    "id": 1,
+    "code": "legalFormType.person",
+    "value": "Person"
+   },
+   "clientNonPersonDetails": {
+    "constitution": {},
+    "mainBusinessLine": {}
+   }
+  },
+  {
+   "id": 9,
+   "accountNo": "000000009",
+   "externalId": "SEED-C07",
+   "status": {
+    "id": 300,
+    "code": "clientStatusType.active",
+    "value": "Active"
+   },
+   "subStatus": {
+    "active": false,
+    "mandatory": false
+   },
+   "active": true,
+   "activationDate": [
+    2025,
+    1,
+    15
+   ],
+   "firstname": "Getachew",
+   "lastname": "Ayele",
+   "displayName": "Getachew Ayele",
+   "mobileNo": "0922200007",
+   "dateOfBirth": [
+    1983,
+    8,
+    9
+   ],
+   "gender": {},
+   "clientType": {},
+   "clientClassification": {},
+   "isStaff": false,
+   "officeId": 3,
+   "officeName": "Adama Branch",
+   "staffId": 4,
+   "staffName": "Alemu, Meron",
+   "timeline": {
+    "submittedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "activatedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "activatedByUsername": "mifos",
+    "activatedByFirstname": "App",
+    "activatedByLastname": "Administrator"
+   },
+   "legalForm": {
+    "id": 1,
+    "code": "legalFormType.person",
+    "value": "Person"
+   },
+   "clientNonPersonDetails": {
+    "constitution": {},
+    "mainBusinessLine": {}
+   }
+  },
+  {
+   "id": 12,
+   "accountNo": "000000012",
+   "externalId": "SEED-C10",
+   "status": {
+    "id": 300,
+    "code": "clientStatusType.active",
+    "value": "Active"
+   },
+   "subStatus": {
+    "active": false,
+    "mandatory": false
+   },
+   "active": true,
+   "activationDate": [
+    2025,
+    1,
+    15
+   ],
+   "firstname": "Hirut",
+   "lastname": "Desta",
+   "displayName": "Hirut Desta",
+   "mobileNo": "0922200010",
+   "dateOfBirth": [
+    1996,
+    6,
+    6
+   ],
+   "gender": {},
+   "clientType": {},
+   "clientClassification": {},
+   "isStaff": false,
+   "officeId": 3,
+   "officeName": "Adama Branch",
+   "staffId": 5,
+   "staffName": "Haile, Dawit",
+   "timeline": {
+    "submittedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "activatedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "activatedByUsername": "mifos",
+    "activatedByFirstname": "App",
+    "activatedByLastname": "Administrator"
+   },
+   "legalForm": {
+    "id": 1,
+    "code": "legalFormType.person",
+    "value": "Person"
+   },
+   "clientNonPersonDetails": {
+    "constitution": {},
+    "mainBusinessLine": {}
+   }
+  },
+  {
+   "id": 14,
+   "accountNo": "000000014",
+   "externalId": "SEED-C12",
+   "status": {
+    "id": 300,
+    "code": "clientStatusType.active",
+    "value": "Active"
+   },
+   "subStatus": {
+    "active": false,
+    "mandatory": false
+   },
+   "active": true,
+   "activationDate": [
+    2025,
+    1,
+    15
+   ],
+   "firstname": "Meseret",
+   "lastname": "Bekele",
+   "displayName": "Meseret Bekele",
+   "mobileNo": "0922200012",
+   "dateOfBirth": [
+    1994,
+    3,
+    27
+   ],
+   "gender": {},
+   "clientType": {},
+   "clientClassification": {},
+   "isStaff": false,
+   "officeId": 3,
+   "officeName": "Adama Branch",
+   "staffId": 5,
+   "staffName": "Haile, Dawit",
+   "timeline": {
+    "submittedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "activatedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "activatedByUsername": "mifos",
+    "activatedByFirstname": "App",
+    "activatedByLastname": "Administrator"
+   },
+   "legalForm": {
+    "id": 1,
+    "code": "legalFormType.person",
+    "value": "Person"
+   },
+   "clientNonPersonDetails": {
+    "constitution": {},
+    "mainBusinessLine": {}
+   }
+  },
+  {
+   "id": 10,
+   "accountNo": "000000010",
+   "externalId": "SEED-C08",
+   "status": {
+    "id": 300,
+    "code": "clientStatusType.active",
+    "value": "Active"
+   },
+   "subStatus": {
+    "active": false,
+    "mandatory": false
+   },
+   "active": true,
+   "activationDate": [
+    2025,
+    1,
+    15
+   ],
+   "firstname": "Mulu",
+   "lastname": "Gebre",
+   "displayName": "Mulu Gebre",
+   "mobileNo": "0922200008",
+   "dateOfBirth": [
+    1979,
+    12,
+    1
+   ],
+   "gender": {},
+   "clientType": {},
+   "clientClassification": {},
+   "isStaff": false,
+   "officeId": 3,
+   "officeName": "Adama Branch",
+   "staffId": 4,
+   "staffName": "Alemu, Meron",
+   "timeline": {
+    "submittedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "activatedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "activatedByUsername": "mifos",
+    "activatedByFirstname": "App",
+    "activatedByLastname": "Administrator"
+   },
+   "legalForm": {
+    "id": 1,
+    "code": "legalFormType.person",
+    "value": "Person"
+   },
+   "clientNonPersonDetails": {
+    "constitution": {},
+    "mainBusinessLine": {}
+   }
+  },
+  {
+   "id": 11,
+   "accountNo": "000000011",
+   "externalId": "SEED-C09",
+   "status": {
+    "id": 300,
+    "code": "clientStatusType.active",
+    "value": "Active"
+   },
+   "subStatus": {
+    "active": false,
+    "mandatory": false
+   },
+   "active": true,
+   "activationDate": [
+    2025,
+    1,
+    15
+   ],
+   "firstname": "Solomon",
+   "lastname": "Tefera",
+   "displayName": "Solomon Tefera",
+   "mobileNo": "0922200009",
+   "dateOfBirth": [
+    1991,
+    4,
+    21
+   ],
+   "gender": {},
+   "clientType": {},
+   "clientClassification": {},
+   "isStaff": false,
+   "officeId": 3,
+   "officeName": "Adama Branch",
+   "staffId": 5,
+   "staffName": "Haile, Dawit",
+   "timeline": {
+    "submittedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "activatedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "activatedByUsername": "mifos",
+    "activatedByFirstname": "App",
+    "activatedByLastname": "Administrator"
+   },
+   "legalForm": {
+    "id": 1,
+    "code": "legalFormType.person",
+    "value": "Person"
+   },
+   "clientNonPersonDetails": {
+    "constitution": {},
+    "mainBusinessLine": {}
+   }
+  },
+  {
+   "id": 8,
+   "accountNo": "000000008",
+   "externalId": "SEED-C06",
+   "status": {
+    "id": 300,
+    "code": "clientStatusType.active",
+    "value": "Active"
+   },
+   "subStatus": {
+    "active": false,
+    "mandatory": false
+   },
+   "active": true,
+   "activationDate": [
+    2025,
+    1,
+    15
+   ],
+   "firstname": "Tigist",
+   "lastname": "Haile",
+   "displayName": "Tigist Haile",
+   "mobileNo": "0922200006",
+   "dateOfBirth": [
+    1987,
+    2,
+    14
+   ],
+   "gender": {},
+   "clientType": {},
+   "clientClassification": {},
+   "isStaff": false,
+   "officeId": 3,
+   "officeName": "Adama Branch",
+   "staffId": 4,
+   "staffName": "Alemu, Meron",
+   "timeline": {
+    "submittedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "submittedByUsername": "mifos",
+    "submittedByFirstname": "App",
+    "submittedByLastname": "Administrator",
+    "activatedOnDate": [
+     2025,
+     1,
+     15
+    ],
+    "activatedByUsername": "mifos",
+    "activatedByFirstname": "App",
+    "activatedByLastname": "Administrator"
+   },
+   "legalForm": {
+    "id": 1,
+    "code": "legalFormType.person",
+    "value": "Person"
+   },
+   "clientNonPersonDetails": {
+    "constitution": {},
+    "mainBusinessLine": {}
+   }
+  }
+ ]
+}

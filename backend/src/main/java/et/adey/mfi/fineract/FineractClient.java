@@ -13,6 +13,7 @@ import et.adey.mfi.fineract.model.FineractCommandResult;
 import et.adey.mfi.fineract.model.FineractLoanRequest;
 import et.adey.mfi.fineract.model.FineractLoanTransaction;
 import et.adey.mfi.fineract.model.FineractPaymentType;
+import et.adey.mfi.fineract.model.FineractStaff;
 import et.adey.mfi.fineract.model.FineractUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -136,6 +137,30 @@ public class FineractClient {
                 .body(FineractClientData.class));
     }
 
+    /** POST /clients. resourceId of the result is the new client id. */
+    public FineractCommandResult createClient(Object body) {
+        return post("/clients", body);
+    }
+
+    /** PUT /clients/{id}: only the fields present in the body are changed. */
+    public FineractCommandResult updateClient(long clientId, Object body) {
+        return call(() -> restClient.put()
+                .uri("/clients/{id}", clientId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(body)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(FineractCommandResult.class));
+    }
+
+    public FineractStaff getStaff(long staffId) {
+        return call(() -> restClient.get()
+                .uri("/staff/{id}", staffId)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(FineractStaff.class));
+    }
+
     public FineractClientAccounts getClientAccounts(long clientId) {
         return call(() -> restClient.get()
                 .uri("/clients/{id}/accounts", clientId)
@@ -145,6 +170,19 @@ public class FineractClient {
     }
 
     // ---- Loans ---------------------------------------------------------------------------
+
+    /**
+     * One page of ALL loans of the tenant (GET /loans), each with its summary, inArrears and
+     * overdueSinceDate, but WITHOUT schedule. Fineract cannot filter this list by office or officer;
+     * PortfolioReader filters it to the caller's clients.
+     */
+    public FineractPage<FineractLoan> listLoans(int offset, int limit) {
+        return call(() -> restClient.get()
+                .uri("/loans?offset={offset}&limit={limit}&orderBy=id&sortOrder=ASC", offset, limit)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(new ParameterizedTypeReference<FineractPage<FineractLoan>>() { }));
+    }
 
     /** One loan including its repayment schedule (needed for installments paid / next due). */
     public FineractLoan getLoanWithSchedule(long loanId) {

@@ -1,5 +1,8 @@
 package et.adey.mfi.auth;
 
+import et.adey.mfi.audit.AuditOutcome;
+import et.adey.mfi.audit.AuditService;
+import et.adey.mfi.common.Names;
 import et.adey.mfi.fineract.FineractApiException;
 import et.adey.mfi.fineract.FineractClient;
 import et.adey.mfi.fineract.model.FineractAuthentication;
@@ -33,27 +36,56 @@ public class AuthService {
     private final FineractClient fineract;
     private final TokenService tokenService;
     private final RefreshTokenService refreshTokens;
+    private final LoginAttemptLimiter limiter;
+    private final AuditService audit;
 
-    public AuthService(FineractClient fineract, TokenService tokenService, RefreshTokenService refreshTokens) {
+    public AuthService(FineractClient fineract, TokenService tokenService, RefreshTokenService refreshTokens,
+                       LoginAttemptLimiter limiter, AuditService audit) {
         this.fineract = fineract;
         this.tokenService = tokenService;
         this.refreshTokens = refreshTokens;
+        this.limiter = limiter;
+        this.audit = audit;
     }
 
-    public TokenResponse login(String username, String password) {
+    /**
+     * 1. refused straight away (429) if this username or IP had too many recent failures;
+     * 2. password checked by Fineract; a wrong one counts as a failure;
+     * 3. the account must be an Adey officer/manager (403 otherwise; not counted as a guess).
+     * Every outcome is written to the audit log.
+     */
+    public TokenResponse login(String username, String password, String ip) {
+        try {
+            limiter.checkAllowed(username, ip);
+        } catch (TooManyLoginAttemptsException e) {
+            audit.recordLogin(username, null, ip, AuditOutcome.LOCKED, "too many failed attempts");
+            throw e;
+        }
         FineractAuthentication auth;
         try {
             auth = fineract.authenticate(username, password);
         } catch (FineractApiException e) {
             // Same answer for "no such user" and "wrong password", so nobody can probe usernames.
-            log.info("Login failed for '{}' (Fineract HTTP {})", username, e.getFineractStatus());
+            log.info("Login failed for '{}' from {} (Fineract HTTP {})", username, ip, e.getFineractStatus());
+            limiter.recordFailure(username, ip);
+            audit.recordLogin(username, null, ip, AuditOutcome.DENIED, "invalid credentials");
             throw new AuthenticationFailedException("INVALID_CREDENTIALS", "Invalid username or password.");
         }
         if (!Boolean.TRUE.equals(auth.authenticated())) {
+            limiter.recordFailure(username, ip);
+            audit.recordLogin(username, null, ip, AuditOutcome.DENIED, "invalid credentials");
             throw new AuthenticationFailedException("INVALID_CREDENTIALS", "Invalid username or password.");
         }
-        Officer officer = toOfficer(auth.userId(), auth.username(), auth.staffId(), auth.staffDisplayName(),
-                auth.officeId(), auth.officeName(), auth.roles());
+        Officer officer;
+        try {
+            officer = toOfficer(auth.userId(), auth.username(), auth.staffId(), auth.staffDisplayName(),
+                    auth.officeId(), auth.officeName(), auth.roles());
+        } catch (AccessDeniedException e) {
+            audit.recordLogin(username, null, ip, AuditOutcome.DENIED, "not an officer or manager account");
+            throw e;
+        }
+        limiter.recordSuccess(username);
+        audit.recordLogin(officer.username(), officer, ip, AuditOutcome.SUCCESS, null);
         log.info("Login: '{}' (staff {}, office {}, roles {})", officer.username(), officer.staffId(),
                 officer.officeId(), officer.roles());
         return issueTokens(officer, refreshTokens.issueNewFamily(officer.userId(), officer.username()));
@@ -90,18 +122,8 @@ public class AuthService {
             throw new AccessDeniedException(
                     "This account is not set up as an Adey MFI loan officer or branch manager.");
         }
-        return new Officer(userId, username, readableName(staffDisplayName), staffId, officeId, officeName,
+        return new Officer(userId, username, Names.readable(staffDisplayName), staffId, officeId, officeName,
                 Set.copyOf(roles));
-    }
-
-    /** Fineract staff display names are "Lastname, Firstname " -> "Firstname Lastname". */
-    static String readableName(String staffDisplayName) {
-        if (staffDisplayName == null) {
-            return null;
-        }
-        String name = staffDisplayName.trim();
-        int comma = name.indexOf(',');
-        return comma < 0 ? name : (name.substring(comma + 1).trim() + " " + name.substring(0, comma).trim());
     }
 
     private TokenResponse issueTokens(Officer officer, RefreshTokenService.Issued refresh) {

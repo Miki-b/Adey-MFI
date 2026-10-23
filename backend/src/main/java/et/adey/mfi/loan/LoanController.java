@@ -3,6 +3,8 @@ package et.adey.mfi.loan;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import et.adey.mfi.idempotency.IdempotencyKeyHeader;
+import et.adey.mfi.idempotency.IdempotencyService;
 import et.adey.mfi.security.Officer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,10 +31,12 @@ public class LoanController {
 
     private final LoanService loanService;
     private final LoanLifecycleService lifecycle;
+    private final IdempotencyService idempotency;
 
-    public LoanController(LoanService loanService, LoanLifecycleService lifecycle) {
+    public LoanController(LoanService loanService, LoanLifecycleService lifecycle, IdempotencyService idempotency) {
         this.loanService = loanService;
         this.lifecycle = lifecycle;
+        this.idempotency = idempotency;
     }
 
     // ---- Reads ---------------------------------------------------------------------------
@@ -60,11 +65,13 @@ public class LoanController {
     @Operation(summary = "Submit a loan application (409 if the client already has a loan in progress)")
     @PostMapping("/api/loans")
     public ResponseEntity<LoanStatusResponse> submit(@AuthenticationPrincipal Officer officer,
+                                                     @IdempotencyKeyHeader @RequestHeader(name = IdempotencyService.HEADER, required = false) String idempotencyKey,
                                                      @Valid @RequestBody LoanApplicationRequest request) {
-        LoanStatusResponse created = lifecycle.submit(officer, request);
+        var outcome = idempotency.execute(officer, idempotencyKey, "POST /api/loans", request,
+                LoanStatusResponse.class, () -> lifecycle.submit(officer, request));
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(created.loanId()).toUri();
-        return ResponseEntity.created(location).body(created);
+                .path("/{id}").buildAndExpand(outcome.body().loanId()).toUri();
+        return withReplayHeader(ResponseEntity.created(location), outcome.replayed()).body(outcome.body());
     }
 
     @Operation(summary = "Approve a submitted application (branch manager only)")
@@ -97,8 +104,17 @@ public class LoanController {
 
     @Operation(summary = "Record a repayment; returns how it was split over principal/interest/fees/penalties")
     @PostMapping("/api/loans/{loanId}/repayments")
-    public LoanTransactionResponse repay(@AuthenticationPrincipal Officer officer, @PathVariable long loanId,
-                                         @Valid @RequestBody RepaymentRequest request) {
-        return lifecycle.repay(officer, loanId, request);
+    public ResponseEntity<LoanTransactionResponse> repay(@AuthenticationPrincipal Officer officer,
+                                                         @PathVariable long loanId,
+                                                         @IdempotencyKeyHeader @RequestHeader(name = IdempotencyService.HEADER, required = false) String idempotencyKey,
+                                                         @Valid @RequestBody RepaymentRequest request) {
+        var outcome = idempotency.execute(officer, idempotencyKey, "POST /api/loans/" + loanId + "/repayments",
+                request, LoanTransactionResponse.class, () -> lifecycle.repay(officer, loanId, request));
+        return withReplayHeader(ResponseEntity.ok(), outcome.replayed()).body(outcome.body());
+    }
+
+    /** "Idempotent-Replayed: true" tells the app this answer is the stored one from an earlier attempt. */
+    public static ResponseEntity.BodyBuilder withReplayHeader(ResponseEntity.BodyBuilder builder, boolean replayed) {
+        return replayed ? builder.header("Idempotent-Replayed", "true") : builder;
     }
 }

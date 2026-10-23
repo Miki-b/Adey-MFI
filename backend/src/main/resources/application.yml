@@ -30,6 +30,9 @@ spring:
 
 server:
   port: ${SERVER_PORT:8080}
+  # 0.0.0.0 = listen on every network interface (so a phone on the same Wi-Fi can connect).
+  # Set SERVER_ADDRESS=127.0.0.1 to accept connections from this computer only.
+  address: ${SERVER_ADDRESS:0.0.0.0}
 
 fineract:
   base-url: ${FINERACT_BASE_URL:https://localhost:8443/fineract-provider/api/v1}
@@ -43,6 +46,10 @@ fineract:
 
 app:
   security:
+    login:
+      # Login rate limit (in memory): this many failures per username or IP within the window -> 429.
+      max-failures: 5
+      window: 15m
     jwt:
       # HMAC key that signs our access tokens. MUST come from the JWT_SECRET environment variable
       # outside local development (32+ characters). Empty here, so a non-local start without it fails.
@@ -63,6 +70,9 @@ management:
         include: health,info
 
 springdoc:
+  # Stable output for backend/openapi.json: sorted keys, pretty-printed.
+  writer-with-order-by-keys: true
+  writer-with-default-pretty-printer: true
   swagger-ui:
     path: /swagger-ui.html
     operations-sorter: method

@@ -6,7 +6,8 @@ import java.util.List;
 public record FineractClientAccounts(List<LoanAccount> loanAccounts) {
 
     /** status.id uses the same codes as a loan: 100 pending, 200 approved, 300 active, ... */
-    public record LoanAccount(Long id, String accountNo, String productName, FineractCodeValue status) {
+    public record LoanAccount(Long id, String accountNo, String externalId, String productName,
+                              FineractCodeValue status) {
     }
 
     public List<LoanAccount> loanAccountsOrEmpty() {

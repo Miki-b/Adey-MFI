@@ -50,14 +50,21 @@ public class LoanService {
      * Builds Fineract's loan request from our few inputs plus the product's terms.
      * Shared by schedule preview and loan application, so both always agree.
      */
-    static FineractLoanRequest buildLoanRequest(long clientId, FineractLoanProduct product, BigDecimal principal,
-                                                int numberOfRepayments, LocalDate expectedDisbursementDate,
-                                                Long loanOfficerId) {
+    public static FineractLoanRequest buildLoanRequest(long clientId, FineractLoanProduct product, BigDecimal principal,
+                                                       int numberOfRepayments, LocalDate expectedDisbursementDate,
+                                                       Long loanOfficerId) {
         LocalDate today = FineractDates.today();
         LocalDate disbursement = expectedDisbursementDate != null ? expectedDisbursementDate : today;
         // Fineract rejects a submission date after the disbursement date (back-dated applications).
         LocalDate submitted = disbursement.isBefore(today) ? disbursement : today;
+        return buildLoanRequest(clientId, product, principal, numberOfRepayments, disbursement, submitted,
+                loanOfficerId, null);
+    }
 
+    /** Full version: explicit submission date and externalId (used by the demo seeder). */
+    public static FineractLoanRequest buildLoanRequest(long clientId, FineractLoanProduct product, BigDecimal principal,
+                                                       int numberOfRepayments, LocalDate disbursement,
+                                                       LocalDate submitted, Long loanOfficerId, String externalId) {
         int repaymentEvery = product.repaymentEvery() == null ? 1 : product.repaymentEvery();
         Integer frequencyType = product.repaymentFrequencyType().id();
 
@@ -65,6 +72,7 @@ public class LoanService {
                 clientId,
                 product.id(),
                 loanOfficerId,
+                externalId,
                 principal,
                 // Loan term = number of repayments x repayment interval, in the same unit.
                 numberOfRepayments * repaymentEvery,

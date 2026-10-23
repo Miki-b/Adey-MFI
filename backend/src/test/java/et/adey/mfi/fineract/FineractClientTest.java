@@ -101,7 +101,7 @@ class FineractClientTest {
                                     "defaultUserMessage":"The parameter `principal` amount 90000.0 must be between 5000.00 and 50000.00 ."}]}
                         """));
 
-        FineractLoanRequest request = new FineractLoanRequest(1L, 1L, null, new BigDecimal("90000"), 12, 2, 12, 1, 2,
+        FineractLoanRequest request = new FineractLoanRequest(1L, 1L, null, null, new BigDecimal("90000"), 12, 2, 12, 1, 2,
                 new BigDecimal("18"), 1, 0, 1, "mifos-standard-strategy", "23 October 2026", "23 October 2026",
                 "individual", "dd MMMM yyyy", "en");
 

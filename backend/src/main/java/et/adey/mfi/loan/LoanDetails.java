@@ -46,6 +46,7 @@ public record LoanDetails(
             BigDecimal interestOutstanding,
             BigDecimal totalOutstanding,
             BigDecimal totalOverdue,
+            LocalDate overdueSince,
             boolean inArrears) {
     }
 

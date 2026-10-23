@@ -19,10 +19,17 @@ public record FineractLoan(
         BigDecimal approvedPrincipal,
         BigDecimal annualInterestRate,
         Integer numberOfRepayments,
+        /* Top level in this Fineract build (the OpenAPI schema puts it in summary, where it is null). */
+        Boolean inArrears,
         Timeline timeline,
         Summary summary,
         FineractLoanSchedule repaymentSchedule,
         List<FineractLoanTransaction> transactions) {
+
+    /** In arrears = an installment is past due and not fully paid. Reads both places Fineract may use. */
+    public boolean isInArrears() {
+        return Boolean.TRUE.equals(inArrears) || (summary != null && Boolean.TRUE.equals(summary.inArrears()));
+    }
 
     /** Loan status: id 100 = submitted, 200 = approved, 300 = active, 600 = closed, ... */
     public record Status(Integer id, String code, String value, Boolean active) {
@@ -53,6 +60,7 @@ public record FineractLoan(
             BigDecimal totalRepayment,
             BigDecimal totalOutstanding,
             BigDecimal totalOverdue,
+            List<Integer> overdueSinceDate,
             Boolean inArrears) {
     }
 }

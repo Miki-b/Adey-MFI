@@ -26,6 +26,56 @@ The `-Xmx512m` heap cap is set in `pom.xml` (`app.jvm.args`) and applies to both
 - Swagger UI: http://localhost:8080/swagger-ui.html
 - Health: http://localhost:8080/actuator/health
 
+## Demo data (seed)
+
+```powershell
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=local,seed"
+```
+
+Starts without a web server, makes Fineract match `seed/SeedPlan.java` and exits. Safe to run
+again: everything is found by a stable key (`externalId` such as `SEED-C07`, username, name)
+and loans are only moved *forward* to their planned state, so a second run changes nothing.
+
+### Demo accounts (local only)
+
+| Username | Password | Role | Office | Staff |
+| --- | --- | --- | --- | --- |
+| `samuel` | `Adey#Loan2026` | Loan Officer | Bishoftu Branch | Samuel Derese |
+| `hana` | `Adey#Loan2026` | Loan Officer | Bishoftu Branch | Hana Girma |
+| `tadesse` | `Adey#Lead2026` | Branch Manager | Bishoftu Branch | Tadesse Bekele |
+| `meron` | `Adey#Loan2026` | Loan Officer | Adama Branch | Meron Alemu |
+| `dawit` | `Adey#Loan2026` | Loan Officer | Adama Branch | Dawit Haile |
+| `selamawit` | `Adey#Lead2026` | Branch Manager | Adama Branch | Selamawit Tesfaye |
+
+These are demo passwords for a local Fineract only. Fineract's "strong" password policy requires
+12+ characters with upper/lower case, a digit and a symbol, and no repeated consecutive characters.
+
+### Demo clients
+
+| Client (id) | Officer | Situation |
+| --- | --- | --- |
+| Yohannes Tekle (1) | samuel | active, partly paid (Phase 2 walkthrough) |
+| Abebe Kebede (2) | samuel | no loan |
+| Almaz Tadesse (3) | samuel | application pending |
+| Kidist Wolde (4) | hana | approved, not yet disbursed |
+| Yonas Mekonnen (5) | hana | rejected |
+| Bethlehem Assefa (6) | hana | active, just disbursed (nothing due yet) |
+| Fikirte Mengistu (7) | hana | no seeded loan; one application rejected live through our API |
+| Tigist Haile (8) | meron | active, every installment paid on time |
+| Getachew Ayele (9) | meron | active, 2 installments paid then a 1,000 part payment: **in arrears** |
+| Mulu Gebre (10) | meron | fully repaid (closed, obligations met) |
+| Solomon Tefera (11) | dawit | active, never paid: **in arrears** since 2026-08-01 |
+| Hirut Desta (12) | dawit | application pending |
+| Ermias Girma (13) | dawit | no loan |
+| Meseret Bekele (14) | dawit | active, every installment paid on time |
+
+Fineract roles created by the seed (minimum permissions):
+- **Loan Officer**: `READ_OFFICE, READ_STAFF, READ_LOANPRODUCT, READ_PAYMENTTYPE, READ_CODE,
+  READ_CODEVALUE, READ_CLIENT, CREATE_CLIENT, ACTIVATE_CLIENT, READ_LOAN, CREATE_LOAN, REPAYMENT_LOAN`
+- **Branch Manager**: all of the above, plus `APPROVE_LOAN, REJECT_LOAN, APPROVALUNDO_LOAN, DISBURSE_LOAN`
+
+Payment type **Cash** (id 4, `isCashPayment: true`) is added next to the existing "Money Transfer".
+
 ## Configuration
 
 All settings live in `src/main/resources/application.yml` and can be overridden with

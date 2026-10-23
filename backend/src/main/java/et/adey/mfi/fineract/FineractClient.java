@@ -23,6 +23,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriBuilder;
 import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -179,6 +180,41 @@ public class FineractClient {
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, this::throwApiError)
                 .body(new ParameterizedTypeReference<List<FineractPaymentType>>() { }));
+    }
+
+    // ---- Generic JSON access (admin / seeding) ----------------------------------------------
+
+    /**
+     * Untyped access for one-off admin calls (the demo seeder: offices, staff, roles, users).
+     * Same auth, tenant header and error handling as everything else in this class.
+     * uri is a template: getJson("/staff?officeId={id}", 2).
+     */
+    public JsonNode getJson(String uri, Object... uriVariables) {
+        return call(() -> restClient.get()
+                .uri(uri, uriVariables)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(JsonNode.class));
+    }
+
+    public JsonNode postJson(String uri, Object body, Object... uriVariables) {
+        return call(() -> restClient.post()
+                .uri(uri, uriVariables)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(body)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(JsonNode.class));
+    }
+
+    public JsonNode putJson(String uri, Object body, Object... uriVariables) {
+        return call(() -> restClient.put()
+                .uri(uri, uriVariables)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(body)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(JsonNode.class));
     }
 
     /** Preview a schedule without saving anything: POST /loans?command=calculateLoanSchedule. */

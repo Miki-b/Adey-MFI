@@ -1,0 +1,6 @@
+# "seed" profile: one-shot demo data loader (see et.adey.mfi.seed.DemoSeeder).
+# Run together with "local":  mvnw spring-boot:run -Dspring-boot.run.profiles=local,seed
+# No web server is started; the app seeds Fineract and exits.
+spring:
+  main:
+    web-application-type: none

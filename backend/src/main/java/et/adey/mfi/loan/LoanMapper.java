@@ -90,7 +90,7 @@ public final class LoanMapper {
                 Money.orZero(totalOutstanding),
                 next.map(p -> FineractDates.fromArray(p.dueDate())).orElse(null),
                 next.map(p -> Money.orZero(p.totalOutstandingForPeriod())).orElse(null),
-                s != null && Boolean.TRUE.equals(s.inArrears()));
+                loan.isInArrears());
     }
 
     // ---- Loan details --------------------------------------------------------------------
@@ -116,7 +116,8 @@ public final class LoanMapper {
                 Money.orZero(s == null ? null : s.interestOutstanding()),
                 Money.orZero(s == null ? null : s.totalOutstanding()),
                 Money.orZero(s == null ? null : s.totalOverdue()),
-                s != null && Boolean.TRUE.equals(s.inArrears()));
+                s == null ? null : FineractDates.fromArray(s.overdueSinceDate()),
+                loan.isInArrears());
 
         // Fineract also lists accruals (interest booked as income at disbursement). They are
         // accounting entries, not money paid or received, so a loan officer doesn't see them.

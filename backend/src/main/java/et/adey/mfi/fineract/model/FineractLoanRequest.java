@@ -15,6 +15,7 @@ public record FineractLoanRequest(
         Long clientId,
         Long productId,
         Long loanOfficerId,
+        String externalId,
         BigDecimal principal,
         Integer loanTermFrequency,
         Integer loanTermFrequencyType,

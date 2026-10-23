@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.16</version>
+        <version>4.1.2</version>
         <relativePath/>
     </parent>
 
@@ -19,16 +19,21 @@
 
     <properties>
         <java.version>21</java.version>
-        <springdoc.version>2.8.17</springdoc.version>
+        <springdoc.version>3.1.1</springdoc.version>
         <!-- Heap cap for the forked app JVM and the test JVM (machine RAM is limited). -->
         <app.jvm.args>-Xmx512m</app.jvm.args>
     </properties>
 
     <dependencies>
-        <!-- REST controllers, embedded Tomcat, Jackson JSON, RestClient -->
+        <!-- REST controllers (Spring MVC), embedded Tomcat, Jackson 3 JSON -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+        <!-- Auto-configured RestClient.Builder (its own module since Boot 4) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-restclient</artifactId>
         </dependency>
         <!-- Bean Validation (@NotNull, @Positive, ...) on request bodies -->
         <dependency>
@@ -59,10 +64,16 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- JUnit 5, AssertJ, Mockito, Spring test support (incl. MockRestServiceServer) -->
+        <!-- Boot 4 splits test support per feature. These pull in JUnit, AssertJ, Mockito,
+             spring-test (MockRestServiceServer) plus @WebMvcTest/MockMvc support. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-restclient-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

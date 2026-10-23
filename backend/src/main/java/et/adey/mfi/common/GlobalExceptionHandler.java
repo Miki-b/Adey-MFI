@@ -101,7 +101,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             case 404 -> HttpStatus.NOT_FOUND;
             case 409 -> HttpStatus.CONFLICT;
             // Fineract uses 403 for business-rule violations (e.g. "loan not in approved state").
-            case 403 -> HttpStatus.UNPROCESSABLE_ENTITY;
+            case 403 -> HttpStatus.UNPROCESSABLE_CONTENT;
             // 401 means OUR credentials for Fineract are wrong: a server-side problem.
             case 401 -> HttpStatus.BAD_GATEWAY;
             default -> fineractStatus >= 500 ? HttpStatus.BAD_GATEWAY : HttpStatus.BAD_REQUEST;
@@ -112,7 +112,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return switch (status) {
             case BAD_REQUEST -> "Invalid request";
             case NOT_FOUND -> "Not found";
-            case UNPROCESSABLE_ENTITY -> "Business rule violated";
+            case UNPROCESSABLE_CONTENT -> "Business rule violated";
             default -> status.getReasonPhrase();
         };
     }

@@ -89,3 +89,29 @@ Key ideas:
 - Client 1: Yohannes Tekle (000000001), Bishoftu, staff 1, **no loans yet**, so
   `/api/clients/1/loans` currently returns `[]`. The loan-list mapping is tested with a hand-made
   sample until Phase 2 creates a real loan.
+
+## Update 2026-10-23: upgrade to Spring Boot 4.1.2
+
+Spring Boot 3.5's open-source support ended on 30 June 2026, so we moved to **Boot 4.1.2**
+(Spring Framework 7) and **springdoc-openapi 3.1.1** (built against Boot 4.1). What changed:
+
+- **Modular starters.** `spring-boot-starter-web` became `spring-boot-starter-webmvc`. The
+  auto-configured `RestClient.Builder` now lives in its own `spring-boot-starter-restclient`;
+  without it there is no builder bean to inject.
+- **Per-feature test starters.** `spring-boot-starter-test` is replaced by
+  `spring-boot-starter-webmvc-test` (MockMvc, `@WebMvcTest`) and
+  `spring-boot-starter-restclient-test`. `@WebMvcTest` moved package to
+  `org.springframework.boot.webmvc.test.autoconfigure`.
+- **Jackson 3.** Package `com.fasterxml.jackson.databind` became `tools.jackson.databind`.
+  Annotations (`@JsonProperty` etc.) stayed in `com.fasterxml.jackson.annotation`. Jackson 3
+  exceptions are unchecked (`JacksonException extends RuntimeException`), Java time support is
+  built in, and dates are written as ISO strings by default. Boot provides a `JsonMapper` bean.
+  `Jackson2ObjectMapperBuilder` is deprecated; tests now use `JsonMapper.builder()` (see `TestJson`).
+- **Alphabetical property order.** Jackson 3 sorts class properties alphabetically by default, so
+  ProblemDetail JSON now starts with `detail`. Records keep their declared order, so our DTOs
+  look the same.
+- **`HttpStatus.UNPROCESSABLE_ENTITY` is deprecated**; use `UNPROCESSABLE_CONTENT` (RFC 9110 name, still 422).
+- **springdoc 3** generates OpenAPI 3.1 instead of 3.0. Same `/swagger-ui.html` URL.
+- Gotcha: the first test run after the upgrade failed with `NoClassDefFoundError:
+  GlobalExceptionHandler$1` (a class javac generates for `switch` on an enum). Old and new
+  class files had mixed in `target/`. `mvnw clean test` fixed it, so run `clean` after a framework upgrade.

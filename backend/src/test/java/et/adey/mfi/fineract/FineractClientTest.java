@@ -1,21 +1,21 @@
 package et.adey.mfi.fineract;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import et.adey.mfi.config.FineractConfig;
 import et.adey.mfi.config.FineractProperties;
 import et.adey.mfi.fineract.model.FineractClientData;
 import et.adey.mfi.fineract.model.FineractOffice;
 import et.adey.mfi.fineract.model.FineractPage;
 import et.adey.mfi.fineract.model.FineractScheduleRequest;
+import et.adey.mfi.TestJson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -51,7 +51,7 @@ class FineractClientTest {
                 Duration.ofSeconds(5), Duration.ofSeconds(30), false);
         RestClient.Builder builder = FineractConfig.applyDefaults(RestClient.builder(), props);
         server = MockRestServiceServer.bindTo(builder).build();
-        ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
+        ObjectMapper objectMapper = TestJson.mapper();
         client = new FineractClient(builder.build(), objectMapper);
     }
 

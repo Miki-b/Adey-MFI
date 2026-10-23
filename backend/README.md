@@ -1,6 +1,6 @@
 # Adey MFI backend
 
-Spring Boot 3.5 API (Java 21) that sits between the Flutter app and Apache Fineract.
+Spring Boot 4.1 API (Java 21, Jackson 3) that sits between the Flutter app and Apache Fineract.
 The app never talks to Fineract directly: this service holds the Fineract credentials,
 turns Fineract's verbose JSON into small clean DTOs, and is where our own business rules live.
 

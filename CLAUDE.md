@@ -70,7 +70,7 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
 ## Current status
 
 - Stage 0 (environment) done. Stage 1 (loan fundamentals) mostly done.
-- Backend Phase 1 done (2026-10-23): Spring Boot 3.5.16 / Java 21 read-only API in `backend/`
+- Backend Phase 1 done (2026-10-23): Java 21 read-only API in `backend/`
   (offices, loan products, clients, client loans, schedule preview), verified live against
   Fineract, 18 tests. Run: `cd backend && .\mvnw.cmd spring-boot:run`. Details: backend/README.md,
   notes/02-backend.md.
@@ -78,7 +78,8 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
 
 ## Backend facts
 
-- start.spring.io only offers Boot 4.x now; we stay on Boot 3.5.x (pom written by hand).
+- Spring Boot 4.1.2 + springdoc 3.1.1 (upgraded from 3.5 on 2026-10-23, see notes/02-backend.md).
+  Jackson 3: `tools.jackson.databind.*` (annotations still `com.fasterxml.jackson.annotation`).
 - Fineract client search (`displayName`) is a case-sensitive substring match.
 - Fineract OpenAPI says dates are strings; real responses send `[y, m, d]` arrays.
 - Host port 5432 may be taken by other projects' Postgres; Fineract doesn't need the host port.

@@ -1,11 +1,11 @@
 package et.adey.mfi.loan;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import et.adey.mfi.fineract.model.FineractLoan;
 import et.adey.mfi.fineract.model.FineractLoanSchedule;
 import org.junit.jupiter.api.Test;
+import et.adey.mfi.TestJson;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LoanMapperTest {
 
     // Same lenient settings Spring Boot uses (unknown fields are ignored).
-    private final ObjectMapper objectMapper = Jackson2ObjectMapperBuilder.json().build();
+    private final ObjectMapper objectMapper = TestJson.mapper();
 
     @Test
     void schedulePreviewMatchesReferenceSpreadsheet() throws IOException {

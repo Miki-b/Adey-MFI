@@ -1,6 +1,5 @@
 package et.adey.mfi.fineract;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import et.adey.mfi.fineract.model.FineractClientAccounts;
 import et.adey.mfi.fineract.model.FineractClientData;
 import et.adey.mfi.fineract.model.FineractError;
@@ -20,6 +19,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriBuilder;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
@@ -164,7 +165,7 @@ public class FineractClient {
                     return parsed;
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | JacksonException e) {
             // Not JSON (e.g. an HTML error page). Fall through to a generic message.
         }
         String reason;

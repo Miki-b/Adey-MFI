@@ -70,6 +70,22 @@ class LoanControllerTest {
     }
 
     @Test
+    void wrongLoanStateGives422WithOurMessage() throws Exception {
+        // Real Fineract answer to "disburse a pending loan" (HTTP 400 validation error).
+        FineractError error = new FineractError(null, "Validation errors exist.",
+                "validation.msg.validation.errors.exist", List.of(new FineractError.FieldError("id",
+                "Loan Disbursal is not allowed. Loan Account is not in approved and not disbursed state.", null,
+                "error.msg.loan.disbursal.account.is.not.approve.not.disbursed.state")));
+        when(lifecycle.disburse(anyLong(), any())).thenThrow(new FineractApiException(400, error));
+
+        mvc.perform(post("/api/loans/2/disburse"))
+                .andExpect(status().isUnprocessableContent())
+                .andExpect(jsonPath("$.code").value("LOAN_WRONG_STATE"))
+                .andExpect(jsonPath("$.detail").value(
+                        "This loan cannot be disbursed: only an approved loan that has not been disbursed yet can be paid out."));
+    }
+
+    @Test
     void fineractNotFoundGives404() throws Exception {
         FineractError error = new FineractError(null, "The requested resource is not available.", null, List.of(
                 new FineractError.FieldError("id", "Client not found with valuer 999.", null, null)));

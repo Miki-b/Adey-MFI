@@ -1,0 +1,36 @@
+[
+  {
+    "id": 1,
+    "name": "Money Transfer",
+    "description": "Money Transfer",
+    "isCashPayment": false,
+    "position": 1,
+    "isSystemDefined": false
+  },
+  {
+    "id": 2,
+    "name": "Repayment Adjustment Chargeback",
+    "description": "Repayment Adjustment Chargeback",
+    "isCashPayment": false,
+    "position": 1,
+    "codeName": "REPAYMENT_ADJUSTMENT_CHARGEBACK",
+    "isSystemDefined": true
+  },
+  {
+    "id": 3,
+    "name": "Repayment Adjustment Refund",
+    "description": "Repayment Adjustment Refund",
+    "isCashPayment": false,
+    "position": 1,
+    "codeName": "REPAYMENT_ADJUSTMENT_REFUND",
+    "isSystemDefined": true
+  },
+  {
+    "id": 4,
+    "name": "Cash",
+    "description": "Cash",
+    "isCashPayment": true,
+    "position": 2,
+    "isSystemDefined": false
+  }
+]

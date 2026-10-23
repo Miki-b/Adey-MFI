@@ -7,6 +7,9 @@ import et.adey.mfi.config.FineractConfig;
 import et.adey.mfi.config.FineractProperties;
 import et.adey.mfi.fineract.FineractApiException;
 import et.adey.mfi.fineract.FineractClient;
+import et.adey.mfi.fineract.FineractErrorCodes;
+import et.adey.mfi.paymenttype.PaymentTypeService;
+import et.adey.mfi.common.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -45,7 +48,8 @@ class LoanLifecycleServiceTest {
                 Duration.ofSeconds(5), Duration.ofSeconds(30), false);
         RestClient.Builder builder = FineractConfig.applyDefaults(RestClient.builder(), props);
         server = MockRestServiceServer.bindTo(builder).build();
-        service = new LoanLifecycleService(new FineractClient(builder.build(), TestJson.mapper()));
+        FineractClient client = new FineractClient(builder.build(), TestJson.mapper());
+        service = new LoanLifecycleService(client, new PaymentTypeService(client));
     }
 
     // ---- Business rule: one loan in progress per client ----------------------------------
@@ -166,17 +170,19 @@ class LoanLifecycleServiceTest {
     }
 
     @Test
-    void disburseSendsDateAndPaymentType() {
+    void disburseInCashIsAccepted() {
+        server.expect(requestTo(BASE + "/paymenttypes"))
+                .andRespond(json("fineract/paymenttypes-with-cash.json"));
         server.expect(requestTo(BASE + "/loans/1?command=disburse"))
                 .andExpect(jsonPath("$.actualDisbursementDate").value("23 October 2026"))
-                .andExpect(jsonPath("$.paymentTypeId").value(1))
+                .andExpect(jsonPath("$.paymentTypeId").value(4))
                 .andExpect(jsonPath("$.transactionAmount").doesNotExist())
                 .andRespond(withSuccess("{\"loanId\": 1, \"resourceId\": 1}", MediaType.APPLICATION_JSON));
         server.expect(requestTo(BASE + "/loans/1?associations=repaymentSchedule"))
                 .andRespond(statusResponse(300, "Active"));
 
         LoanStatusResponse result = service.disburse(1L,
-                new DisburseLoanRequest(LocalDate.of(2026, 10, 23), 1L, null));
+                new DisburseLoanRequest(LocalDate.of(2026, 10, 23), 4L, null));
 
         server.verify();
         assertThat(result.status()).isEqualTo(LoanStatus.ACTIVE);
@@ -200,6 +206,8 @@ class LoanLifecycleServiceTest {
 
     @Test
     void repaymentReturnsTheStoredTransactionWithItsSplit() {
+        server.expect(requestTo(BASE + "/paymenttypes"))
+                .andRespond(json("fineract/paymenttypes-with-cash.json"));
         server.expect(requestTo(BASE + "/loans/1/transactions?command=repayment"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(jsonPath("$.transactionAmount").value(1000))
@@ -220,6 +228,53 @@ class LoanLifecycleServiceTest {
         assertThat(tx.interestPortion()).isEqualTo(new BigDecimal("277.00"));
         assertThat(tx.principalPortion()).isEqualTo(new BigDecimal("723.00"));
         assertThat(tx.outstandingBalanceAfter()).isEqualTo(new BigDecimal("17743.40"));
+    }
+
+    @Test
+    void systemDefinedPaymentTypeIsRefusedBeforeCallingFineract() {
+        server.expect(requestTo(BASE + "/paymenttypes"))
+                .andRespond(json("fineract/paymenttypes-with-cash.json"));
+        // No disburse call expected: id 2 is Fineract's internal "Repayment Adjustment Chargeback".
+
+        assertThatThrownBy(() -> service.disburse(1L, new DisburseLoanRequest(null, 2L, null)))
+                .isInstanceOfSatisfying(BadRequestException.class,
+                        ex -> assertThat(ex.getField()).isEqualTo("paymentTypeId"));
+        server.verify();
+    }
+
+    @Test
+    void wrongStateErrorIsRecognisedByCode() {
+        // Real Fineract answer to "approve an active loan": HTTP 400, two errors, generic top-level message.
+        server.expect(requestTo(BASE + "/loans/1?command=approve"))
+                .andRespond(withStatus(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body("""
+                        {"httpStatusCode": "400", "defaultUserMessage": "Validation errors exist.",
+                         "userMessageGlobalisationCode": "validation.msg.validation.errors.exist",
+                         "errors": [
+                           {"parameterName": "id",
+                            "defaultUserMessage": "Loan Account Approval is not allowed. Loan Account is not in submitted and pending approval state.",
+                            "userMessageGlobalisationCode": "error.msg.loan.approve.account.is.not.submitted.and.pending.state"},
+                           {"parameterName": "id", "defaultUserMessage": "Loan is already approved.",
+                            "userMessageGlobalisationCode": "error.msg.loan.approve.account.is.not.submitted.and.pending.state"}]}
+                        """));
+
+        assertThatThrownBy(() -> service.approve(1L, null))
+                .isInstanceOfSatisfying(FineractApiException.class, ex ->
+                        assertThat(FineractErrorCodes.wrongStateMessage(ex.getError()))
+                                .hasValueSatisfying(msg -> assertThat(msg).contains("pending approval")));
+    }
+
+    @Test
+    void unknownErrorCodeIsNotTreatedAsWrongState() {
+        server.expect(requestTo(BASE + "/loans/1?command=approve"))
+                .andRespond(withStatus(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body("""
+                        {"defaultUserMessage": "Validation errors exist.",
+                         "errors": [{"parameterName": "approvedOnDate", "defaultUserMessage": "The parameter approvedOnDate is mandatory.",
+                                     "userMessageGlobalisationCode": "validation.msg.loan.approvedOnDate.cannot.be.blank"}]}
+                        """));
+
+        assertThatThrownBy(() -> service.approve(1L, null))
+                .isInstanceOfSatisfying(FineractApiException.class, ex ->
+                        assertThat(FineractErrorCodes.wrongStateMessage(ex.getError())).isEmpty());
     }
 
     // ---- Helpers -------------------------------------------------------------------------

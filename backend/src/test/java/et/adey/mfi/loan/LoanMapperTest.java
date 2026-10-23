@@ -81,6 +81,23 @@ class LoanMapperTest {
         assertThat(summary.inArrears()).isFalse();
     }
 
+    /** Real loan 9 (seed): disbursed 2026-07-01, never paid. Fineract puts inArrears at the top level. */
+    @Test
+    void neverPaidLoanIsInArrears() throws IOException {
+        FineractLoan loan = read("fineract/loan-9-in-arrears-never-paid.json", FineractLoan.class);
+
+        LoanSummary summary = LoanMapper.toSummary(loan);
+        LoanDetails details = LoanMapper.toDetails(loan);
+
+        assertThat(loan.summary().inArrears()).isNull();
+        assertThat(summary.inArrears()).isTrue();
+        assertThat(summary.installmentsPaid()).isZero();
+        assertThat(summary.nextDueDate()).isEqualTo(LocalDate.of(2026, 8, 1));
+        assertThat(details.summary().inArrears()).isTrue();
+        assertThat(details.summary().totalOverdue()).isEqualTo(new BigDecimal("3300.48"));
+        assertThat(details.summary().overdueSince()).isEqualTo(LocalDate.of(2026, 8, 1));
+    }
+
     @Test
     void loanDetailsHaveTotalsScheduleAndMoneyTransactionsOnly() throws IOException {
         FineractLoan loan = read("fineract/loan-1-active-with-schedule-and-transactions.json", FineractLoan.class);

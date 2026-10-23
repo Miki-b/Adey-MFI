@@ -9,6 +9,7 @@ import et.adey.mfi.fineract.model.FineractLoan;
 import et.adey.mfi.fineract.model.FineractLoanCommands;
 import et.adey.mfi.fineract.model.FineractLoanProduct;
 import et.adey.mfi.fineract.model.FineractLoanRequest;
+import et.adey.mfi.paymenttype.PaymentTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +32,11 @@ public class LoanLifecycleService {
             Set.of(LoanStatus.SUBMITTED_AND_PENDING_APPROVAL, LoanStatus.APPROVED, LoanStatus.ACTIVE);
 
     private final FineractClient fineract;
+    private final PaymentTypeService paymentTypes;
 
-    public LoanLifecycleService(FineractClient fineract) {
+    public LoanLifecycleService(FineractClient fineract, PaymentTypeService paymentTypes) {
         this.fineract = fineract;
+        this.paymentTypes = paymentTypes;
     }
 
     // ---- Submit --------------------------------------------------------------------------
@@ -102,6 +105,7 @@ public class LoanLifecycleService {
 
     public LoanStatusResponse disburse(long loanId, DisburseLoanRequest req) {
         DisburseLoanRequest r = req != null ? req : new DisburseLoanRequest(null, null, null);
+        paymentTypes.requireSelectable(r.paymentTypeId());
         fineract.loanCommand(loanId, "disburse", new FineractLoanCommands.Disburse(
                 dateOrToday(r.actualDisbursementDate()), null, r.paymentTypeId(), r.note(),
                 FineractDates.DATE_FORMAT, FineractDates.LOCALE));
@@ -113,6 +117,7 @@ public class LoanLifecycleService {
      * the amount over penalties, fees, interest and principal (the product's allocation order).
      */
     public LoanTransactionResponse repay(long loanId, RepaymentRequest req) {
+        paymentTypes.requireSelectable(req.paymentTypeId());
         FineractCommandResult result = fineract.repayLoan(loanId, new FineractLoanCommands.Repayment(
                 dateOrToday(req.transactionDate()), req.amount(), req.paymentTypeId(), req.note(),
                 FineractDates.DATE_FORMAT, FineractDates.LOCALE));

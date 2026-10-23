@@ -1,6 +1,7 @@
 package et.adey.mfi.common;
 
 import et.adey.mfi.fineract.FineractApiException;
+import et.adey.mfi.fineract.FineractErrorCodes;
 import et.adey.mfi.fineract.FineractUnavailableException;
 import et.adey.mfi.fineract.model.FineractError;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Turns exceptions into RFC 7807 "problem detail" JSON:
@@ -34,8 +36,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(FineractApiException.class)
     public ProblemDetail handleFineract(FineractApiException ex) {
-        HttpStatus status = mapFineractStatus(ex.getFineractStatus());
         FineractError error = ex.getError();
+
+        // Wrong-state actions (disburse a pending loan, approve an active one, ...) come back from
+        // Fineract as plain 400 validation errors. We recognise them by error code and answer 422.
+        Optional<String> wrongState = FineractErrorCodes.wrongStateMessage(error);
+        if (wrongState.isPresent()) {
+            ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_CONTENT, wrongState.get());
+            problem.setTitle("Not allowed in the loan's current state");
+            problem.setType(URI.create("urn:adey:problem:loan-state"));
+            problem.setProperty("code", FineractErrorCodes.WRONG_LOAN_STATE);
+            return problem;
+        }
+
+        HttpStatus status = mapFineractStatus(ex.getFineractStatus());
 
         // Fineract's top-level message is often generic ("Validation errors exist."),
         // so when there is exactly one field error we use its clearer message.
@@ -60,6 +74,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                     .map(fe -> new FieldProblem(fe.parameterName(), fe.defaultUserMessage()))
                     .toList());
         }
+        return problem;
+    }
+
+    /** One of our own input checks failed (e.g. a payment type officers may not use). */
+    @ExceptionHandler(BadRequestException.class)
+    public ProblemDetail handleBadRequest(BadRequestException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+        problem.setTitle("Invalid request");
+        problem.setProperty("errors", List.of(new FieldProblem(ex.getField(), ex.getMessage())));
         return problem;
     }
 

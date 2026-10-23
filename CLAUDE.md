@@ -92,7 +92,13 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   (login/refresh/logout/me, refresh rotation + reuse detection), data scoping (officer = own clients,
   manager = own office), manager-only approve/reject/undo/disburse, audit row per action. 56 tests.
   Notes: notes/04-security.md.
-- Next: the Flutter app (see the report's list of what it needs from the backend).
+- Phase 4 done (2026-10-23), backend feature-complete for the MVP: client onboarding (POST/PUT
+  /api/clients), loan lists (GET /api/loans: PENDING queue, arrears list by daysOverdue), dashboard
+  (GET /api/me/portfolio with PAR1/PAR30 on principal outstanding, per-officer for managers),
+  Idempotency-Key on loan application / repayment / client creation (Flyway V2), login rate limit
+  (in memory, 5 per 15 min per username/IP -> 429), stable `code` on every error, backend/openapi.json
+  exported by OpenApiSpecTest. 91 tests. Notes: notes/05-portfolio-and-par.md.
+- Next: the Flutter app in app/ (generate the Dart client from backend/openapi.json).
 
 ## Backend facts
 
@@ -108,4 +114,9 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   protects the API. Officers' Fineract roles are read at login (POST /authentication).
 - Backend DB: `adey_backend` / login `adey` (password `adey`, local) in the same Postgres, host port 5433.
   JWT_SECRET is required outside the local profile.
+- Fineract code values (e.g. gender) are `{id, name}`; enum options are `{id, code, value}`.
+- Fineract `GET /loans` list: summaries yes, schedules no (associations ignored), no office filter,
+  `status` filter only numeric. `delinquent` block empty (no delinquency buckets configured).
+- Seeded Adama PAR30 = 64.76% (36,745.16 / 56,736.16), on purpose; Bishoftu 0.00%.
+- LAN: PC Wi-Fi IP 192.168.1.3 (Private network); firewall rule for TCP 8080 documented in backend/README.md.
 - Drive C: has run full before (2026-10-23). If builds or Postgres act strangely, check free space first.

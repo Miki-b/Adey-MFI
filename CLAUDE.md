@@ -63,11 +63,14 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
 
 ## Existing data (default tenant)
 
-- Offices: Head Office (id 1), Bishoftu Branch (id 2)
-- Staff id 1: Samuel Derese (loan officer, Bishoftu). Client id 1: Yohannes Tekle (Bishoftu, staff 1).
-- Loan id 1 (000000001), client 1: 20,000 / 12 months, Active since 2026-10-23, repaid 1833.60 + 1000.00,
-  principal outstanding 17,743.40. Client 1 can't apply again until it closes (our one-open-loan rule).
-- Payment types: Money Transfer (id 1); ids 2–3 are Fineract system-defined adjustment types (hidden by our API).
+- Offices: Head Office (id 1), Bishoftu Branch (id 2, opened 2026-10-03), Adama Branch (id 3, opened 2025-01-01).
+- Demo data comes from the seed profile (`backend/src/main/java/et/adey/mfi/seed/SeedPlan.java`, idempotent):
+  6 staff with Fineract users (officers samuel, hana, meron, dawit; managers tadesse, selamawit), roles
+  "Loan Officer" / "Branch Manager", 14 clients with loans in every state. Accounts + client table:
+  backend/README.md "Demo accounts (local only)".
+- Loan id 1 (000000001), client 1 Yohannes (samuel): 20,000 / 12 months, Active since 2026-10-23, partly
+  repaid (Phase 2/3 demos).
+- Payment types: Money Transfer (id 1), Cash (id 4); ids 2–3 are Fineract system-defined (hidden by our API).
 - Loan product id 1: "Small Business Loan" (SBL), ETB, principal 5,000–50,000 (default 20,000),
   6–24 monthly repayments (default 12), 18% per year, equal installments, declining balance,
   same-as-repayment-period interest, no accounting.
@@ -84,7 +87,12 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
 - Backend Phase 2 done (2026-10-23): loan lifecycle (submit with our one-open-loan rule -> 409,
   approve / undo approval / reject, disburse, repayments with principal/interest/fee/penalty split),
   loan details, payment types. Verified live with loan 1; 32 tests. Notes: notes/03-loan-lifecycle.md.
-- Next: Phase 3: officer login (Spring Security + JWT), then the Flutter app.
+- Phase 3 done (2026-10-23): demo seed (profile `seed`), wrong-state errors -> 422 by Fineract error code,
+  own DB `adey_backend` (JPA + Flyway: refresh_tokens, audit_log), officer login with Spring Security + JWT
+  (login/refresh/logout/me, refresh rotation + reuse detection), data scoping (officer = own clients,
+  manager = own office), manager-only approve/reject/undo/disburse, audit row per action. 56 tests.
+  Notes: notes/04-security.md.
+- Next: the Flutter app (see the report's list of what it needs from the backend).
 
 ## Backend facts
 
@@ -92,3 +100,12 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   Jackson 3: `tools.jackson.databind.*` (annotations still `com.fasterxml.jackson.annotation`).
 - Fineract client search (`displayName`) is a case-sensitive substring match.
 - Fineract OpenAPI says dates are strings; real responses send `[y, m, d]` arrays.
+- Fineract reports `inArrears` at the loan's top level (summary.inArrears is null in this build).
+- Wrong-state loan commands come back as 400; recognise them by `userMessageGlobalisationCode`
+  (list in `FineractErrorCodes`).
+- Fineract password policy is "strong": 12+ chars, mixed case, digit, symbol, no repeated consecutive chars.
+- Our backend calls Fineract as the service account `mifos`; our AccessPolicy, not Fineract permissions,
+  protects the API. Officers' Fineract roles are read at login (POST /authentication).
+- Backend DB: `adey_backend` / login `adey` (password `adey`, local) in the same Postgres, host port 5433.
+  JWT_SECRET is required outside the local profile.
+- Drive C: has run full before (2026-10-23). If builds or Postgres act strangely, check free space first.

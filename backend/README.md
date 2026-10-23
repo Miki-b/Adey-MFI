@@ -6,12 +6,28 @@ turns Fineract's verbose JSON into small clean DTOs, and is where our own busine
 
 ```
 Flutter app  ->  this backend (:8080)  ->  Fineract (https://localhost:8443)
+                      |
+                      +-> own Postgres DB adey_backend (refresh tokens, audit log)
 ```
+
+Officers log in with their Fineract username + password and get a JWT; every `/api/**` call needs
+it. How it works: [notes/04-security.md](../notes/04-security.md).
 
 ## Run it
 
 Prerequisites: JDK 21, Fineract running (see `../infra`, check
-`curl -k https://localhost:8443/fineract-provider/actuator/health` says `UP`).
+`curl -k https://localhost:8443/fineract-provider/actuator/health` says `UP`), and the backend's
+own database `adey_backend` in the same Postgres container (host port 5433).
+
+**One-time database setup.** Fresh Postgres volumes get it from `infra/init-db.sql`. For a volume
+created before 2026-10-23, run once:
+
+```powershell
+docker exec infra-db-1 psql -U postgres -c "CREATE ROLE adey LOGIN PASSWORD 'adey';" -c "CREATE DATABASE adey_backend OWNER adey;"
+```
+
+`adey` owns only `adey_backend` and has no rights on Fineract's databases. Flyway creates the
+tables at startup (`src/main/resources/db/migration`).
 
 ```powershell
 cd C:\dev\MFI\adey-mfi\backend
@@ -23,8 +39,11 @@ The `-Xmx512m` heap cap is set in `pom.xml` (`app.jvm.args`) and applies to both
 `spring-boot:run` and the tests. If you run the jar yourself:
 `java -Xmx512m -jar target/mfi-backend-0.0.1-SNAPSHOT.jar`.
 
-- Swagger UI: http://localhost:8080/swagger-ui.html
+- Swagger UI: http://localhost:8080/swagger-ui.html. Call `POST /api/auth/login`, copy
+  `accessToken`, click **Authorize**, paste it.
 - Health: http://localhost:8080/actuator/health
+
+Swagger and health need no token in the local profile only.
 
 ## Demo data (seed)
 
@@ -56,7 +75,7 @@ These are demo passwords for a local Fineract only. Fineract's "strong" password
 | --- | --- | --- |
 | Yohannes Tekle (1) | samuel | active, partly paid (Phase 2 walkthrough) |
 | Abebe Kebede (2) | samuel | no loan |
-| Almaz Tadesse (3) | samuel | application pending |
+| Almaz Tadesse (3) | samuel | application pending (seed); approved by `tadesse` in the Phase 3 demo |
 | Kidist Wolde (4) | hana | approved, not yet disbursed |
 | Yonas Mekonnen (5) | hana | rejected |
 | Bethlehem Assefa (6) | hana | active, just disbursed (nothing due yet) |
@@ -91,18 +110,51 @@ environment variables.
 | `FINERACT_READ_TIMEOUT` | `fineract.read-timeout` | `30s` |
 | `SERVER_PORT` | `server.port` | `8080` |
 | `SPRING_PROFILES_ACTIVE` | active profile | none, so `local` is used |
+| `DB_URL` | `spring.datasource.url` | `jdbc:postgresql://localhost:5433/adey_backend` |
+| `DB_USERNAME` / `DB_PASSWORD` | `spring.datasource.*` | `adey` / `adey` |
+| `JWT_SECRET` | `app.security.jwt.secret` | **none**; local profile has a marked dev-only default. 32+ characters, required elsewhere (startup fails without it) |
+| - | `app.security.jwt.access-token-ttl` | `15m` |
+| - | `app.security.refresh-token-ttl` | `7d` |
+| - | `app.cors.allowed-origins` | empty (local: `http://localhost:[*]`, `http://127.0.0.1:[*]`) |
+
+Generate a real secret with e.g. `openssl rand -base64 48`.
 
 ### Profiles
 
 - **local** (default when no profile is set), in `application-local.yml`:
   - trusts Fineract's self-signed certificate (`fineract.trust-self-signed-certificate: true`)
-  - allows CORS from any origin (for Flutter web/dev)
+  - a **local-only** JWT signing key, used when `JWT_SECRET` is not set
+  - Swagger UI, OpenAPI and health reachable without a token
+  - CORS for `http://localhost:<any port>` (Flutter web dev)
 
   **Never run production with the local profile.** Trusting any certificate lets anyone
-  intercept the Fineract credentials and customer data.
-- Any other profile (e.g. `SPRING_PROFILES_ACTIVE=prod`) has normal certificate checks and no CORS.
+  intercept the Fineract credentials and customer data, and the default JWT key lets anyone forge tokens.
+- **seed**: one-shot demo data loader (no web server), see above.
+- **test**: used by the tests (H2 in-memory database, test-only key).
+- Any other profile (e.g. `SPRING_PROFILES_ACTIVE=prod`) has normal certificate checks, requires
+  `JWT_SECRET`, protects Swagger/health, and allows only the configured CORS origins.
 
 ## Endpoints
+
+Every endpoint except login/refresh/logout needs `Authorization: Bearer <accessToken>`.
+
+Auth (Phase 3):
+
+| Method | Path | Body | Result |
+| --- | --- | --- | --- |
+| POST | `/api/auth/login` | `username, password` (Fineract credentials) | `{accessToken, tokenType: "Bearer", expiresIn: 900, accessTokenExpiresAt, refreshToken, refreshTokenExpiresAt, officer}` |
+| POST | `/api/auth/refresh` | `refreshToken` | a new pair; the old refresh token stops working |
+| POST | `/api/auth/logout` | `refreshToken` | 204; that refresh token (and its family) is revoked |
+| GET | `/api/auth/me` | - | `{userId, username, displayName, staffId, officeId, officeName, roles}` |
+
+Access token claims: `sub` (username), `uid`, `staffId`, `officeId`, `officeName`, `name`, `roles`
+(`OFFICER` / `MANAGER`), `iss`, `iat`, `exp`, `jti`. Only Fineract users linked to a staff member
+with the **Loan Officer** or **Branch Manager** role can log in.
+
+**Who sees what.** An officer sees only clients assigned to them (and those clients' loans). A
+manager sees every client of their office. Both come from the token, never from query parameters.
+**Approve, reject, undo approval and disburse need the MANAGER role**; officers can apply, preview
+and record repayments.
 
 Reads (Phase 1):
 
@@ -111,7 +163,7 @@ Reads (Phase 1):
 | GET | `/api/offices` | id, name, parentId, openingDate |
 | GET | `/api/loan-products` | ranges for principal / repayments, rate, interest method, amortization |
 | GET | `/api/payment-types` | payment types an officer can pick (Fineract's system-defined ones hidden) |
-| GET | `/api/clients?search=&officeId=&staffId=&page=0&size=20` | paged client list |
+| GET | `/api/clients?search=&page=0&size=20` | paged client list, scoped to the caller |
 | GET | `/api/clients/{id}` | client details |
 | GET | `/api/clients/{id}/loans` | per loan: status, progress, outstanding, next due, arrears |
 | GET | `/api/loans/{id}` | totals, key dates, full schedule (with paid/outstanding per installment), transactions |
@@ -121,11 +173,11 @@ Loan lifecycle (Phase 2):
 
 | Method | Path | Body (all dates optional, default today) | Result |
 | --- | --- | --- | --- |
-| POST | `/api/loans` | `clientId, productId, principal, numberOfRepayments, expectedDisbursementDate?, staffId?` | 201 + `Location`, `{loanId, accountNo, status, statusLabel}` |
-| POST | `/api/loans/{id}/approve` | `approvedOnDate?, approvedAmount?, note?` (body optional) | `{loanId, status: APPROVED, ...}` |
-| POST | `/api/loans/{id}/undo-approval` | `note?` (body optional) | back to `SUBMITTED_AND_PENDING_APPROVAL` |
-| POST | `/api/loans/{id}/reject` | `rejectedOnDate?, note?` (body optional) | `REJECTED` |
-| POST | `/api/loans/{id}/disburse` | `actualDisbursementDate?, paymentTypeId?, note?` (body optional) | `ACTIVE` |
+| POST | `/api/loans` | `clientId, productId, principal, numberOfRepayments, expectedDisbursementDate?` | 201 + `Location`, `{loanId, accountNo, status, statusLabel}`; loan officer = the caller (a manager applies on behalf of the client's officer) |
+| POST | `/api/loans/{id}/approve` | `approvedOnDate?, approvedAmount?, note?` (body optional) | `{loanId, status: APPROVED, ...}`. **Manager** |
+| POST | `/api/loans/{id}/undo-approval` | `note?` (body optional) | back to `SUBMITTED_AND_PENDING_APPROVAL`. **Manager** |
+| POST | `/api/loans/{id}/reject` | `rejectedOnDate?, note?` (body optional) | `REJECTED`. **Manager** |
+| POST | `/api/loans/{id}/disburse` | `actualDisbursementDate?, paymentTypeId?, note?` (body optional) | `ACTIVE`. **Manager** |
 | POST | `/api/loans/{id}/repayments` | `amount, transactionDate?, paymentTypeId?, note?` | the transaction with `principalPortion`, `interestPortion`, `feesPortion`, `penaltiesPortion` |
 
 Status values: `SUBMITTED_AND_PENDING_APPROVAL`, `APPROVED`, `ACTIVE`, `WITHDRAWN_BY_CLIENT`,
@@ -141,6 +193,16 @@ gives `interestPortion 277.00`, `principalPortion 723.00`.
 
 `GET /api/loans/{id}` lists money movements only. Fineract's accrual entries (interest booked
 as income) are bookkeeping and are left out.
+
+`paymentTypeId` must be one of `GET /api/payment-types` (e.g. Cash = 4); anything else gives 400.
+
+**Audit log.** Every apply / approve / undo approval / reject / disburse / repayment attempt writes
+one row to `audit_log` (who, staff, office, action, client, loan, amount, time, outcome
+`SUCCESS` / `DENIED` / `REJECTED` / `ERROR`, and the error message). Refused attempts are included.
+
+```powershell
+docker exec infra-db-1 psql -U adey -d adey_backend -c "select * from audit_log order by id desc limit 20"
+```
 
 Conventions:
 - Money is a JSON number with 2 decimals (`1833.60`), ETB. Rates are percent per year (`18.00`).
@@ -175,10 +237,13 @@ Errors are [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) problem details:
 
 | Situation | Status |
 | --- | --- |
-| Our validation fails, or Fineract returns 400 | 400 (with `errors[]`). Note: Fineract reports some wrong-state actions (e.g. disbursing an unapproved loan) as 400, not 403 |
+| Our validation fails, or Fineract returns 400 | 400 (with `errors[]`) |
+| No / invalid / expired access token; wrong password; bad refresh token | 401 (`code`: `UNAUTHENTICATED`, `INVALID_CREDENTIALS`, `INVALID_REFRESH_TOKEN`) |
+| Not your client / not your office; manager-only action; account not an officer | 403 (`code`: `FORBIDDEN`) |
 | Not found in Fineract | 404 |
-| Our business rule (e.g. open loan exists) | 409 (with `code`) |
-| Fineract business rule (Fineract 403) | 422 |
+| Our business rule (e.g. open loan exists) | 409 (`code`: `OPEN_LOAN_EXISTS`) |
+| Action not allowed in the loan's current state (e.g. disburse a pending loan) | 422 (`code`: `LOAN_WRONG_STATE`). Fineract sends these as 400; we recognise them by error code (`FineractErrorCodes`) |
+| Other Fineract business rule (Fineract 403) | 422 |
 | Fineract rejects our credentials (401) or fails (5xx) | 502 |
 | Fineract unreachable or timed out | 503 |
 
@@ -186,8 +251,14 @@ Errors are [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) problem details:
 
 ```
 et.adey.mfi
-├── config/    FineractProperties, RestClient bean (auth + tenant header, local SSL trust), local CORS
-├── fineract/  FineractClient: the ONLY class that calls Fineract; raw Fineract records in model/
+├── config/    FineractProperties, RestClient bean (auth + tenant header, local SSL trust), CORS, Clock
+├── security/  SecurityConfig (filter chain), JwtConfig (sign/verify), TokenService, Officer,
+│              OfficerJwtConverter (token -> Officer), AccessPolicy (who may see/do what)
+├── auth/      login / refresh / logout / me, refresh tokens (hashed, rotated) in our DB
+├── audit/     audit_log entity + AuditService (one row per state-changing attempt)
+├── seed/      demo data loader (profile "seed")
+├── fineract/  FineractClient: the ONLY class that calls Fineract; raw Fineract records in model/;
+│              FineractErrorCodes (wrong-state codes -> 422)
 ├── common/    FineractDates, Money, Rates, PageResponse, GlobalExceptionHandler
 ├── office/    controller -> service -> DTO
 ├── product/

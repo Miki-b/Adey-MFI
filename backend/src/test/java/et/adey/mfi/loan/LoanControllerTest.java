@@ -6,13 +6,18 @@ import et.adey.mfi.fineract.FineractUnavailableException;
 import et.adey.mfi.fineract.model.FineractError;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static et.adey.mfi.TestOfficers.SAMUEL;
+import static et.adey.mfi.TestOfficers.TADESSE;
+import static et.adey.mfi.TestOfficers.as;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -23,10 +28,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * @WebMvcTest starts only the web layer (controllers + GlobalExceptionHandler), with the
- * service replaced by a Mockito mock. Checks HTTP status codes and the ProblemDetail JSON.
+ * HTTP layer of the loan endpoints with the REAL security filter chain, and the services replaced
+ * by Mockito mocks. Checks status codes and ProblemDetail JSON. Requests are sent "as" an officer
+ * with TestOfficers.as(...); security itself is tested in SecurityIntegrationTest.
+ * (A @WebMvcTest slice would not load our SecurityConfig, so this is a @SpringBootTest.)
  */
-@WebMvcTest(LoanController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
 class LoanControllerTest {
 
     @Autowired
@@ -40,7 +49,7 @@ class LoanControllerTest {
 
     @Test
     void invalidBodyGives400WithFieldErrors() throws Exception {
-        mvc.perform(post("/api/loans/schedule-preview")
+        mvc.perform(post("/api/loans/schedule-preview").with(as(SAMUEL))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"clientId": 1, "productId": 1, "principal": -5}
@@ -56,9 +65,9 @@ class LoanControllerTest {
         FineractError error = new FineractError(null, "Validation errors exist.", null, List.of(
                 new FineractError.FieldError("principal",
                         "The parameter `principal` amount 90000.0 must be between 5000.00 and 50000.00 .", null, null)));
-        when(loanService.previewSchedule(any())).thenThrow(new FineractApiException(400, error));
+        when(loanService.previewSchedule(any(), any())).thenThrow(new FineractApiException(400, error));
 
-        mvc.perform(post("/api/loans/schedule-preview")
+        mvc.perform(post("/api/loans/schedule-preview").with(as(SAMUEL))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"clientId": 1, "productId": 1, "principal": 90000, "numberOfRepayments": 12}
@@ -76,9 +85,9 @@ class LoanControllerTest {
                 "validation.msg.validation.errors.exist", List.of(new FineractError.FieldError("id",
                 "Loan Disbursal is not allowed. Loan Account is not in approved and not disbursed state.", null,
                 "error.msg.loan.disbursal.account.is.not.approve.not.disbursed.state")));
-        when(lifecycle.disburse(anyLong(), any())).thenThrow(new FineractApiException(400, error));
+        when(lifecycle.disburse(any(), anyLong(), any())).thenThrow(new FineractApiException(400, error));
 
-        mvc.perform(post("/api/loans/2/disburse"))
+        mvc.perform(post("/api/loans/2/disburse").with(as(TADESSE)))
                 .andExpect(status().isUnprocessableContent())
                 .andExpect(jsonPath("$.code").value("LOAN_WRONG_STATE"))
                 .andExpect(jsonPath("$.detail").value(
@@ -89,29 +98,29 @@ class LoanControllerTest {
     void fineractNotFoundGives404() throws Exception {
         FineractError error = new FineractError(null, "The requested resource is not available.", null, List.of(
                 new FineractError.FieldError("id", "Client not found with valuer 999.", null, null)));
-        when(loanService.getClientLoans(anyLong())).thenThrow(new FineractApiException(404, error));
+        when(loanService.getClientLoans(any(), anyLong())).thenThrow(new FineractApiException(404, error));
 
-        mvc.perform(get("/api/clients/999/loans"))
+        mvc.perform(get("/api/clients/999/loans").with(as(SAMUEL)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.title").value("Not found"));
     }
 
     @Test
     void fineractDownGives503() throws Exception {
-        when(loanService.getClientLoans(anyLong()))
+        when(loanService.getClientLoans(any(), anyLong()))
                 .thenThrow(new FineractUnavailableException("Connection refused", null));
 
-        mvc.perform(get("/api/clients/1/loans"))
+        mvc.perform(get("/api/clients/1/loans").with(as(SAMUEL)))
                 .andExpect(status().isServiceUnavailable())
                 .andExpect(jsonPath("$.title").value("Fineract unavailable"));
     }
 
     @Test
     void submitReturns201WithLocation() throws Exception {
-        when(lifecycle.submit(any())).thenReturn(new LoanStatusResponse(7L, "000000007",
+        when(lifecycle.submit(any(), any())).thenReturn(new LoanStatusResponse(7L, "000000007",
                 LoanStatus.SUBMITTED_AND_PENDING_APPROVAL, "Submitted and pending approval"));
 
-        mvc.perform(post("/api/loans")
+        mvc.perform(post("/api/loans").with(as(SAMUEL))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"clientId": 1, "productId": 1, "principal": 20000, "numberOfRepayments": 12}
@@ -123,10 +132,10 @@ class LoanControllerTest {
 
     @Test
     void openLoanRuleGives409WithCode() throws Exception {
-        when(lifecycle.submit(any())).thenThrow(new ConflictException("OPEN_LOAN_EXISTS",
+        when(lifecycle.submit(any(), any())).thenThrow(new ConflictException("OPEN_LOAN_EXISTS",
                 "Client 1 already has loan 000000001 (Active)."));
 
-        mvc.perform(post("/api/loans")
+        mvc.perform(post("/api/loans").with(as(SAMUEL))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"clientId": 1, "productId": 1, "principal": 20000, "numberOfRepayments": 12}
@@ -138,7 +147,7 @@ class LoanControllerTest {
 
     @Test
     void repaymentAmountMustBePositive() throws Exception {
-        mvc.perform(post("/api/loans/1/repayments")
+        mvc.perform(post("/api/loans/1/repayments").with(as(SAMUEL))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {"amount": 0}

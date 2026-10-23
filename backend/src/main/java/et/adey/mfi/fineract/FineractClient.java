@@ -1,5 +1,6 @@
 package et.adey.mfi.fineract;
 
+import et.adey.mfi.fineract.model.FineractAuthentication;
 import et.adey.mfi.fineract.model.FineractClientAccounts;
 import et.adey.mfi.fineract.model.FineractClientData;
 import et.adey.mfi.fineract.model.FineractError;
@@ -12,6 +13,7 @@ import et.adey.mfi.fineract.model.FineractCommandResult;
 import et.adey.mfi.fineract.model.FineractLoanRequest;
 import et.adey.mfi.fineract.model.FineractLoanTransaction;
 import et.adey.mfi.fineract.model.FineractPaymentType;
+import et.adey.mfi.fineract.model.FineractUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpRequest;
@@ -28,6 +30,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -45,6 +48,31 @@ public class FineractClient {
     public FineractClient(RestClient fineractRestClient, ObjectMapper objectMapper) {
         this.restClient = fineractRestClient;
         this.objectMapper = objectMapper;
+    }
+
+    // ---- Users and login -----------------------------------------------------------------
+
+    /**
+     * Checks a user's username + password: POST /authentication. Wrong credentials come back as
+     * FineractApiException with status 401. The service account's Basic auth header is also sent;
+     * Fineract ignores it here and checks the credentials in the body.
+     */
+    public FineractAuthentication authenticate(String username, String password) {
+        return call(() -> restClient.post()
+                .uri("/authentication")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Map.of("username", username, "password", password))
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiErrorQuietly)
+                .body(FineractAuthentication.class));
+    }
+
+    public FineractUser getUser(long userId) {
+        return call(() -> restClient.get()
+                .uri("/users/{id}", userId)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(FineractUser.class));
     }
 
     // ---- Offices -------------------------------------------------------------------------
@@ -248,6 +276,11 @@ public class FineractClient {
         log.warn("Fineract {} {} -> {} {}", request.getMethod(), request.getURI().getPath(), status,
                 error.defaultUserMessage());
         throw new FineractApiException(status, error);
+    }
+
+    /** Like throwApiError but without the warning log line: a wrong password is not a system problem. */
+    private void throwApiErrorQuietly(HttpRequest request, ClientHttpResponse response) throws IOException {
+        throw new FineractApiException(response.getStatusCode().value(), parseError(response));
     }
 
     private FineractError parseError(ClientHttpResponse response) {

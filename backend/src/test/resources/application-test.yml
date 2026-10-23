@@ -1,0 +1,17 @@
+# "test" profile: used by @SpringBootTest tests (@ActiveProfiles("test")).
+# In-memory H2 database in PostgreSQL mode instead of the real Postgres, so tests need no Docker.
+# Flyway runs the same migrations against it.
+spring:
+  datasource:
+    url: jdbc:h2:mem:adey;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+
+app:
+  security:
+    jwt:
+      secret: test-only-secret-0123456789abcdef0123456789
+    public-docs: false
+  cors:
+    allowed-origins:
+      - http://localhost:[*]

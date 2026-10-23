@@ -12,6 +12,21 @@ spring:
     # Spring's built-in errors (400 for bad JSON, 404, ...) also use RFC 7807 ProblemDetail.
     problemdetails:
       enabled: true
+  # Our own database: refresh tokens + audit log. Separate from Fineract's databases.
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/adey_backend}
+    username: ${DB_USERNAME:adey}
+    password: ${DB_PASSWORD:adey}
+    hikari:
+      maximum-pool-size: 5
+  jpa:
+    # Flyway owns the schema (src/main/resources/db/migration); Hibernate only checks it matches.
+    hibernate:
+      ddl-auto: validate
+    # Don't keep a DB connection open while the HTTP response is rendered.
+    open-in-view: false
+  flyway:
+    locations: classpath:db/migration
 
 server:
   port: ${SERVER_PORT:8080}
@@ -25,6 +40,21 @@ fineract:
   read-timeout: ${FINERACT_READ_TIMEOUT:30s}
   # Secure by default. Only application-local.yml switches this on.
   trust-self-signed-certificate: false
+
+app:
+  security:
+    jwt:
+      # HMAC key that signs our access tokens. MUST come from the JWT_SECRET environment variable
+      # outside local development (32+ characters). Empty here, so a non-local start without it fails.
+      secret: ${JWT_SECRET:}
+      issuer: adey-mfi-backend
+      access-token-ttl: 15m
+    refresh-token-ttl: 7d
+    # Swagger UI / OpenAPI / health reachable without a token. Only the local profile sets true.
+    public-docs: false
+  cors:
+    # Browser origins allowed to call /api/**. Empty = no cross-origin browser access.
+    allowed-origins: []
 
 management:
   endpoints:

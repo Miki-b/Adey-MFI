@@ -1,5 +1,6 @@
 package et.adey.mfi.common;
 
+import et.adey.mfi.auth.AuthenticationFailedException;
 import et.adey.mfi.fineract.FineractApiException;
 import et.adey.mfi.fineract.FineractErrorCodes;
 import et.adey.mfi.fineract.FineractUnavailableException;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -83,6 +85,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
         problem.setTitle("Invalid request");
         problem.setProperty("errors", List.of(new FieldProblem(ex.getField(), ex.getMessage())));
+        return problem;
+    }
+
+    /** Login or refresh refused. Deliberately vague detail (see AuthService). */
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<ProblemDetail> handleAuthFailed(AuthenticationFailedException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        problem.setTitle("Unauthorized");
+        problem.setProperty("code", ex.getCode());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).header("WWW-Authenticate", "Bearer").body(problem);
+    }
+
+    /**
+     * Thrown by AccessPolicy (someone else's client, manager-only action). Must be handled here:
+     * otherwise the catch-all Exception handler below would turn it into a 500.
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ProblemDetail handleAccessDenied(AccessDeniedException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
+        problem.setTitle("Forbidden");
+        problem.setProperty("code", "FORBIDDEN");
         return problem;
     }
 

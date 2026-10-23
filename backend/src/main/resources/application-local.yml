@@ -9,6 +9,14 @@ fineract:
   trust-self-signed-certificate: true
 
 app:
+  security:
+    jwt:
+      # LOCAL-ONLY DEFAULT signing key. Anyone who knows it can forge tokens, so it is only
+      # acceptable on a developer laptop. Real environments set JWT_SECRET (32+ random characters).
+      secret: ${JWT_SECRET:local-dev-only-secret-change-me-0123456789abcdef}
+    public-docs: true
   cors:
-    # Flutter dev builds (web / hot reload) call us from random localhost ports.
-    allow-any-origin: true
+    # Flutter web dev builds call us from random localhost ports ([*] = any port).
+    allowed-origins:
+      - http://localhost:[*]
+      - http://127.0.0.1:[*]

@@ -9,7 +9,10 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/** A new loan application. Same terms as a schedule preview, plus the responsible loan officer. */
+/**
+ * A new loan application. Same terms as a schedule preview. The responsible loan officer is
+ * taken from the access token, never from the request.
+ */
 public record LoanApplicationRequest(
         @NotNull @Positive Long clientId,
         @NotNull @Positive Long productId,
@@ -18,7 +21,5 @@ public record LoanApplicationRequest(
         @Schema(example = "12")
         @NotNull @Min(1) Integer numberOfRepayments,
         @Schema(description = "ISO date. Defaults to today.")
-        LocalDate expectedDisbursementDate,
-        @Schema(description = "Loan officer (staff) id. Optional.")
-        @Positive Long staffId) {
+        LocalDate expectedDisbursementDate) {
 }

@@ -2,8 +2,10 @@ package et.adey.mfi.loan;
 
 import et.adey.mfi.common.FineractDates;
 import et.adey.mfi.fineract.FineractClient;
+import et.adey.mfi.fineract.model.FineractLoan;
 import et.adey.mfi.fineract.model.FineractLoanProduct;
 import et.adey.mfi.fineract.model.FineractLoanRequest;
+import et.adey.mfi.security.Officer;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,31 +17,37 @@ import java.util.List;
 public class LoanService {
 
     private final FineractClient fineract;
+    private final LoanGuard guard;
 
-    public LoanService(FineractClient fineract) {
+    public LoanService(FineractClient fineract, LoanGuard guard) {
         this.fineract = fineract;
+        this.guard = guard;
     }
 
     /**
      * Fineract's account list only has ids, so we fetch each loan with its schedule.
      * (One extra call per loan; fine for the handful of loans a client has.)
      */
-    public List<LoanSummary> getClientLoans(long clientId) {
+    public List<LoanSummary> getClientLoans(Officer officer, long clientId) {
+        guard.requireClient(officer, clientId);
         return fineract.getClientAccounts(clientId).loanAccountsOrEmpty().stream()
                 .map(account -> fineract.getLoanWithSchedule(account.id()))
                 .map(LoanMapper::toSummary)
                 .toList();
     }
 
-    public LoanDetails getLoan(long loanId) {
-        return LoanMapper.toDetails(fineract.getLoanWithScheduleAndTransactions(loanId));
+    public LoanDetails getLoan(Officer officer, long loanId) {
+        FineractLoan loan = fineract.getLoanWithScheduleAndTransactions(loanId);
+        guard.requireClient(officer, loan.clientId());
+        return LoanMapper.toDetails(loan);
     }
 
     /**
      * The product holds the loan's terms (rate, frequency, amortization, ...). We copy them into
      * the request so the preview uses exactly what a real application for this product would get.
      */
-    public SchedulePreviewResponse previewSchedule(SchedulePreviewRequest req) {
+    public SchedulePreviewResponse previewSchedule(Officer officer, SchedulePreviewRequest req) {
+        guard.requireClient(officer, req.clientId());
         FineractLoanProduct product = fineract.getLoanProduct(req.productId());
         FineractLoanRequest request = buildLoanRequest(req.clientId(), product, req.principal(),
                 req.numberOfRepayments(), req.expectedDisbursementDate(), null);

@@ -1,27 +1,40 @@
 package et.adey.mfi.loan;
 
+import et.adey.mfi.audit.AuditAction;
+import et.adey.mfi.audit.AuditService;
 import et.adey.mfi.common.ConflictException;
 import et.adey.mfi.common.FineractDates;
 import et.adey.mfi.fineract.FineractClient;
 import et.adey.mfi.fineract.model.FineractClientAccounts.LoanAccount;
+import et.adey.mfi.fineract.model.FineractClientData;
 import et.adey.mfi.fineract.model.FineractCommandResult;
 import et.adey.mfi.fineract.model.FineractLoan;
 import et.adey.mfi.fineract.model.FineractLoanCommands;
 import et.adey.mfi.fineract.model.FineractLoanProduct;
 import et.adey.mfi.fineract.model.FineractLoanRequest;
 import et.adey.mfi.paymenttype.PaymentTypeService;
+import et.adey.mfi.security.AccessPolicy;
+import et.adey.mfi.security.Officer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Write side of loans: the lifecycle
  * submit -> approve (or reject / undo approval) -> disburse -> repayments.
- * Fineract enforces the state machine (e.g. you cannot disburse an unapproved loan; it answers
- * 403, which we return as 422). Our own extra rules are checked here before calling Fineract.
+ *
+ * Every method runs inside audit.record(...), so each attempt leaves exactly one audit_log row.
+ * Inside that block, in this order:
+ *   1. role check (approve/reject/undo/disburse need MANAGER)  -> 403, audited as DENIED
+ *   2. access check (the loan's client must be the officer's / in the manager's office) -> 403
+ *   3. our business rules, then the Fineract call (Fineract enforces its own state machine).
+ * The role check is done here rather than with a URL rule or @PreAuthorize on purpose: those stop
+ * the request before our code runs, and then refused attempts would be missing from the audit log.
  */
 @Slf4j
 @Service
@@ -33,25 +46,41 @@ public class LoanLifecycleService {
 
     private final FineractClient fineract;
     private final PaymentTypeService paymentTypes;
+    private final LoanGuard guard;
+    private final AccessPolicy access;
+    private final AuditService audit;
 
-    public LoanLifecycleService(FineractClient fineract, PaymentTypeService paymentTypes) {
+    public LoanLifecycleService(FineractClient fineract, PaymentTypeService paymentTypes, LoanGuard guard,
+                                AccessPolicy access, AuditService audit) {
         this.fineract = fineract;
         this.paymentTypes = paymentTypes;
+        this.guard = guard;
+        this.access = access;
+        this.audit = audit;
     }
 
     // ---- Submit --------------------------------------------------------------------------
 
-    public LoanStatusResponse submit(LoanApplicationRequest req) {
-        ensureNoOpenLoan(req.clientId());
+    public LoanStatusResponse submit(Officer officer, LoanApplicationRequest req) {
+        return audit.record(officer, AuditAction.LOAN_APPLY, rec -> {
+            rec.clientId(req.clientId()).amount(req.principal());
+            FineractClientData client = guard.requireClient(officer, req.clientId());
+            ensureNoOpenLoan(req.clientId());
 
-        FineractLoanProduct product = fineract.getLoanProduct(req.productId());
-        FineractLoanRequest request = LoanService.buildLoanRequest(req.clientId(), product, req.principal(),
-                req.numberOfRepayments(), req.expectedDisbursementDate(), req.staffId());
-        FineractCommandResult result = fineract.submitLoanApplication(request);
+            // The loan officer on the loan comes from the token, never from the request:
+            // an officer applies as themselves; a manager applies on behalf of the client's officer.
+            Long loanOfficerId = officer.isManager() ? client.staffId() : Long.valueOf(officer.staffId());
 
-        long loanId = result.loanId() != null ? result.loanId() : result.resourceId();
-        log.info("Loan {} submitted for client {}", loanId, req.clientId());
-        return currentStatus(loanId);
+            FineractLoanProduct product = fineract.getLoanProduct(req.productId());
+            FineractLoanRequest request = LoanService.buildLoanRequest(req.clientId(), product, req.principal(),
+                    req.numberOfRepayments(), req.expectedDisbursementDate(), loanOfficerId);
+            FineractCommandResult result = fineract.submitLoanApplication(request);
+
+            long loanId = result.loanId() != null ? result.loanId() : result.resourceId();
+            rec.loanId(loanId);
+            log.info("Loan {} submitted for client {} by {}", loanId, req.clientId(), officer.username());
+            return currentStatus(loanId);
+        });
     }
 
     /**
@@ -78,53 +107,91 @@ public class LoanLifecycleService {
         return LoanStatus.fromFineractId(account.status() == null ? null : account.status().id());
     }
 
-    // ---- Approval ------------------------------------------------------------------------
+    // ---- Approval (manager only) ---------------------------------------------------------
 
-    public LoanStatusResponse approve(long loanId, ApproveLoanRequest req) {
+    public LoanStatusResponse approve(Officer officer, long loanId, ApproveLoanRequest req) {
         ApproveLoanRequest r = req != null ? req : new ApproveLoanRequest(null, null, null);
-        fineract.loanCommand(loanId, "approve", new FineractLoanCommands.Approve(
-                dateOrToday(r.approvedOnDate()), r.approvedAmount(), r.note(),
-                FineractDates.DATE_FORMAT, FineractDates.LOCALE));
-        return currentStatus(loanId);
+        return managerAction(officer, AuditAction.LOAN_APPROVE, loanId, loan -> {
+            fineract.loanCommand(loanId, "approve", new FineractLoanCommands.Approve(
+                    dateOrToday(r.approvedOnDate()), r.approvedAmount(), r.note(),
+                    FineractDates.DATE_FORMAT, FineractDates.LOCALE));
+            return currentStatus(loanId);
+        }, r.approvedAmount());
     }
 
-    public LoanStatusResponse undoApproval(long loanId, UndoApprovalRequest req) {
-        fineract.loanCommand(loanId, "undoApproval",
-                new FineractLoanCommands.UndoApproval(req == null ? null : req.note()));
-        return currentStatus(loanId);
+    public LoanStatusResponse undoApproval(Officer officer, long loanId, UndoApprovalRequest req) {
+        return managerAction(officer, AuditAction.LOAN_UNDO_APPROVAL, loanId, loan -> {
+            fineract.loanCommand(loanId, "undoApproval",
+                    new FineractLoanCommands.UndoApproval(req == null ? null : req.note()));
+            return currentStatus(loanId);
+        }, null);
     }
 
-    public LoanStatusResponse reject(long loanId, RejectLoanRequest req) {
+    public LoanStatusResponse reject(Officer officer, long loanId, RejectLoanRequest req) {
         RejectLoanRequest r = req != null ? req : new RejectLoanRequest(null, null);
-        fineract.loanCommand(loanId, "reject", new FineractLoanCommands.Reject(
-                dateOrToday(r.rejectedOnDate()), r.note(), FineractDates.DATE_FORMAT, FineractDates.LOCALE));
-        return currentStatus(loanId);
+        return managerAction(officer, AuditAction.LOAN_REJECT, loanId, loan -> {
+            fineract.loanCommand(loanId, "reject", new FineractLoanCommands.Reject(
+                    dateOrToday(r.rejectedOnDate()), r.note(), FineractDates.DATE_FORMAT, FineractDates.LOCALE));
+            return currentStatus(loanId);
+        }, null);
     }
 
     // ---- Money movements -----------------------------------------------------------------
 
-    public LoanStatusResponse disburse(long loanId, DisburseLoanRequest req) {
+    /** Paying out the money is a manager decision too. */
+    public LoanStatusResponse disburse(Officer officer, long loanId, DisburseLoanRequest req) {
         DisburseLoanRequest r = req != null ? req : new DisburseLoanRequest(null, null, null);
-        paymentTypes.requireSelectable(r.paymentTypeId());
-        fineract.loanCommand(loanId, "disburse", new FineractLoanCommands.Disburse(
-                dateOrToday(r.actualDisbursementDate()), null, r.paymentTypeId(), r.note(),
-                FineractDates.DATE_FORMAT, FineractDates.LOCALE));
-        return currentStatus(loanId);
+        return managerAction(officer, AuditAction.LOAN_DISBURSE, loanId, loan -> {
+            paymentTypes.requireSelectable(r.paymentTypeId());
+            fineract.loanCommand(loanId, "disburse", new FineractLoanCommands.Disburse(
+                    dateOrToday(r.actualDisbursementDate()), null, r.paymentTypeId(), r.note(),
+                    FineractDates.DATE_FORMAT, FineractDates.LOCALE));
+            return currentStatus(loanId);
+        }, null);
     }
 
     /**
-     * Records a repayment and returns the stored transaction, which shows how Fineract split
-     * the amount over penalties, fees, interest and principal (the product's allocation order).
+     * Records a repayment (officers and managers) and returns the stored transaction, which shows
+     * how Fineract split the amount over penalties, fees, interest and principal.
      */
-    public LoanTransactionResponse repay(long loanId, RepaymentRequest req) {
-        paymentTypes.requireSelectable(req.paymentTypeId());
-        FineractCommandResult result = fineract.repayLoan(loanId, new FineractLoanCommands.Repayment(
-                dateOrToday(req.transactionDate()), req.amount(), req.paymentTypeId(), req.note(),
-                FineractDates.DATE_FORMAT, FineractDates.LOCALE));
-        return LoanMapper.toTransaction(fineract.getLoanTransaction(loanId, result.resourceId()));
+    public LoanTransactionResponse repay(Officer officer, long loanId, RepaymentRequest req) {
+        return audit.record(officer, AuditAction.LOAN_REPAY, rec -> {
+            rec.loanId(loanId).amount(req.amount());
+            FineractLoan loan = loadLoan(officer, loanId, rec);
+            paymentTypes.requireSelectable(req.paymentTypeId());
+            FineractCommandResult result = fineract.repayLoan(loanId, new FineractLoanCommands.Repayment(
+                    dateOrToday(req.transactionDate()), req.amount(), req.paymentTypeId(), req.note(),
+                    FineractDates.DATE_FORMAT, FineractDates.LOCALE));
+            return LoanMapper.toTransaction(fineract.getLoanTransaction(loanId, result.resourceId()));
+        });
     }
 
     // ---- Helpers -------------------------------------------------------------------------
+
+    /** Audit + manager role + loan access, then the action. */
+    private <T> T managerAction(Officer officer, AuditAction action, long loanId,
+                                Function<FineractLoan, T> work, BigDecimal amount) {
+        return audit.record(officer, action, rec -> {
+            rec.loanId(loanId).amount(amount);
+            access.requireManager(officer);
+            FineractLoan loan = loadLoan(officer, loanId, rec);
+            if (amount == null && action == AuditAction.LOAN_DISBURSE) {
+                rec.amount(loan.approvedPrincipal());
+            }
+            return work.apply(loan);
+        });
+    }
+
+    /**
+     * Loads the loan, notes its client in the audit record, THEN checks access. In that order, a
+     * refused attempt on someone else's loan is still logged with the client it concerned.
+     */
+    private FineractLoan loadLoan(Officer officer, long loanId, AuditService.AuditRecord rec) {
+        FineractLoan loan = fineract.getLoanWithSchedule(loanId);
+        rec.clientId(loan.clientId());
+        guard.requireClient(officer, loan.clientId());
+        return loan;
+    }
 
     /** Fineract's command responses don't include the new status, so we read it back. */
     private LoanStatusResponse currentStatus(long loanId) {

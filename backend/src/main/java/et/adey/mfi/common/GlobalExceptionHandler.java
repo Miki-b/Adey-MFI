@@ -63,6 +63,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problem;
     }
 
+    @ExceptionHandler(ConflictException.class)
+    public ProblemDetail handleConflict(ConflictException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Business rule violated");
+        problem.setType(URI.create("urn:adey:problem:business-rule"));
+        problem.setProperty("code", ex.getCode());
+        return problem;
+    }
+
     @ExceptionHandler(FineractUnavailableException.class)
     public ProblemDetail handleUnavailable(FineractUnavailableException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.SERVICE_UNAVAILABLE,

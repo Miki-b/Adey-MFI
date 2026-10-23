@@ -1,0 +1,86 @@
+{
+  "loanAccounts": [
+    {
+      "id": 1,
+      "accountNo": "000000001",
+      "productId": 1,
+      "productName": "Small Business Loan",
+      "shortProductName": "SBL",
+      "status": {
+        "id": 300,
+        "code": "loanStatusType.active",
+        "value": "Active",
+        "pendingApproval": false,
+        "waitingForDisbursal": false,
+        "active": true,
+        "closedObligationsMet": false,
+        "closedWrittenOff": false,
+        "closedRescheduled": false,
+        "closed": false,
+        "overpaid": false
+      },
+      "currency": {
+        "code": "ETB",
+        "name": "Ethiopian Birr",
+        "decimalPlaces": 2,
+        "inMultiplesOf": 0,
+        "nameCode": "currency.ETB",
+        "displayLabel": "Ethiopian Birr [ETB]"
+      },
+      "loanType": {
+        "id": 1,
+        "code": "accountType.individual",
+        "value": "Individual"
+      },
+      "loanCycle": 1,
+      "timeline": {
+        "submittedOnDate": [
+          2026,
+          10,
+          23
+        ],
+        "submittedByUsername": "mifos",
+        "submittedByFirstname": "App",
+        "submittedByLastname": "Administrator",
+        "approvedOnDate": [
+          2026,
+          10,
+          23
+        ],
+        "approvedByUsername": "mifos",
+        "approvedByFirstname": "App",
+        "approvedByLastname": "Administrator",
+        "expectedDisbursementDate": [
+          2026,
+          10,
+          23
+        ],
+        "actualDisbursementDate": [
+          2026,
+          10,
+          23
+        ],
+        "disbursedByUsername": "mifos",
+        "disbursedByFirstname": "App",
+        "disbursedByLastname": "Administrator",
+        "actualMaturityDate": [
+          2027,
+          10,
+          23
+        ],
+        "expectedMaturityDate": [
+          2027,
+          10,
+          23
+        ]
+      },
+      "inArrears": false,
+      "originalLoan": 20000.0,
+      "loanBalance": 19169.61,
+      "amountPaid": 2833.6
+    }
+  ],
+  "groupLoanIndividualMonitoringAccounts": [],
+  "guarantorAccounts": [],
+  "workingCapitalLoanAccounts": []
+}

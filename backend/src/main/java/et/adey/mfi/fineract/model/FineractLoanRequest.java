@@ -1,14 +1,20 @@
 package et.adey.mfi.fineract.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.math.BigDecimal;
 
 /**
- * Body for POST /loans?command=calculateLoanSchedule (and later, loan submission).
+ * Loan terms in Fineract's request shape. The same body is used for
+ * POST /loans?command=calculateLoanSchedule (preview) and POST /loans (submit an application).
  * Every time quantity is a number + unit-code pair; dates are text + dateFormat + locale.
+ * NON_NULL: optional fields we don't set (e.g. loanOfficerId) are left out of the JSON.
  */
-public record FineractScheduleRequest(
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record FineractLoanRequest(
         Long clientId,
         Long productId,
+        Long loanOfficerId,
         BigDecimal principal,
         Integer loanTermFrequency,
         Integer loanTermFrequencyType,

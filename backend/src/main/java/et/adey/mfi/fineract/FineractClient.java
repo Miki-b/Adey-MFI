@@ -8,7 +8,10 @@ import et.adey.mfi.fineract.model.FineractLoanProduct;
 import et.adey.mfi.fineract.model.FineractLoanSchedule;
 import et.adey.mfi.fineract.model.FineractOffice;
 import et.adey.mfi.fineract.model.FineractPage;
-import et.adey.mfi.fineract.model.FineractScheduleRequest;
+import et.adey.mfi.fineract.model.FineractCommandResult;
+import et.adey.mfi.fineract.model.FineractLoanRequest;
+import et.adey.mfi.fineract.model.FineractLoanTransaction;
+import et.adey.mfi.fineract.model.FineractPaymentType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpRequest;
@@ -116,15 +119,70 @@ public class FineractClient {
 
     /** One loan including its repayment schedule (needed for installments paid / next due). */
     public FineractLoan getLoanWithSchedule(long loanId) {
+        return getLoan(loanId, "repaymentSchedule");
+    }
+
+    /** One loan with schedule AND transactions (the loan details screen). */
+    public FineractLoan getLoanWithScheduleAndTransactions(long loanId) {
+        return getLoan(loanId, "repaymentSchedule,transactions");
+    }
+
+    private FineractLoan getLoan(long loanId, String associations) {
         return call(() -> restClient.get()
-                .uri("/loans/{id}?associations=repaymentSchedule", loanId)
+                .uri("/loans/{id}?associations={associations}", loanId, associations)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, this::throwApiError)
                 .body(FineractLoan.class));
     }
 
+    public FineractLoanTransaction getLoanTransaction(long loanId, long transactionId) {
+        return call(() -> restClient.get()
+                .uri("/loans/{loanId}/transactions/{txId}", loanId, transactionId)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(FineractLoanTransaction.class));
+    }
+
+    /** Submit a loan application: POST /loans. resourceId of the result is the new loan id. */
+    public FineractCommandResult submitLoanApplication(FineractLoanRequest request) {
+        return post("/loans", request);
+    }
+
+    /**
+     * A state change on a loan: POST /loans/{id}?command=approve|undoApproval|reject|disburse.
+     * The body type depends on the command (see FineractLoanCommands).
+     */
+    public FineractCommandResult loanCommand(long loanId, String command, Object body) {
+        return post("/loans/" + loanId + "?command=" + command, body);
+    }
+
+    /** POST /loans/{id}/transactions?command=repayment. resourceId is the new transaction id. */
+    public FineractCommandResult repayLoan(long loanId, Object body) {
+        return post("/loans/" + loanId + "/transactions?command=repayment", body);
+    }
+
+    private FineractCommandResult post(String uri, Object body) {
+        return call(() -> restClient.post()
+                .uri(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(body)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(FineractCommandResult.class));
+    }
+
+    // ---- Payment types -------------------------------------------------------------------
+
+    public List<FineractPaymentType> getPaymentTypes() {
+        return call(() -> restClient.get()
+                .uri("/paymenttypes")
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, this::throwApiError)
+                .body(new ParameterizedTypeReference<List<FineractPaymentType>>() { }));
+    }
+
     /** Preview a schedule without saving anything: POST /loans?command=calculateLoanSchedule. */
-    public FineractLoanSchedule calculateLoanSchedule(FineractScheduleRequest request) {
+    public FineractLoanSchedule calculateLoanSchedule(FineractLoanRequest request) {
         return call(() -> restClient.post()
                 .uri("/loans?command=calculateLoanSchedule")
                 .contentType(MediaType.APPLICATION_JSON)

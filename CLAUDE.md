@@ -57,11 +57,17 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   submission fails (the write-side field is misspelled `allowPartialPeriodInterestCalcualtion`).
 - Currencies: `PUT /currencies` REPLACES the whole list — always send every currency to keep.
 - Errors return JSON with `defaultUserMessage` and an `errors[]` array naming the field.
+- Wrong-state loan commands can come back as 400 (not 403), e.g. disbursing an unapproved loan.
+- Command responses (`POST /loans...`) only return ids (`resourceId`), not the new status.
+- Disbursement posts an Accrual transaction (bookkeeping) even with accounting "none".
 
 ## Existing data (default tenant)
 
 - Offices: Head Office (id 1), Bishoftu Branch (id 2)
-- Staff id 1: Samuel Derese (loan officer, Bishoftu). Client id 1: Yohannes Tekle (Bishoftu, staff 1, no loans yet).
+- Staff id 1: Samuel Derese (loan officer, Bishoftu). Client id 1: Yohannes Tekle (Bishoftu, staff 1).
+- Loan id 1 (000000001), client 1: 20,000 / 12 months, Active since 2026-10-23, repaid 1833.60 + 1000.00,
+  principal outstanding 17,743.40. Client 1 can't apply again until it closes (our one-open-loan rule).
+- Payment types: Money Transfer (id 1); ids 2–3 are Fineract system-defined adjustment types (hidden by our API).
 - Loan product id 1: "Small Business Loan" (SBL), ETB, principal 5,000–50,000 (default 20,000),
   6–24 monthly repayments (default 12), 18% per year, equal installments, declining balance,
   same-as-repayment-period interest, no accounting.
@@ -75,7 +81,10 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   (offices, loan products, clients, client loans, schedule preview), verified live against
   Fineract, 18 tests. Run: `cd backend && .\mvnw.cmd spring-boot:run`. Details: backend/README.md,
   notes/02-backend.md.
-- Next: backend Phase 2: loan application submit, approve, disburse, repayment. Then security, then Flutter.
+- Backend Phase 2 done (2026-10-23): loan lifecycle (submit with our one-open-loan rule -> 409,
+  approve / undo approval / reject, disburse, repayments with principal/interest/fee/penalty split),
+  loan details, payment types. Verified live with loan 1; 32 tests. Notes: notes/03-loan-lifecycle.md.
+- Next: Phase 3: officer login (Spring Security + JWT), then the Flutter app.
 
 ## Backend facts
 

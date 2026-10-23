@@ -52,16 +52,45 @@ environment variables.
   intercept the Fineract credentials and customer data.
 - Any other profile (e.g. `SPRING_PROFILES_ACTIVE=prod`) has normal certificate checks and no CORS.
 
-## Endpoints (Phase 1, read-only)
+## Endpoints
+
+Reads (Phase 1):
 
 | Method | Path | What |
 | --- | --- | --- |
 | GET | `/api/offices` | id, name, parentId, openingDate |
 | GET | `/api/loan-products` | ranges for principal / repayments, rate, interest method, amortization |
+| GET | `/api/payment-types` | payment types an officer can pick (Fineract's system-defined ones hidden) |
 | GET | `/api/clients?search=&officeId=&staffId=&page=0&size=20` | paged client list |
 | GET | `/api/clients/{id}` | client details |
 | GET | `/api/clients/{id}/loans` | per loan: status, progress, outstanding, next due, arrears |
+| GET | `/api/loans/{id}` | totals, key dates, full schedule (with paid/outstanding per installment), transactions |
 | POST | `/api/loans/schedule-preview` | repayment schedule without creating a loan |
+
+Loan lifecycle (Phase 2):
+
+| Method | Path | Body (all dates optional, default today) | Result |
+| --- | --- | --- | --- |
+| POST | `/api/loans` | `clientId, productId, principal, numberOfRepayments, expectedDisbursementDate?, staffId?` | 201 + `Location`, `{loanId, accountNo, status, statusLabel}` |
+| POST | `/api/loans/{id}/approve` | `approvedOnDate?, approvedAmount?, note?` (body optional) | `{loanId, status: APPROVED, ...}` |
+| POST | `/api/loans/{id}/undo-approval` | `note?` (body optional) | back to `SUBMITTED_AND_PENDING_APPROVAL` |
+| POST | `/api/loans/{id}/reject` | `rejectedOnDate?, note?` (body optional) | `REJECTED` |
+| POST | `/api/loans/{id}/disburse` | `actualDisbursementDate?, paymentTypeId?, note?` (body optional) | `ACTIVE` |
+| POST | `/api/loans/{id}/repayments` | `amount, transactionDate?, paymentTypeId?, note?` | the transaction with `principalPortion`, `interestPortion`, `feesPortion`, `penaltiesPortion` |
+
+Status values: `SUBMITTED_AND_PENDING_APPROVAL`, `APPROVED`, `ACTIVE`, `WITHDRAWN_BY_CLIENT`,
+`REJECTED`, `CLOSED`, `WRITTEN_OFF`, `RESCHEDULED`, `OVERPAID`. `statusLabel` carries Fineract's text.
+
+**Our business rule:** a client with a loan that is pending approval, approved or active cannot
+apply for another one. The answer is `409 Conflict` with `"code": "OPEN_LOAN_EXISTS"`. Fineract
+itself would allow it; the check is in `LoanLifecycleService`.
+
+Repayments are split in the product's order **penalties, fees, interest, principal**, applied to
+the oldest unpaid installment first. Example: 1000 against installment 2 (277.00 interest due)
+gives `interestPortion 277.00`, `principalPortion 723.00`.
+
+`GET /api/loans/{id}` lists money movements only. Fineract's accrual entries (interest booked
+as income) are bookkeeping and are left out.
 
 Conventions:
 - Money is a JSON number with 2 decimals (`1833.60`), ETB. Rates are percent per year (`18.00`).
@@ -96,8 +125,9 @@ Errors are [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) problem details:
 
 | Situation | Status |
 | --- | --- |
-| Our validation fails, or Fineract returns 400 | 400 (with `errors[]`) |
+| Our validation fails, or Fineract returns 400 | 400 (with `errors[]`). Note: Fineract reports some wrong-state actions (e.g. disbursing an unapproved loan) as 400, not 403 |
 | Not found in Fineract | 404 |
+| Our business rule (e.g. open loan exists) | 409 (with `code`) |
 | Fineract business rule (Fineract 403) | 422 |
 | Fineract rejects our credentials (401) or fails (5xx) | 502 |
 | Fineract unreachable or timed out | 503 |
@@ -111,6 +141,8 @@ et.adey.mfi
 ├── common/    FineractDates, Money, Rates, PageResponse, GlobalExceptionHandler
 ├── office/    controller -> service -> DTO
 ├── product/
+├── paymenttype/
 ├── client/
-└── loan/      also LoanMapper (pure Fineract -> DTO mapping, unit-tested)
+└── loan/      LoanService (reads, preview), LoanLifecycleService (submit -> repay, our rules),
+               LoanMapper (pure Fineract -> DTO mapping, unit-tested against real responses)
 ```

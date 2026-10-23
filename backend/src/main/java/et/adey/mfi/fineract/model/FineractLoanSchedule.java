@@ -31,6 +31,7 @@ public record FineractLoanSchedule(
             BigDecimal feeChargesDue,
             BigDecimal penaltyChargesDue,
             BigDecimal totalDueForPeriod,
+            BigDecimal totalPaidForPeriod,
             BigDecimal totalOutstandingForPeriod,
             BigDecimal principalLoanBalanceOutstanding,
             Boolean complete) {

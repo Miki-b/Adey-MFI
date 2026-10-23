@@ -13,6 +13,7 @@ public record LoanSummary(
         String accountNo,
         String productName,
         LoanStatus status,
+        String statusLabel,
         BigDecimal principal,
         BigDecimal annualInterestRate,
         int installmentsTotal,

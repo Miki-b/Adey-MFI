@@ -5,7 +5,7 @@ import et.adey.mfi.config.FineractProperties;
 import et.adey.mfi.fineract.model.FineractClientData;
 import et.adey.mfi.fineract.model.FineractOffice;
 import et.adey.mfi.fineract.model.FineractPage;
-import et.adey.mfi.fineract.model.FineractScheduleRequest;
+import et.adey.mfi.fineract.model.FineractLoanRequest;
 import et.adey.mfi.TestJson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -101,7 +101,7 @@ class FineractClientTest {
                                     "defaultUserMessage":"The parameter `principal` amount 90000.0 must be between 5000.00 and 50000.00 ."}]}
                         """));
 
-        FineractScheduleRequest request = new FineractScheduleRequest(1L, 1L, new BigDecimal("90000"), 12, 2, 12, 1, 2,
+        FineractLoanRequest request = new FineractLoanRequest(1L, 1L, null, new BigDecimal("90000"), 12, 2, 12, 1, 2,
                 new BigDecimal("18"), 1, 0, 1, "mifos-standard-strategy", "23 October 2026", "23 October 2026",
                 "individual", "dd MMMM yyyy", "en");
 

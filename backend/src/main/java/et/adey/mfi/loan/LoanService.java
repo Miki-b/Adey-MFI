@@ -3,12 +3,14 @@ package et.adey.mfi.loan;
 import et.adey.mfi.common.FineractDates;
 import et.adey.mfi.fineract.FineractClient;
 import et.adey.mfi.fineract.model.FineractLoanProduct;
-import et.adey.mfi.fineract.model.FineractScheduleRequest;
+import et.adey.mfi.fineract.model.FineractLoanRequest;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+/** Read side of loans: lists, details and schedule previews. Nothing here changes data. */
 @Service
 public class LoanService {
 
@@ -29,32 +31,45 @@ public class LoanService {
                 .toList();
     }
 
+    public LoanDetails getLoan(long loanId) {
+        return LoanMapper.toDetails(fineract.getLoanWithScheduleAndTransactions(loanId));
+    }
+
     /**
      * The product holds the loan's terms (rate, frequency, amortization, ...). We copy them into
      * the request so the preview uses exactly what a real application for this product would get.
      */
     public SchedulePreviewResponse previewSchedule(SchedulePreviewRequest req) {
         FineractLoanProduct product = fineract.getLoanProduct(req.productId());
-        return LoanMapper.toPreview(fineract.calculateLoanSchedule(buildScheduleRequest(req, product)));
+        FineractLoanRequest request = buildLoanRequest(req.clientId(), product, req.principal(),
+                req.numberOfRepayments(), req.expectedDisbursementDate(), null);
+        return LoanMapper.toPreview(fineract.calculateLoanSchedule(request));
     }
 
-    static FineractScheduleRequest buildScheduleRequest(SchedulePreviewRequest req, FineractLoanProduct product) {
+    /**
+     * Builds Fineract's loan request from our few inputs plus the product's terms.
+     * Shared by schedule preview and loan application, so both always agree.
+     */
+    static FineractLoanRequest buildLoanRequest(long clientId, FineractLoanProduct product, BigDecimal principal,
+                                                int numberOfRepayments, LocalDate expectedDisbursementDate,
+                                                Long loanOfficerId) {
         LocalDate today = FineractDates.today();
-        LocalDate disbursement = req.expectedDisbursementDate() != null ? req.expectedDisbursementDate() : today;
-        // Fineract rejects a submission date after the disbursement date (back-dated previews).
+        LocalDate disbursement = expectedDisbursementDate != null ? expectedDisbursementDate : today;
+        // Fineract rejects a submission date after the disbursement date (back-dated applications).
         LocalDate submitted = disbursement.isBefore(today) ? disbursement : today;
 
         int repaymentEvery = product.repaymentEvery() == null ? 1 : product.repaymentEvery();
         Integer frequencyType = product.repaymentFrequencyType().id();
 
-        return new FineractScheduleRequest(
-                req.clientId(),
-                req.productId(),
-                req.principal(),
+        return new FineractLoanRequest(
+                clientId,
+                product.id(),
+                loanOfficerId,
+                principal,
                 // Loan term = number of repayments x repayment interval, in the same unit.
-                req.numberOfRepayments() * repaymentEvery,
+                numberOfRepayments * repaymentEvery,
                 frequencyType,
-                req.numberOfRepayments(),
+                numberOfRepayments,
                 repaymentEvery,
                 frequencyType,
                 // Rate is per the product's interest-rate period (per year for SBL).

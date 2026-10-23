@@ -1,0 +1,14 @@
+# "local" profile: developer laptop only. Active by default (see spring.profiles.default).
+
+fineract:
+  # Local Fineract (Docker) serves HTTPS with a self-signed certificate, so we skip
+  # certificate and hostname checks when calling it.
+  # WARNING: NEVER enable this in production. It lets anyone intercept the connection
+  # and read the Fineract credentials and customer data. In production, give Fineract
+  # a real certificate (or add its certificate to a trust store) and leave this false.
+  trust-self-signed-certificate: true
+
+app:
+  cors:
+    # Flutter dev builds (web / hot reload) call us from random localhost ports.
+    allow-any-origin: true

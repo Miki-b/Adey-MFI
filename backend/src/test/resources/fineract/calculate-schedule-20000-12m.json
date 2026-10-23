@@ -1,0 +1,410 @@
+{
+  "currency": {
+    "code": "ETB",
+    "name": "Ethiopian Birr",
+    "decimalPlaces": 2,
+    "inMultiplesOf": 0,
+    "nameCode": "currency.ETB",
+    "displayLabel": "Ethiopian Birr [ETB]"
+  },
+  "loanTermInDays": 365,
+  "totalPrincipalDisbursed": 20000.0,
+  "totalPrincipalExpected": 20000.0,
+  "totalPrincipalPaid": 0,
+  "totalInterestCharged": 2003.21,
+  "totalFeeChargesCharged": 0.0,
+  "totalPenaltyChargesCharged": 0.0,
+  "totalRepaymentExpected": 22003.21,
+  "totalOutstanding": 0,
+  "totalCredits": 0,
+  "periods": [
+    {
+      "dueDate": [
+        2026,
+        10,
+        23
+      ],
+      "principalDisbursed": 20000.0,
+      "principalLoanBalanceOutstanding": 20000.0,
+      "feeChargesDue": 0,
+      "feeChargesOutstanding": 0,
+      "totalOriginalDueForPeriod": 0,
+      "totalDueForPeriod": 0,
+      "totalOutstandingForPeriod": 0,
+      "totalActualCostOfLoanForPeriod": 0,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 1,
+      "fromDate": [
+        2026,
+        10,
+        23
+      ],
+      "dueDate": [
+        2026,
+        11,
+        23
+      ],
+      "daysInPeriod": 31,
+      "principalOriginalDue": 1533.6,
+      "principalDue": 1533.6,
+      "principalOutstanding": 1533.6,
+      "principalLoanBalanceOutstanding": 18466.4,
+      "interestOriginalDue": 300.0,
+      "interestDue": 300.0,
+      "interestOutstanding": 300.0,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 300.0,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 2,
+      "fromDate": [
+        2026,
+        11,
+        23
+      ],
+      "dueDate": [
+        2026,
+        12,
+        23
+      ],
+      "daysInPeriod": 30,
+      "principalOriginalDue": 1556.6,
+      "principalDue": 1556.6,
+      "principalOutstanding": 1556.6,
+      "principalLoanBalanceOutstanding": 16909.8,
+      "interestOriginalDue": 277.0,
+      "interestDue": 277.0,
+      "interestOutstanding": 277.0,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 277.0,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 3,
+      "fromDate": [
+        2026,
+        12,
+        23
+      ],
+      "dueDate": [
+        2027,
+        1,
+        23
+      ],
+      "daysInPeriod": 31,
+      "principalOriginalDue": 1579.95,
+      "principalDue": 1579.95,
+      "principalOutstanding": 1579.95,
+      "principalLoanBalanceOutstanding": 15329.85,
+      "interestOriginalDue": 253.65,
+      "interestDue": 253.65,
+      "interestOutstanding": 253.65,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 253.65,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 4,
+      "fromDate": [
+        2027,
+        1,
+        23
+      ],
+      "dueDate": [
+        2027,
+        2,
+        23
+      ],
+      "daysInPeriod": 31,
+      "principalOriginalDue": 1603.65,
+      "principalDue": 1603.65,
+      "principalOutstanding": 1603.65,
+      "principalLoanBalanceOutstanding": 13726.2,
+      "interestOriginalDue": 229.95,
+      "interestDue": 229.95,
+      "interestOutstanding": 229.95,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 229.95,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 5,
+      "fromDate": [
+        2027,
+        2,
+        23
+      ],
+      "dueDate": [
+        2027,
+        3,
+        23
+      ],
+      "daysInPeriod": 28,
+      "principalOriginalDue": 1627.71,
+      "principalDue": 1627.71,
+      "principalOutstanding": 1627.71,
+      "principalLoanBalanceOutstanding": 12098.49,
+      "interestOriginalDue": 205.89,
+      "interestDue": 205.89,
+      "interestOutstanding": 205.89,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 205.89,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 6,
+      "fromDate": [
+        2027,
+        3,
+        23
+      ],
+      "dueDate": [
+        2027,
+        4,
+        23
+      ],
+      "daysInPeriod": 31,
+      "principalOriginalDue": 1652.12,
+      "principalDue": 1652.12,
+      "principalOutstanding": 1652.12,
+      "principalLoanBalanceOutstanding": 10446.37,
+      "interestOriginalDue": 181.48,
+      "interestDue": 181.48,
+      "interestOutstanding": 181.48,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 181.48,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 7,
+      "fromDate": [
+        2027,
+        4,
+        23
+      ],
+      "dueDate": [
+        2027,
+        5,
+        23
+      ],
+      "daysInPeriod": 30,
+      "principalOriginalDue": 1676.9,
+      "principalDue": 1676.9,
+      "principalOutstanding": 1676.9,
+      "principalLoanBalanceOutstanding": 8769.47,
+      "interestOriginalDue": 156.7,
+      "interestDue": 156.7,
+      "interestOutstanding": 156.7,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 156.7,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 8,
+      "fromDate": [
+        2027,
+        5,
+        23
+      ],
+      "dueDate": [
+        2027,
+        6,
+        23
+      ],
+      "daysInPeriod": 31,
+      "principalOriginalDue": 1702.06,
+      "principalDue": 1702.06,
+      "principalOutstanding": 1702.06,
+      "principalLoanBalanceOutstanding": 7067.41,
+      "interestOriginalDue": 131.54,
+      "interestDue": 131.54,
+      "interestOutstanding": 131.54,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 131.54,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 9,
+      "fromDate": [
+        2027,
+        6,
+        23
+      ],
+      "dueDate": [
+        2027,
+        7,
+        23
+      ],
+      "daysInPeriod": 30,
+      "principalOriginalDue": 1727.59,
+      "principalDue": 1727.59,
+      "principalOutstanding": 1727.59,
+      "principalLoanBalanceOutstanding": 5339.82,
+      "interestOriginalDue": 106.01,
+      "interestDue": 106.01,
+      "interestOutstanding": 106.01,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 106.01,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 10,
+      "fromDate": [
+        2027,
+        7,
+        23
+      ],
+      "dueDate": [
+        2027,
+        8,
+        23
+      ],
+      "daysInPeriod": 31,
+      "principalOriginalDue": 1753.5,
+      "principalDue": 1753.5,
+      "principalOutstanding": 1753.5,
+      "principalLoanBalanceOutstanding": 3586.32,
+      "interestOriginalDue": 80.1,
+      "interestDue": 80.1,
+      "interestOutstanding": 80.1,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 80.1,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 11,
+      "fromDate": [
+        2027,
+        8,
+        23
+      ],
+      "dueDate": [
+        2027,
+        9,
+        23
+      ],
+      "daysInPeriod": 31,
+      "principalOriginalDue": 1779.81,
+      "principalDue": 1779.81,
+      "principalOutstanding": 1779.81,
+      "principalLoanBalanceOutstanding": 1806.51,
+      "interestOriginalDue": 53.79,
+      "interestDue": 53.79,
+      "interestOutstanding": 53.79,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.6,
+      "totalDueForPeriod": 1833.6,
+      "totalOutstandingForPeriod": 1833.6,
+      "totalActualCostOfLoanForPeriod": 53.79,
+      "totalInstallmentAmountForPeriod": 1833.6,
+      "downPaymentPeriod": false
+    },
+    {
+      "period": 12,
+      "fromDate": [
+        2027,
+        9,
+        23
+      ],
+      "dueDate": [
+        2027,
+        10,
+        23
+      ],
+      "daysInPeriod": 30,
+      "principalOriginalDue": 1806.51,
+      "principalDue": 1806.51,
+      "principalOutstanding": 1806.51,
+      "principalLoanBalanceOutstanding": 0.0,
+      "interestOriginalDue": 27.1,
+      "interestDue": 27.1,
+      "interestOutstanding": 27.1,
+      "feeChargesDue": 0.0,
+      "feeChargesOutstanding": 0.0,
+      "penaltyChargesDue": 0.0,
+      "penaltyChargesOutstanding": 0.0,
+      "totalOriginalDueForPeriod": 1833.61,
+      "totalDueForPeriod": 1833.61,
+      "totalOutstandingForPeriod": 1833.61,
+      "totalActualCostOfLoanForPeriod": 27.1,
+      "totalInstallmentAmountForPeriod": 1833.61,
+      "downPaymentPeriod": false
+    }
+  ]
+}

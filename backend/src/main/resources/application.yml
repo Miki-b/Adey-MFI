@@ -1,0 +1,38 @@
+# Main configuration. Every value can be overridden by an environment variable:
+# ${NAME:default} means "use env var NAME if set, otherwise the default".
+
+spring:
+  application:
+    name: mfi-backend
+  profiles:
+    # Used only when no profile is chosen explicitly (SPRING_PROFILES_ACTIVE).
+    # Production must set SPRING_PROFILES_ACTIVE to something else (e.g. "prod").
+    default: local
+  mvc:
+    # Spring's built-in errors (400 for bad JSON, 404, ...) also use RFC 7807 ProblemDetail.
+    problemdetails:
+      enabled: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+fineract:
+  base-url: ${FINERACT_BASE_URL:https://localhost:8443/fineract-provider/api/v1}
+  tenant: ${FINERACT_TENANT:default}
+  username: ${FINERACT_USERNAME:mifos}
+  password: ${FINERACT_PASSWORD:password}
+  connect-timeout: ${FINERACT_CONNECT_TIMEOUT:5s}
+  read-timeout: ${FINERACT_READ_TIMEOUT:30s}
+  # Secure by default. Only application-local.yml switches this on.
+  trust-self-signed-certificate: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method

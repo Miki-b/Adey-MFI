@@ -1,0 +1,113 @@
+# Adey MFI — local Apache Fineract learning stack
+#
+# Three services run together:
+#   db       -> PostgreSQL database that stores all Fineract data
+#   fineract -> the Apache Fineract backend (REST API, runs on HTTPS 8443)
+#   web-app  -> the Mifos/Fineract web UI (served on http://localhost:4200)
+#
+# Note: there is intentionally NO "version:" key at the top. It is obsolete in
+# modern Docker Compose and only produces a warning.
+
+services:
+  # ---------------------------------------------------------------------------
+  # PostgreSQL database
+  # ---------------------------------------------------------------------------
+  db:
+    image: postgres:18.3
+    environment:
+      # Superuser credentials. Fineract connects with these below.
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      # Named volume keeps the data even if the container is removed.
+      # Postgres 18 stores its data under /var/lib/postgresql (not .../data).
+      - pgdata:/var/lib/postgresql
+      # init-db.sql runs ONCE, the first time the empty volume is initialised.
+      # It creates the two databases Fineract needs. Mounted read-only (:ro).
+      - ./init-db.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      # Expose Postgres on the host so you can connect with a DB client if you like.
+      # Host port 5433 (not 5432) because another project's Postgres already uses 5432.
+      # Inside Docker, Fineract still connects to db:5432.
+      - "5433:5432"
+    healthcheck:
+      # Fineract waits until this reports healthy (see depends_on below).
+      # pg_isready returns success once Postgres is accepting connections.
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ---------------------------------------------------------------------------
+  # Apache Fineract backend
+  # ---------------------------------------------------------------------------
+  fineract:
+    image: apache/fineract:latest
+    depends_on:
+      db:
+        # Do not start Fineract until the db healthcheck passes.
+        condition: service_healthy
+    ports:
+      # Fineract serves its REST API over HTTPS on 8443 (self-signed cert).
+      - "8443:8443"
+    environment:
+      # Node identity (relevant in clustered setups; 1 is fine for local use).
+      FINERACT_NODE_ID: "1"
+
+      # --- Connection to the "tenants" database (Fineract's directory of tenants) ---
+      FINERACT_HIKARI_DRIVER_SOURCE_CLASS_NAME: org.postgresql.Driver
+      FINERACT_HIKARI_JDBC_URL: jdbc:postgresql://db:5432/fineract_tenants
+      FINERACT_HIKARI_USERNAME: postgres
+      FINERACT_HIKARI_PASSWORD: postgres
+
+      # --- Details Fineract uses to reach/create each tenant's own database ---
+      FINERACT_DEFAULT_TENANTDB_HOSTNAME: db
+      FINERACT_DEFAULT_TENANTDB_PORT: "5432"
+      FINERACT_DEFAULT_TENANTDB_UID: postgres
+      FINERACT_DEFAULT_TENANTDB_PWD: postgres
+      FINERACT_DEFAULT_TENANTDB_CONN_PARAMS: ""
+      FINERACT_DEFAULT_TENANTDB_TIMEZONE: Africa/Addis_Ababa
+      FINERACT_DEFAULT_TENANTDB_IDENTIFIER: default
+      FINERACT_DEFAULT_TENANTDB_NAME: fineract_default
+      FINERACT_DEFAULT_TENANTDB_DESCRIPTION: Adey MFI
+
+      # Master password used to encrypt stored tenant DB credentials.
+      FINERACT_DEFAULT_MASTER_PASSWORD: fineract
+
+      # Serve over HTTPS (self-signed certificate).
+      FINERACT_SERVER_SSL_ENABLED: "true"
+
+      # Where Fineract stores uploaded documents/images on the filesystem.
+      FINERACT_CONTENT_FILESYSTEM_ROOT_FOLDER: /tmp
+
+      # Handle scheduled/background jobs in-process via Spring events (no external worker).
+      FINERACT_REMOTE_JOB_MESSAGE_HANDLER_SPRING_EVENTS_ENABLED: "true"
+
+      # Cap the JVM heap at 1 GB so the container stays within Docker's RAM.
+      JAVA_TOOL_OPTIONS: -Xmx1G
+
+  # ---------------------------------------------------------------------------
+  # Mifos / Fineract web UI
+  # ---------------------------------------------------------------------------
+  web-app:
+    # Note: openmf/web-app has no ":latest" tag on Docker Hub. 1.14 is the
+    # newest numbered (stable) release, chosen for a reproducible learning setup.
+    image: openmf/web-app:1.14
+    ports:
+      # The UI is served by nginx on port 80 inside the container -> host 4200.
+      - "4200:80"
+    environment:
+      # Tell the UI where the Fineract API lives and how its paths are formed.
+      FINERACT_API_URLS: https://localhost:8443
+      FINERACT_API_URL: https://localhost:8443
+      FINERACT_API_PROVIDER: /fineract-provider/api
+      FINERACT_API_VERSION: /v1
+      FINERACT_PLATFORM_TENANT_IDENTIFIER: default
+      MIFOS_DEFAULT_LANGUAGE: en-US
+
+# -----------------------------------------------------------------------------
+# Named volumes — managed by Docker, survive "docker compose down".
+# Removed only with "docker compose down -v" (which wipes all data).
+# -----------------------------------------------------------------------------
+volumes:
+  pgdata:

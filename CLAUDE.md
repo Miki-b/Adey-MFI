@@ -19,7 +19,7 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
 
 | Folder | What |
 | --- | --- |
-| infra/ | docker-compose.yml: PostgreSQL 18 + apache/fineract + openmf/web-app:1.14 |
+| infra/ | docker-compose.yml: PostgreSQL 18 (host port 5433) + apache/fineract + openmf/web-app:1.14 |
 | backend/ | Spring Boot API (Java 17+, Maven wrapper) |
 | app/ | Flutter app (later) |
 | calc/ | loan-schedule.xlsx — reference schedule that matches Fineract to the cent |
@@ -29,6 +29,7 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
 ## Running locally (Windows, Docker Desktop)
 
 - Start: `cd infra && docker compose up -d` (Fineract takes 1–3 min to boot)
+- Postgres is on host port **5433** (`localhost:5433`, postgres/postgres); 5432 belongs to another project.
 - Health: `curl -k https://localhost:8443/fineract-provider/actuator/health` → `{"status":"UP"}`
 - Mifos admin UI: http://localhost:4200 (mifos / password, tenant default).
   Stop it when not needed to save RAM: `docker compose stop web-app`
@@ -82,4 +83,3 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   Jackson 3: `tools.jackson.databind.*` (annotations still `com.fasterxml.jackson.annotation`).
 - Fineract client search (`displayName`) is a case-sensitive substring match.
 - Fineract OpenAPI says dates are strings; real responses send `[y, m, d]` arrays.
-- Host port 5432 may be taken by other projects' Postgres; Fineract doesn't need the host port.

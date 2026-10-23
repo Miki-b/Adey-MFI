@@ -69,6 +69,8 @@ Conventions:
 - Paging is 0-based: `{content, page, size, totalElements, totalPages}`; `size` max 100.
 - `search` matches part of the client's display name and is **case-sensitive**
   (Fineract runs SQL `LIKE` on PostgreSQL): `Tek` finds "Yohannes Tekle", `tek` does not.
+  Fineract's `/search` endpoint was checked too (2026-10-23): also case-sensitive, and it has
+  no paging or office/staff filters, so we keep `displayName`.
 
 Schedule preview example:
 

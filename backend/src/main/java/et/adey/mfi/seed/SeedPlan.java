@@ -148,5 +148,5 @@ final class SeedPlan {
                     Scenario.ACTIVE_ON_TIME)));
 
     /** Payment types to ensure exist (name -> isCashPayment). Existing ones are left alone. */
-    static final Map<String, Boolean> PAYMENT_TYPES = Map.of(CASH, true);
+    static final Map<String, Boolean> PAYMENT_TYPES = Map.of(CASH, true, "Mobile Money", false);
 }

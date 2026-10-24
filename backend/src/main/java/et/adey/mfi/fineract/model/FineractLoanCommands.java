@@ -35,9 +35,12 @@ public final class FineractLoanCommands {
                            String note, String dateFormat, String locale) {
     }
 
-    /** POST /loans/{id}/transactions?command=repayment. */
+    /**
+     * POST /loans/{id}/transactions?command=repayment. receiptNumber: for mobile money we put the
+     * provider's transaction id there, so every Fineract repayment can be traced to the provider.
+     */
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public record Repayment(String transactionDate, BigDecimal transactionAmount, Long paymentTypeId,
-                            String note, String dateFormat, String locale) {
+                            String note, String receiptNumber, String dateFormat, String locale) {
     }
 }

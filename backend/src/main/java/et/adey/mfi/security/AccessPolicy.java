@@ -27,14 +27,19 @@ public class AccessPolicy {
     }
 
     public void requireClientAccess(Officer officer, FineractClientData client) {
-        boolean sameOffice = Objects.equals(client.officeId(), officer.officeId());
+        requireAccess(officer, client.officeId(), client.staffId(), "Client " + client.id());
+    }
+
+    /** The same rule for anything that carries an office and an officer (e.g. a stored payment intent). */
+    public void requireAccess(Officer officer, Long officeId, Long staffId, String what) {
+        boolean sameOffice = Objects.equals(officeId, officer.officeId());
         boolean allowed = officer.isManager()
                 ? sameOffice
-                : sameOffice && Objects.equals(client.staffId(), officer.staffId());
+                : sameOffice && Objects.equals(staffId, officer.staffId());
         if (!allowed) {
             throw new AccessDeniedException(officer.isManager()
-                    ? "Client %d belongs to another office.".formatted(client.id())
-                    : "Client %d is not assigned to you.".formatted(client.id()));
+                    ? what + " belongs to another office."
+                    : what + " is not assigned to you.");
         }
     }
 

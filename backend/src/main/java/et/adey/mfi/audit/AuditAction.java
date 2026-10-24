@@ -10,5 +10,14 @@ public enum AuditAction {
     LOAN_UNDO_APPROVAL,
     LOAN_REJECT,
     LOAN_DISBURSE,
-    LOAN_REPAY
+    LOAN_REPAY,
+    /** Officer asked the provider to collect from a client's phone. */
+    MOBILE_PAYMENT_REQUEST,
+    /** A provider webhook arrived: SUCCESS = applied, DENIED = bad signature/timestamp, REJECTED = mismatch/duplicate/unknown. */
+    WEBHOOK,
+    MOBILE_PAYMENT_POSTED,
+    MOBILE_PAYMENT_RETRY,
+    MOBILE_PAYMENT_NEEDS_ATTENTION,
+    RECONCILIATION_RUN,
+    RECONCILIATION_RESOLVE
 }

@@ -1,6 +1,7 @@
 package et.adey.mfi.audit;
 
 import et.adey.mfi.auth.AuthenticationFailedException;
+import et.adey.mfi.common.ApiException;
 import et.adey.mfi.common.BadRequestException;
 import et.adey.mfi.common.ConflictException;
 import et.adey.mfi.fineract.FineractApiException;
@@ -82,6 +83,20 @@ public class AuditService {
         }
     }
 
+    /**
+     * Steps without a logged-in officer (webhooks, the posting worker, scheduled reconciliation).
+     * actor names the component, e.g. "system:mobile-money-webhook".
+     */
+    public void recordSystem(String actor, AuditAction action, Long clientId, Long loanId, BigDecimal amount,
+                             AuditOutcome outcome, String detail) {
+        try {
+            repository.save(new AuditLogEntry(clock.instant(), actor, null, null, null, action, clientId, loanId,
+                    amount, outcome, truncate(detail)));
+        } catch (RuntimeException e) {
+            log.error("AUDIT WRITE FAILED: {} loan {} by {} ({}): {}", action, loanId, actor, outcome, e.getMessage());
+        }
+    }
+
     private static String truncateTo(String s, int max) {
         return s == null || s.length() <= max ? s : s.substring(0, max);
     }
@@ -92,6 +107,9 @@ public class AuditService {
             return AuditOutcome.DENIED;
         }
         if (e instanceof ConflictException || e instanceof BadRequestException) {
+            return AuditOutcome.REJECTED;
+        }
+        if (e instanceof ApiException api && api.getStatus().is4xxClientError()) {
             return AuditOutcome.REJECTED;
         }
         if (e instanceof FineractApiException f && f.getFineractStatus() < 500 && f.getFineractStatus() != 401) {

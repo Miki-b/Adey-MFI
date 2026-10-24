@@ -1,5 +1,6 @@
 package et.adey.mfi.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,8 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.security.oauth2.server.resource.web.DefaultBearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -32,7 +35,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, SecurityProperties props,
-                                                   OfficerJwtConverter converter, ObjectMapper objectMapper)
+                                                   OfficerJwtConverter converter, ObjectMapper objectMapper,
+                                                   @Value("${app.simulator.enabled:false}") boolean simulatorEnabled)
             throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
@@ -41,6 +45,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     // Getting a token must work without one.
                     auth.requestMatchers("/api/auth/login", "/api/auth/refresh", "/api/auth/logout").permitAll();
+                    // The provider's webhook: no JWT, protected by its HMAC signature instead.
+                    auth.requestMatchers("/api/webhooks/**").permitAll();
+                    if (simulatorEnabled) {
+                        // Local profile only: the simulated provider (it checks its own API key).
+                        auth.requestMatchers("/sim/**").permitAll();
+                    }
                     // Spring's error page (used when a request fails before reaching us).
                     auth.requestMatchers("/error").permitAll();
                     if (props.publicDocs()) {
@@ -52,6 +62,7 @@ public class SecurityConfig {
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer(rs -> rs
+                        .bearerTokenResolver(ourBearerTokens())
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(converter))
                         .authenticationEntryPoint(unauthorized(objectMapper))
                         .accessDeniedHandler(forbidden(objectMapper)))
@@ -59,6 +70,23 @@ public class SecurityConfig {
                         .authenticationEntryPoint(unauthorized(objectMapper))
                         .accessDeniedHandler(forbidden(objectMapper)));
         return http.build();
+    }
+
+    /**
+     * Read "Authorization: Bearer ..." as OUR JWT everywhere except on paths that are not ours to
+     * authenticate: the provider's webhook (HMAC-signed) and the local simulator (it checks the
+     * provider API key, which is also sent as a Bearer header). Without this, the JWT filter
+     * would reject the provider key as an invalid JWT before the simulator ever saw it.
+     */
+    private static BearerTokenResolver ourBearerTokens() {
+        DefaultBearerTokenResolver standard = new DefaultBearerTokenResolver();
+        return request -> {
+            String path = request.getRequestURI();
+            if (path.startsWith("/sim/") || path.startsWith("/api/webhooks/")) {
+                return null;
+            }
+            return standard.resolve(request);
+        };
     }
 
     /** 401: no token, or the token is invalid/expired. Same ProblemDetail JSON as our other errors. */

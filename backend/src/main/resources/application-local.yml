@@ -15,8 +15,22 @@ app:
       # acceptable on a developer laptop. Real environments set JWT_SECRET (32+ random characters).
       secret: ${JWT_SECRET:local-dev-only-secret-change-me-0123456789abcdef}
     public-docs: true
+  # LOCAL-ONLY defaults: the provider is the built-in simulator on this same app.
+  mobile-money:
+    provider-base-url: ${TELEPAY_BASE_URL:http://localhost:8080/sim}
+    api-key: ${TELEPAY_API_KEY:local-telepay-api-key}
+    webhook-secret: ${MOBILE_MONEY_WEBHOOK_SECRET:local-dev-only-webhook-secret-0123456789abcdef}
+    callback-url: ${MOBILE_MONEY_CALLBACK_URL:http://localhost:8080/api/webhooks/mobile-money}
+  simulator:
+    enabled: true
   cors:
     # Flutter web dev builds call us from random localhost ports ([*] = any port).
     allowed-origins:
       - http://localhost:[*]
       - http://127.0.0.1:[*]
+
+# The simulated provider's own settings (a real provider would have these on its side).
+# Its webhook secret must equal ours (app.mobile-money.webhook-secret) for signatures to match.
+simulator:
+  webhook-secret: ${MOBILE_MONEY_WEBHOOK_SECRET:local-dev-only-webhook-secret-0123456789abcdef}
+  api-key: ${TELEPAY_API_KEY:local-telepay-api-key}

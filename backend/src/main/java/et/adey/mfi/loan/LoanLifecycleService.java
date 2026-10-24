@@ -160,7 +160,7 @@ public class LoanLifecycleService {
             FineractLoan loan = loadLoan(officer, loanId, rec);
             paymentTypes.requireSelectable(req.paymentTypeId());
             FineractCommandResult result = fineract.repayLoan(loanId, new FineractLoanCommands.Repayment(
-                    dateOrToday(req.transactionDate()), req.amount(), req.paymentTypeId(), req.note(),
+                    dateOrToday(req.transactionDate()), req.amount(), req.paymentTypeId(), req.note(), null,
                     FineractDates.DATE_FORMAT, FineractDates.LOCALE));
             return LoanMapper.toTransaction(fineract.getLoanTransaction(loanId, result.resourceId()));
         });

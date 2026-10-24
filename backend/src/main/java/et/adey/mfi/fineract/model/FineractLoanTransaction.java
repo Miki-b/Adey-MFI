@@ -35,6 +35,6 @@ public record FineractLoanTransaction(
         }
     }
 
-    public record PaymentDetail(FineractPaymentType paymentType) {
+    public record PaymentDetail(FineractPaymentType paymentType, String receiptNumber) {
     }
 }

@@ -18,6 +18,8 @@ import et.adey.mfi.seed.SeedPlan.Staff;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.JsonNode;
@@ -51,13 +53,15 @@ public class DemoSeeder implements ApplicationRunner {
     private static final long PRODUCT_ID = 1L;
 
     private final FineractClient fineract;
+    private final ConfigurableApplicationContext context;
     private final Map<String, Long> officeIds = new HashMap<>();
     private final Map<String, Long> staffIds = new HashMap<>();
     private final Map<String, Long> staffOffice = new HashMap<>();
     private int created;
 
-    public DemoSeeder(FineractClient fineract) {
+    public DemoSeeder(FineractClient fineract, ConfigurableApplicationContext context) {
         this.fineract = fineract;
+        this.context = context;
     }
 
     @Override
@@ -85,6 +89,9 @@ public class DemoSeeder implements ApplicationRunner {
         }
         printSummary();
         log.info("=== Seeding finished: {} records created or changed ===", created);
+        // Scheduled jobs (idempotency clean-up, posting worker, ...) keep threads alive, so a
+        // web-less app would never stop by itself. Shut down explicitly once seeding is done.
+        System.exit(SpringApplication.exit(context, () -> 0));
     }
 
     // ---- Payment types and offices -------------------------------------------------------
@@ -336,7 +343,7 @@ public class DemoSeeder implements ApplicationRunner {
         for (int i = (int) alreadyPaid; i < planned.size(); i++) {
             Payment pay = planned.get(i);
             fineract.repayLoan(loanId, new FineractLoanCommands.Repayment(FineractDates.format(pay.date()),
-                    pay.amount(), cashId, "Repayment (demo seed)", FineractDates.DATE_FORMAT, FineractDates.LOCALE));
+                    pay.amount(), cashId, "Repayment (demo seed)", null, FineractDates.DATE_FORMAT, FineractDates.LOCALE));
             created++;
         }
         if (planned.size() > alreadyPaid) {

@@ -153,6 +153,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problem;
     }
 
+    /** Errors with a fixed status and code (mobile money, reconciliation, ...). */
+    @ExceptionHandler(ApiException.class)
+    public ProblemDetail handleApi(ApiException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(ex.getStatus(), ex.getMessage());
+        problem.setTitle(ex.getStatus().getReasonPhrase());
+        problem.setProperty("code", ex.getCode());
+        return problem;
+    }
+
     @ExceptionHandler(ConflictException.class)
     public ProblemDetail handleConflict(ConflictException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());

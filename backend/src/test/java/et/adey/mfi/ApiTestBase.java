@@ -7,6 +7,11 @@ import et.adey.mfi.fineract.FineractClient;
 import et.adey.mfi.fineract.model.FineractClientData;
 import et.adey.mfi.fineract.model.FineractLoan;
 import et.adey.mfi.idempotency.IdempotencyRepository;
+import et.adey.mfi.mobilemoney.PaymentIntentRepository;
+import et.adey.mfi.mobilemoney.TelePayClient;
+import et.adey.mfi.mobilemoney.WebhookEventRepository;
+import et.adey.mfi.reconciliation.ReconciliationFindingRepository;
+import et.adey.mfi.reconciliation.ReconciliationRunRepository;
 import et.adey.mfi.security.Officer;
 import et.adey.mfi.security.TokenService;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +53,18 @@ public abstract class ApiTestBase {
 
     @MockitoBean
     protected FineractClient fineract;
+    /** The mobile money provider, mocked like Fineract (tests never make real HTTP calls). */
+    @MockitoBean
+    protected TelePayClient telePay;
+
+    @Autowired
+    protected PaymentIntentRepository paymentIntents;
+    @Autowired
+    protected WebhookEventRepository webhookEvents;
+    @Autowired
+    protected ReconciliationFindingRepository reconciliationFindings;
+    @Autowired
+    protected ReconciliationRunRepository reconciliationRuns;
 
     protected final ObjectMapper json = TestJson.mapper();
 
@@ -57,6 +74,10 @@ public abstract class ApiTestBase {
         refreshTokens.deleteAll();
         idempotencyKeys.deleteAll();
         loginLimiter.reset();
+        reconciliationFindings.deleteAll();
+        reconciliationRuns.deleteAll();
+        webhookEvents.deleteAll();
+        paymentIntents.deleteAll();
     }
 
     protected String bearer(Officer officer) {

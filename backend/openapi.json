@@ -299,7 +299,7 @@
     },
     "/api/loan-products" : {
       "get" : {
-        "operationId" : "list_3",
+        "operationId" : "list_4",
         "responses" : {
           "200" : {
             "content" : {
@@ -434,7 +434,7 @@
     },
     "/api/loans/{loanId}" : {
       "get" : {
-        "operationId" : "get_1",
+        "operationId" : "get_3",
         "parameters" : [ {
           "in" : "path",
           "name" : "loanId",
@@ -532,6 +532,82 @@
         },
         "summary" : "Disburse (pay out) an approved loan; it becomes Active (branch manager only)",
         "tags" : [ "Loans" ]
+      }
+    },
+    "/api/loans/{loanId}/mobile-payments" : {
+      "get" : {
+        "operationId" : "list_1",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "loanId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/MobilePaymentResponse"
+                  }
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "All mobile payments of a loan, newest first",
+        "tags" : [ "Mobile money" ]
+      },
+      "post" : {
+        "operationId" : "request",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "loanId",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "description" : "Optional. A unique id (e.g. a UUID) the app creates once per action and sends again on every retry. A retry with the same key and body returns the first response instead of running twice. Valid for 24 hours.",
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "example" : "3f0a9c5e-6f1b-4b8e-9d2a-7c1e0b5a4d33"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MobilePaymentRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MobilePaymentResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Ask the client to pay a repayment from their mobile wallet (client confirms on the phone)",
+        "tags" : [ "Mobile money" ]
       }
     },
     "/api/loans/{loanId}/reject" : {
@@ -674,9 +750,37 @@
         "tags" : [ "Portfolio" ]
       }
     },
+    "/api/mobile-payments/{id}" : {
+      "get" : {
+        "operationId" : "get_2",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MobilePaymentResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One mobile payment with its status history (poll this until finalState is true)",
+        "tags" : [ "Mobile money" ]
+      }
+    },
     "/api/offices" : {
       "get" : {
-        "operationId" : "list_2",
+        "operationId" : "list_3",
         "responses" : {
           "200" : {
             "content" : {
@@ -698,7 +802,7 @@
     },
     "/api/payment-types" : {
       "get" : {
-        "operationId" : "list_1",
+        "operationId" : "list_2",
         "responses" : {
           "200" : {
             "content" : {
@@ -716,6 +820,145 @@
         },
         "summary" : "Payment types an officer can choose for disbursements and repayments",
         "tags" : [ "Payment types" ]
+      }
+    },
+    "/api/reconciliation/findings/{id}/resolve" : {
+      "post" : {
+        "operationId" : "resolve",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ResolveRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FindingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Resolve a finding: PAID_NOT_POSTED is posted to Fineract; others need a note. Manager only",
+        "tags" : [ "Reconciliation" ]
+      }
+    },
+    "/api/reconciliation/run" : {
+      "post" : {
+        "operationId" : "run",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "date",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ReconciliationReport"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Run reconciliation for a date now (default today). Manager only",
+        "tags" : [ "Reconciliation" ]
+      }
+    },
+    "/api/reconciliation/{date}" : {
+      "get" : {
+        "operationId" : "get_1",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "date",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ReconciliationReport"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Latest reconciliation for a date: summary + findings of your office. Manager only",
+        "tags" : [ "Reconciliation" ]
+      }
+    },
+    "/api/webhooks/mobile-money" : {
+      "post" : {
+        "operationId" : "receive",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "X-TelePay-Timestamp",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "X-TelePay-Signature",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "string"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : { }
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "security" : [ ],
+        "summary" : "Webhook from the mobile money provider (HMAC-signed, no JWT)",
+        "tags" : [ "Mobile money" ]
       }
     }
   },
@@ -1010,6 +1253,66 @@
             "format" : "int64",
             "description" : "How the money was handed over (see GET /api/payment-types).",
             "exclusiveMinimum" : 0
+          }
+        }
+      },
+      "FindingResponse" : {
+        "type" : "object",
+        "properties" : {
+          "detail" : {
+            "type" : "string"
+          },
+          "fineractAmount" : {
+            "type" : "number"
+          },
+          "fineractTransactionId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "intentAmount" : {
+            "type" : "number"
+          },
+          "intentId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "loanId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "officeId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "providerAmount" : {
+            "type" : "number"
+          },
+          "receiptNumber" : {
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : "string"
+          },
+          "resolutionNote" : {
+            "type" : "string"
+          },
+          "resolved" : {
+            "type" : "boolean"
+          },
+          "resolvedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "resolvedBy" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "MATCHED", "PAID_NOT_POSTED", "POSTED_NOT_PAID", "AMOUNT_MISMATCH" ]
           }
         }
       },
@@ -1412,6 +1715,105 @@
         },
         "required" : [ "password", "username" ]
       },
+      "MobilePaymentRequest" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "example" : 1833.6,
+            "exclusiveMinimum" : 0
+          },
+          "phone" : {
+            "type" : "string",
+            "description" : "Wallet phone number, 10 digits starting 09 or 07",
+            "example" : "0922100001",
+            "minLength" : 1,
+            "pattern" : "^0[79][0-9]{8}$"
+          }
+        },
+        "required" : [ "amount", "phone" ]
+      },
+      "MobilePaymentResponse" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number"
+          },
+          "clientId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "currency" : {
+            "type" : "string"
+          },
+          "finalState" : {
+            "type" : "boolean"
+          },
+          "fineractTransactionId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "history" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Transition"
+            }
+          },
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "lastError" : {
+            "type" : "string"
+          },
+          "loanId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "nextAttemptAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "paidAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "phone" : {
+            "type" : "string"
+          },
+          "postingAttempts" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "providerAmount" : {
+            "type" : "number"
+          },
+          "providerChargeId" : {
+            "type" : "string"
+          },
+          "providerTransactionId" : {
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : "string"
+          },
+          "requestedBy" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "DECLINED", "CHARGE_FAILED", "MISMATCH", "RECEIVED", "RETRYING", "POSTED", "NEEDS_ATTENTION" ]
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
       "OfficeResponse" : {
         "type" : "object",
         "properties" : {
@@ -1603,6 +2005,35 @@
           }
         }
       },
+      "ReconciliationReport" : {
+        "type" : "object",
+        "properties" : {
+          "date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "findings" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FindingResponse"
+            }
+          },
+          "runAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "runId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "summary" : {
+            "$ref" : "#/components/schemas/Summary"
+          },
+          "triggeredBy" : {
+            "type" : "string"
+          }
+        }
+      },
       "RefreshRequest" : {
         "type" : "object",
         "properties" : {
@@ -1656,6 +2087,17 @@
           }
         },
         "required" : [ "amount" ]
+      },
+      "ResolveRequest" : {
+        "type" : "object",
+        "properties" : {
+          "note" : {
+            "type" : "string",
+            "example" : "Client confirmed the 1000 ETB; difference collected in cash.",
+            "maxLength" : 1000,
+            "minLength" : 0
+          }
+        }
       },
       "SchedulePeriod" : {
         "type" : "object",
@@ -1777,36 +2219,34 @@
       "Summary" : {
         "type" : "object",
         "properties" : {
-          "inArrears" : {
-            "type" : "boolean"
+          "amountMismatch" : {
+            "type" : "integer",
+            "format" : "int32"
           },
-          "interestCharged" : {
+          "fineractTotal" : {
             "type" : "number"
           },
-          "interestOutstanding" : {
+          "matched" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "matchedTotal" : {
             "type" : "number"
           },
-          "interestPaid" : {
+          "paidNotPosted" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "postedNotPaid" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "providerTotal" : {
             "type" : "number"
           },
-          "overdueSince" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "principalDisbursed" : {
-            "type" : "number"
-          },
-          "principalOutstanding" : {
-            "type" : "number"
-          },
-          "principalPaid" : {
-            "type" : "number"
-          },
-          "totalOutstanding" : {
-            "type" : "number"
-          },
-          "totalOverdue" : {
-            "type" : "number"
+          "unresolved" : {
+            "type" : "integer",
+            "format" : "int32"
           }
         }
       },
@@ -1836,6 +2276,26 @@
           },
           "tokenType" : {
             "type" : "string"
+          }
+        }
+      },
+      "Transition" : {
+        "type" : "object",
+        "properties" : {
+          "at" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "from" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "DECLINED", "CHARGE_FAILED", "MISMATCH", "RECEIVED", "RETRYING", "POSTED", "NEEDS_ATTENTION" ]
+          },
+          "note" : {
+            "type" : "string"
+          },
+          "to" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "DECLINED", "CHARGE_FAILED", "MISMATCH", "RECEIVED", "RETRYING", "POSTED", "NEEDS_ATTENTION" ]
           }
         }
       },

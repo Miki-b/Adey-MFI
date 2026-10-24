@@ -98,6 +98,11 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   Idempotency-Key on loan application / repayment / client creation (Flyway V2), login rate limit
   (in memory, 5 per 15 min per username/IP -> 429), stable `code` on every error, backend/openapi.json
   exported by OpenApiSpecTest. 91 tests. Notes: notes/05-portfolio-and-par.md.
+- Phase 5 done (2026-10-24): mobile money repayments with the built-in TelePay simulator (local profile,
+  /sim/**, chaos switches), HMAC-signed webhooks (5 min window, eventId dedupe, inbox pattern), posting
+  worker with exponential backoff and receipt-number double-post guard, daily + on-demand reconciliation
+  (MATCHED / PAID_NOT_POSTED / POSTED_NOT_PAID / AMOUNT_MISMATCH) with manager resolve. Flyway V3, V4.
+  122 tests. Notes: notes/07-mobile-money.md.
 - Next: the Flutter app in app/ (generate the Dart client from backend/openapi.json).
 
 ## Backend facts
@@ -119,4 +124,11 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   `status` filter only numeric. `delinquent` block empty (no delinquency buckets configured).
 - Seeded Adama PAR30 = 64.76% (36,745.16 / 56,736.16), on purpose; Bishoftu 0.00%.
 - LAN: PC Wi-Fi IP 192.168.1.3 (Private network); firewall rule for TCP 8080 documented in backend/README.md.
+- RAM is tight (~1.5 GB free): run the backend as ONE JVM (`mvnw package -DskipTests`, then
+  `java -Xmx512m -jar target/mfi-backend-0.0.1-SNAPSHOT.jar`), stop it before `mvnw test` and before
+  re-packaging (Windows locks the running jar).
+- Mobile money: payment type "Mobile Money" (id 5); receipt number = provider transaction id. The simulator
+  shares the backend JVM but is reached only over HTTP; its state is in memory (lost on restart).
+- Spring Security's bearer filter reads every `Authorization: Bearer`; /sim/** and /api/webhooks/** are
+  excluded on purpose (SecurityConfig.ourBearerTokens).
 - Drive C: has run full before (2026-10-23). If builds or Postgres act strangely, check free space first.

@@ -39,6 +39,10 @@ The `-Xmx512m` heap cap is set in `pom.xml` (`app.jvm.args`) and applies to both
 `spring-boot:run` and the tests. If you run the jar yourself:
 `java -Xmx512m -jar target/mfi-backend-0.0.1-SNAPSHOT.jar`.
 
+**Low on RAM? Run the jar.** `mvnw spring-boot:run` keeps a Maven JVM alive *next to* the app JVM.
+`.\mvnw.cmd package -DskipTests` then `java -Xmx512m -jar target\mfi-backend-0.0.1-SNAPSHOT.jar`
+is one JVM. On Windows, stop the running app before re-packaging (the jar file is locked while it runs).
+
 - Swagger UI: http://localhost:8080/swagger-ui.html. Call `POST /api/auth/login`, copy
   `accessToken`, click **Authorize**, paste it.
 - Health: http://localhost:8080/actuator/health
@@ -139,6 +143,12 @@ environment variables.
 | - | `app.security.refresh-token-ttl` | `7d` |
 | - | `app.cors.allowed-origins` | empty (local: `http://localhost:[*]`, `http://127.0.0.1:[*]`) |
 | `SERVER_ADDRESS` | `server.address` | `0.0.0.0` (all interfaces; `127.0.0.1` = this PC only) |
+| `TELEPAY_BASE_URL` | `app.mobile-money.provider-base-url` | **none** (local: `http://localhost:8080/sim`, the simulator) |
+| `TELEPAY_API_KEY` | `app.mobile-money.api-key` | **none** (local: `local-telepay-api-key`) |
+| `MOBILE_MONEY_WEBHOOK_SECRET` | `app.mobile-money.webhook-secret` | **none**, 32+ chars (local: marked dev-only default) |
+| `MOBILE_MONEY_CALLBACK_URL` | `app.mobile-money.callback-url` | **none** (local: `http://localhost:8080/api/webhooks/mobile-money`) |
+| - | `app.mobile-money.posting.*` | `max-attempts 8`, `base-delay 10s`, `max-delay 2m`, `poll-interval 5s` |
+| - | `app.reconciliation.cron` | `0 30 0 * * *` (00:30 Addis Ababa, for the previous day) |
 | - | `app.security.login.max-failures` / `.window` | `5` / `15m` |
 
 Generate a real secret with e.g. `openssl rand -base64 48`.
@@ -295,6 +305,67 @@ right password, until the oldest failure is 15 minutes old. A successful login c
 username's count. Counts are **in memory** (reset on restart, not shared between instances).
 Every login success, failure and lockout is in `audit_log` (action `LOGIN`, IP in `detail`).
 
+### Mobile money repayments (Phase 5)
+
+```
+Officer app ─POST /api/loans/{id}/mobile-payments─▶ backend: checks, stores intent PENDING
+                                                     ─POST {provider}/charges─▶ TelePay: charge PENDING
+                                                                                  client approves on phone
+backend ◀──POST /api/webhooks/mobile-money (HMAC-signed)──────────────────────── TelePay
+  verify signature + timestamp + new eventId → inbox row + intent RECEIVED → 200 at once
+  posting worker (every 5 s): receipt not yet in Fineract? → repayment "Mobile Money",
+     receipt number = provider transaction id → POSTED
+     Fineract down → RETRYING (10 s, 20 s, 40 s, 80 s, 2 min …) → POSTED, or NEEDS_ATTENTION after 8
+nightly / on demand: reconciliation (provider settlements ↔ intents ↔ Fineract receipts)
+```
+
+| Method | Path | Who | What |
+| --- | --- | --- | --- |
+| POST | `/api/loans/{id}/mobile-payments` | officer (own clients) / manager (office) | `{amount, phone}`; amount ≤ outstanding − payments already in flight; `Idempotency-Key` supported; 201 with the intent |
+| GET | `/api/mobile-payments/{id}` | same scope | status + full history; poll until `finalState` is true. Works while Fineract is down |
+| GET | `/api/loans/{id}/mobile-payments` | same scope | all intents of a loan, newest first |
+| POST | `/api/webhooks/mobile-money` | the provider (no JWT) | headers `X-TelePay-Timestamp` (unix seconds) and `X-TelePay-Signature: v1=<hex HMAC-SHA256(secret, timestamp + "." + raw body)>`; timestamp within 5 min; repeated `eventId` = no-op |
+| POST | `/api/reconciliation/run?date=YYYY-MM-DD` | manager | run now (default today); answer = the run's report for your office |
+| GET | `/api/reconciliation/{date}` | manager | latest completed run: counts, totals, findings of your office (+ findings with unknown office) |
+| POST | `/api/reconciliation/findings/{id}/resolve` | manager (own office) | `{note}`. PAID_NOT_POSTED with a known intent is **posted** through the normal posting path; every other finding needs a note |
+
+Payment intent states: `PENDING`, `DECLINED`, `CHARGE_FAILED` (provider unreachable when asking),
+`MISMATCH` (provider reported a different amount, held, never posted automatically), `RECEIVED`,
+`RETRYING`, `POSTED`, `NEEDS_ATTENTION`. Every change is stored with its time
+(`payment_intent_transitions`). Webhooks that pass the signature check are kept in
+`webhook_events` (the inbox); rejected ones are only in `audit_log` (action `WEBHOOK`, `DENIED`).
+
+Reconciliation findings: `MATCHED`, `PAID_NOT_POSTED` (paid at the provider, no Fineract repayment with
+that receipt), `POSTED_NOT_PAID` (Mobile Money repayment in Fineract without a provider payment),
+`AMOUNT_MISMATCH`. A finding resolved once stays resolved in later runs (same type + receipt).
+
+### TelePay simulator (local profile only)
+
+A fake mobile money provider **inside this app** (to save RAM), at `/sim/**`. In reality it would
+be a separate service on the internet; here it is still kept apart: its own in-memory state (lost on
+restart), its own HTTP client and signing code, and it reaches the backend only over HTTP.
+
+| Call | Meaning |
+| --- | --- |
+| `POST /sim/charges` | our backend asks for a charge (needs `Authorization: Bearer <TELEPAY_API_KEY>`) |
+| `GET /sim/charges/{id}` | the charge, including every webhook delivery attempt and its HTTP answer |
+| `POST /sim/charges/{id}/approve` | the customer presses "Pay": status SUCCEEDED, webhook sent |
+| `POST /sim/charges/{id}/decline` | the customer presses "Decline": webhook with status DECLINED |
+| `GET /sim/settlements?date=YYYY-MM-DD` | the provider's successful payments that day (needs the API key) |
+
+**Chaos switches** (query parameters on `approve`), combine as you like:
+
+| Flag | Effect |
+| --- | --- |
+| `duplicate=true` | send the same webhook (same `eventId`) twice |
+| `delaySeconds=20` | wait before sending |
+| `wrongSecret=true` | sign with a wrong secret (our backend answers 401) |
+| `drop=true` | never send the webhook (reconciliation finds it as PAID_NOT_POSTED) |
+| `reportAmount=1000` | report (and settle) a different amount than requested |
+| `staleSeconds=600` | sign with a timestamp 10 minutes in the past (401) |
+
+Example (PowerShell): `curl.exe -X POST "http://localhost:8080/sim/charges/ch_abc/approve?drop=true"`
+
 ### OpenAPI for the Flutter client
 
 `backend/openapi.json` is the full OpenAPI 3.1 spec. `OpenApiSpecTest` re-exports it on every
@@ -343,9 +414,12 @@ may change. Complete list:
 | 400 | `INVALID_REQUEST` | one of our rules on the input (e.g. client under 18, unusable payment type) |
 | 400 | `FINERACT_VALIDATION` | Fineract rejected a field (e.g. principal outside the product range) |
 | 400 | `IDEMPOTENCY_KEY_INVALID` | `Idempotency-Key` has the wrong format |
+| 400 | `RESOLUTION_NOTE_REQUIRED` | resolving this reconciliation finding needs a `note` |
 | 401 | `UNAUTHENTICATED` | no, invalid or expired access token: refresh or log in |
 | 401 | `INVALID_CREDENTIALS` | wrong username or password |
 | 401 | `INVALID_REFRESH_TOKEN` | refresh token expired, revoked or already used: log in again |
+| 401 | `WEBHOOK_SIGNATURE_INVALID` | (provider only) webhook signature missing or wrong |
+| 401 | `WEBHOOK_TIMESTAMP_INVALID` | (provider only) webhook timestamp more than 5 minutes off |
 | 403 | `FORBIDDEN` | not your client / office, manager-only action, or not an officer account |
 | 404 | `NOT_FOUND` | no such client/loan/URL |
 | 405 | `METHOD_NOT_ALLOWED` | wrong HTTP method for this URL |
@@ -355,14 +429,19 @@ may change. Complete list:
 | 409 | `IDEMPOTENCY_IN_PROGRESS` | the first request with this key is still running |
 | 409 | `IDEMPOTENCY_OUTCOME_UNKNOWN` | the first request with this key failed midway; check, then use a new key |
 | 409 | `CONFLICT` | other conflict reported by Fineract |
+| 409 | `FINDING_ALREADY_RESOLVED` | this reconciliation finding was already resolved |
 | 415 | `UNSUPPORTED_MEDIA_TYPE` | send `Content-Type: application/json` |
 | 422 | `LOAN_WRONG_STATE` | action not allowed in the loan's current state (e.g. disburse a pending loan) |
 | 422 | `FINERACT_RULE` | other Fineract business rule |
 | 422 | `IDEMPOTENCY_KEY_REUSED` | this key was used for a different request |
+| 422 | `AMOUNT_EXCEEDS_OUTSTANDING` | mobile payment larger than what is still owed (minus payments in flight) |
+| 422 | `LOAN_NOT_ACTIVE` | mobile payments only on active (disbursed) loans |
 | 429 | `TOO_MANY_LOGIN_ATTEMPTS` | login locked; wait `Retry-After` seconds |
 | 500 | `INTERNAL_ERROR` | bug on our side (details only in the server log) |
 | 502 | `FINERACT_ERROR` | Fineract failed or rejected our service credentials |
 | 503 | `FINERACT_UNAVAILABLE` | Fineract unreachable or timed out |
+| 503 | `PROVIDER_UNAVAILABLE` | the mobile money provider could not be reached (intent marked CHARGE_FAILED) |
+| 503 | `POSTING_PENDING` | reconciliation accepted the payment but Fineract posting failed; the worker retries |
 
 ## Code layout
 
@@ -376,6 +455,9 @@ et.adey.mfi
 ├── seed/      demo data loader (profile "seed")
 ├── portfolio/ GET /api/loans + /api/me/portfolio: PortfolioReader (fetch) + PortfolioCalculator (PAR etc.)
 ├── idempotency/ Idempotency-Key support (idempotency_keys table)
+├── mobilemoney/ intents + state machine, TelePayClient, webhook (signature, inbox), posting worker
+├── reconciliation/ matcher (pure), Fineract reader, runs/findings, resolve
+├── simulator/ TelePay simulator, local profile only (/sim/**)
 ├── fineract/  FineractClient: the ONLY class that calls Fineract; raw Fineract records in model/;
 │              FineractErrorCodes (wrong-state codes -> 422)
 ├── common/    FineractDates, Money, Rates, PageResponse, GlobalExceptionHandler

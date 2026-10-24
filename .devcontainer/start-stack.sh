@@ -23,6 +23,20 @@ flock -n 9 || { log "another start-stack.sh is running; exiting"; exit 0; }
 echo "STARTING" > "$STATUS"
 log "===== starting Adey MFI stack ====="
 
+# Codespaces secrets are in the environment of lifecycle commands (postStart), but NOT in a manual
+# `gh codespace ssh` session. Fall back to the Codespace's secrets file (values are base64-encoded).
+# Only the variables we need are read; values are never printed.
+SECRETS_FILE=/workspaces/.codespaces/shared/.env-secrets
+for v in ADEY_JWT_SECRET CHAPA_SECRET_KEY CHAPA_WEBHOOK_SECRET CODESPACE_NAME GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN; do
+  if [ -z "${!v:-}" ] && [ -r "$SECRETS_FILE" ]; then
+    enc="$(grep -m1 "^$v=" "$SECRETS_FILE" | cut -d= -f2-)"
+    if [ -n "$enc" ]; then
+      export "$v=$(printf %s "$enc" | base64 -d 2>/dev/null)"
+      log "loaded $v from the Codespace secrets file"
+    fi
+  fi
+done
+
 if [ -z "${ADEY_JWT_SECRET:-}" ]; then
   fail "Codespaces secret ADEY_JWT_SECRET is not set for this repo (gh secret set ADEY_JWT_SECRET --user --app codespaces --repos <owner>/<repo>), then rebuild/restart the Codespace"
 fi

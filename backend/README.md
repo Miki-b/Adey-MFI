@@ -15,6 +15,10 @@ it. How it works: [notes/04-security.md](../notes/04-security.md).
 
 ## Run it
 
+**Short on RAM?** Run the whole stack in GitHub Codespaces instead: see the root
+[README](../README.md#run-everything-in-github-codespaces-no-local-ram-needed) and
+`scripts/codespace.ps1`. The `codespaces` Spring profile (with `local`) is used there.
+
 Prerequisites: JDK 21, Fineract running (see `../infra`, check
 `curl -k https://localhost:8443/fineract-provider/actuator/health` says `UP`), and the backend's
 own database `adey_backend` in the same Postgres container (host port 5433).

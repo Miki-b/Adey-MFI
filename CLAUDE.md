@@ -54,7 +54,8 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   `POST /loans/{id}/transactions?command=repayment`.
 - Preview a schedule without saving: `POST /loans?command=calculateLoanSchedule`.
 - Loan products need an explicit `allowPartialPeriodInterestCalculation: false` or loan
-  submission fails (the write-side field is misspelled `allowPartialPeriodInterestCalcualtion`).
+  submission fails. On product CREATE (POST /loanproducts) the correct spelling is required; the
+  misspelled `allowPartialPeriodInterestCalcualtion` is refused there (checked 2026-10-24).
 - Currencies: `PUT /currencies` REPLACES the whole list — always send every currency to keep.
 - Errors return JSON with `defaultUserMessage` and an `errors[]` array naming the field.
 - Wrong-state loan commands can come back as 400 (not 403), e.g. disbursing an unapproved loan.
@@ -103,6 +104,10 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   worker with exponential backoff and receipt-number double-post guard, daily + on-demand reconciliation
   (MATCHED / PAID_NOT_POSTED / POSTED_NOT_PAID / AMOUNT_MISMATCH) with manager resolve. Flyway V3, V4.
   122 tests. Notes: notes/07-mobile-money.md.
+- Codespaces (2026-10-24): `.devcontainer/` (Java 21 + docker-in-docker + sshd, 2 CPU / 8 GB) runs db +
+  Fineract + seed + backend in the cloud; only port 8080 forwarded (private). Driven from Windows with
+  `scripts/codespace.ps1 start|stop|status|logs|url|public|private`. See README "Run everything in GitHub
+  Codespaces".
 - Next: the Flutter app in app/ (generate the Dart client from backend/openapi.json).
 
 ## Backend facts
@@ -131,4 +136,11 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   shares the backend JVM but is reached only over HTTP; its state is in memory (lost on restart).
 - Spring Security's bearer filter reads every `Authorization: Bearer`; /sim/** and /api/webhooks/** are
   excluded on purpose (SecurityConfig.ourBearerTokens).
+- Heavy work (Fineract, tests, builds) can run in the Codespace instead of locally:
+  `gh codespace ssh -c <name> -- 'cd /workspaces/Adey-MFI/backend && ./mvnw -q test'`.
+  Codespaces secrets (user, scoped to this repo): ADEY_JWT_SECRET (required), CHAPA_SECRET_KEY,
+  CHAPA_ENCRYPTION_KEY (CHAPA_WEBHOOK_SECRET not created yet). gh needs the `codespace` scope.
+  Always `scripts/codespace.ps1 stop` at the end (2-core = 2 core-hours/hour; auto-stop after 30 min idle).
+- The seed also bootstraps an EMPTY Fineract (ETB currency, SBL product, Bishoftu Branch, staff). Yohannes
+  (client 1, loan 1) exists only in the local Fineract, not in a fresh Codespace.
 - Drive C: has run full before (2026-10-23). If builds or Postgres act strangely, check free space first.

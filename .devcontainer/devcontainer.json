@@ -1,0 +1,32 @@
+// Dev container for GitHub Codespaces: the whole Adey MFI stack in the cloud.
+// - image: Java 21 (same as backend/pom.xml), Maven via the project's ./mvnw.
+// - docker-in-docker: a Docker engine INSIDE the Codespace, so infra/docker-compose.yml can run
+//   Postgres + Fineract there (the "docker" CLI talks to that inner engine).
+// - lifecycle: onCreate builds the backend once; postStart (every start, also after a stop) brings
+//   up db + Fineract, seeds, and starts the backend in the background (.devcontainer/start-stack.sh).
+// - ports: only 8080 is forwarded, private (GitHub login needed). 8443/5432/5433 are never forwarded.
+{
+  "name": "Adey MFI (Fineract + backend)",
+  "image": "mcr.microsoft.com/devcontainers/java:1-21-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "8gb"
+  },
+  "containerEnv": {
+    "SPRING_PROFILES_ACTIVE": "local,codespaces"
+  },
+  "onCreateCommand": "bash .devcontainer/on-create.sh",
+  // setsid -f: detach, so the stack keeps running after this lifecycle step returns.
+  "postStartCommand": "setsid -f bash .devcontainer/start-stack.sh > /dev/null 2>&1",
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": { "label": "Adey backend", "onAutoForward": "silent", "protocol": "http" },
+    "8443": { "label": "Fineract (internal only)", "onAutoForward": "ignore" },
+    "5432": { "label": "Postgres (internal only)", "onAutoForward": "ignore" },
+    "5433": { "label": "Postgres (internal only)", "onAutoForward": "ignore" }
+  },
+  "otherPortsAttributes": { "onAutoForward": "ignore" }
+}

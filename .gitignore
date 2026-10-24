@@ -37,3 +37,6 @@ app/build/
 Thumbs.db
 *.log
 HELP.md
+
+# Codespaces startup / backend logs
+/logs/

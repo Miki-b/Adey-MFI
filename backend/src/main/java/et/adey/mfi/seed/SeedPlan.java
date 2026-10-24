@@ -27,7 +27,48 @@ final class SeedPlan {
     static final String OFFICER_PASSWORD = "Adey#Loan2026";
     static final String MANAGER_PASSWORD = "Adey#Lead2026";
 
+    static final String CURRENCY = "ETB";
+    static final String PRODUCT_NAME = "Small Business Loan";
+
+    /**
+     * Loan product "Small Business Loan" exactly as set up by hand in Phase 1 (for a brand-new
+     * Fineract, e.g. in a Codespace). Note: on product CREATE the flag is spelled correctly
+     * (allowPartialPeriodInterestCalculation); the misspelled variant is refused there.
+     */
+    static Map<String, Object> loanProductBody() {
+        Map<String, Object> p = new java.util.LinkedHashMap<>();
+        p.put("name", PRODUCT_NAME);
+        p.put("shortName", "SBL");
+        p.put("currencyCode", CURRENCY);
+        p.put("digitsAfterDecimal", 2);
+        p.put("inMultiplesOf", 0);
+        p.put("principal", 20000);
+        p.put("minPrincipal", 5000);
+        p.put("maxPrincipal", 50000);
+        p.put("numberOfRepayments", 12);
+        p.put("minNumberOfRepayments", 6);
+        p.put("maxNumberOfRepayments", 24);
+        p.put("repaymentEvery", 1);
+        p.put("repaymentFrequencyType", 2);        // months
+        p.put("interestRatePerPeriod", 18);
+        p.put("minInterestRatePerPeriod", 12);
+        p.put("maxInterestRatePerPeriod", 30);
+        p.put("interestRateFrequencyType", 3);     // per year
+        p.put("amortizationType", 1);              // equal installments
+        p.put("interestType", 0);                  // declining balance
+        p.put("interestCalculationPeriodType", 1); // same as repayment period
+        p.put("allowPartialPeriodInterestCalculation", false);
+        p.put("transactionProcessingStrategyCode", "mifos-standard-strategy");
+        p.put("daysInYearType", 1);
+        p.put("daysInMonthType", 1);
+        p.put("isInterestRecalculationEnabled", false);
+        p.put("accountingRule", 1);                // none
+        p.put("locale", "en");
+        return p;
+    }
+
     static final String BISHOFTU = "Bishoftu Branch";
+    static final LocalDate BISHOFTU_OPENED = LocalDate.of(2026, 10, 3);
     static final String ADAMA = "Adama Branch";
     static final LocalDate ADAMA_OPENED = LocalDate.of(2025, 1, 1);
 

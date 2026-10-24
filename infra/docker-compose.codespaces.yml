@@ -1,0 +1,13 @@
+# Override for GitHub Codespaces (used by .devcontainer/start-stack.sh):
+#   docker compose -f docker-compose.yml -f docker-compose.codespaces.yml up -d db fineract
+#
+# Fineract (8443) and Postgres (5433) are published on 127.0.0.1 ONLY: the backend in the same
+# Codespace can reach them, nothing outside can. "!reset" replaces the base file's port list
+# instead of adding to it. (Codespaces is also told to never forward these ports.)
+services:
+  db:
+    ports: !reset
+      - "127.0.0.1:5433:5432"
+  fineract:
+    ports: !reset
+      - "127.0.0.1:8443:8443"

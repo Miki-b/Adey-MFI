@@ -50,7 +50,6 @@ import java.util.Optional;
 public class DemoSeeder implements ApplicationRunner {
 
     private static final long HEAD_OFFICE_ID = 1L;
-    private static final long PRODUCT_ID = 1L;
 
     private final FineractClient fineract;
     private final ConfigurableApplicationContext context;
@@ -67,6 +66,9 @@ public class DemoSeeder implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         log.info("=== Seeding demo data into Fineract ===");
+        // Foundations that a brand-new Fineract (e.g. in a Codespace) does not have yet.
+        ensureCurrency(SeedPlan.CURRENCY);
+        long productId = ensureLoanProduct();
         long cashId = ensurePaymentTypes();
         ensureCodeValues("Gender", List.of("Male", "Female"));
         ensureOffices();
@@ -80,7 +82,7 @@ public class DemoSeeder implements ApplicationRunner {
             ensureStaff(s);
             ensureUser(s, s.kind() == Kind.OFFICER ? officerRole : managerRole);
         }
-        FineractLoanProduct product = fineract.getLoanProduct(PRODUCT_ID);
+        FineractLoanProduct product = fineract.getLoanProduct(productId);
         for (Client c : SeedPlan.CLIENTS) {
             long clientId = ensureClient(c);
             if (c.loan() != null) {
@@ -92,6 +94,39 @@ public class DemoSeeder implements ApplicationRunner {
         // Scheduled jobs (idempotency clean-up, posting worker, ...) keep threads alive, so a
         // web-less app would never stop by itself. Shut down explicitly once seeding is done.
         System.exit(SpringApplication.exit(context, () -> 0));
+    }
+
+    // ---- Foundations: currency, loan product ----------------------------------------------
+
+    /** PUT /currencies REPLACES the whole list, so we send every currency already selected plus ours. */
+    private void ensureCurrency(String code) {
+        JsonNode selected = fineract.getJson("/currencies").path("selectedCurrencyOptions");
+        List<String> codes = new ArrayList<>();
+        for (JsonNode c : selected) {
+            codes.add(c.path("code").asString());
+        }
+        if (codes.contains(code)) {
+            log.info("Currency {} already enabled", code);
+            return;
+        }
+        codes.add(code);
+        fineract.putJson("/currencies", Map.of("currencies", codes));
+        created++;
+        log.info("Currency {} enabled (now {})", code, codes);
+    }
+
+    /** The "Small Business Loan" product (Phase 1 settings), found by name or created. */
+    private long ensureLoanProduct() {
+        Optional<JsonNode> existing = find(fineract.getJson("/loanproducts"), "name", SeedPlan.PRODUCT_NAME);
+        if (existing.isPresent()) {
+            long id = existing.get().path("id").asLong();
+            log.info("Loan product '{}' exists (id {})", SeedPlan.PRODUCT_NAME, id);
+            return id;
+        }
+        long id = fineract.postJson("/loanproducts", SeedPlan.loanProductBody()).path("resourceId").asLong();
+        created++;
+        log.info("Loan product '{}' created (id {})", SeedPlan.PRODUCT_NAME, id);
+        return id;
     }
 
     // ---- Payment types and offices -------------------------------------------------------
@@ -141,20 +176,22 @@ public class DemoSeeder implements ApplicationRunner {
 
     private void ensureOffices() {
         JsonNode offices = fineract.getJson("/offices");
-        officeIds.put(SeedPlan.BISHOFTU, find(offices, "name", SeedPlan.BISHOFTU)
-                .orElseThrow(() -> new IllegalStateException("Bishoftu Branch must already exist"))
-                .path("id").asLong());
-        Optional<JsonNode> adama = find(offices, "name", SeedPlan.ADAMA);
-        if (adama.isPresent()) {
-            officeIds.put(SeedPlan.ADAMA, adama.get().path("id").asLong());
-            log.info("Office '{}' exists (id {})", SeedPlan.ADAMA, officeIds.get(SeedPlan.ADAMA));
+        ensureOffice(offices, SeedPlan.BISHOFTU, "SEED-OFFICE-BISHOFTU", SeedPlan.BISHOFTU_OPENED);
+        ensureOffice(offices, SeedPlan.ADAMA, "SEED-OFFICE-ADAMA", SeedPlan.ADAMA_OPENED);
+    }
+
+    private void ensureOffice(JsonNode offices, String name, String externalId, LocalDate opened) {
+        Optional<JsonNode> existing = find(offices, "name", name);
+        if (existing.isPresent()) {
+            officeIds.put(name, existing.get().path("id").asLong());
+            log.info("Office '{}' exists (id {})", name, officeIds.get(name));
         } else {
             long id = fineract.postJson("/offices", withDateFormat(Map.of(
-                    "name", SeedPlan.ADAMA, "parentId", HEAD_OFFICE_ID, "externalId", "SEED-OFFICE-ADAMA",
-                    "openingDate", FineractDates.format(SeedPlan.ADAMA_OPENED)))).path("resourceId").asLong();
-            officeIds.put(SeedPlan.ADAMA, id);
+                    "name", name, "parentId", HEAD_OFFICE_ID, "externalId", externalId,
+                    "openingDate", FineractDates.format(opened)))).path("resourceId").asLong();
+            officeIds.put(name, id);
             created++;
-            log.info("Office '{}' created (id {})", SeedPlan.ADAMA, id);
+            log.info("Office '{}' created (id {})", name, id);
         }
     }
 

@@ -1,0 +1,26 @@
+# "codespaces" profile: the whole stack running inside a GitHub Codespace.
+# Activated together with "local" (SPRING_PROFILES_ACTIVE=local,codespaces): it keeps local's
+# simulator and dev conveniences, and overrides what must differ in a cloud dev box.
+#
+# Fineract and Postgres run in Docker inside the Codespace and are bound to 127.0.0.1 there
+# (infra/docker-compose.codespaces.yml); only this backend (port 8080) is forwarded.
+
+app:
+  security:
+    jwt:
+      # From the Codespaces secret ADEY_JWT_SECRET (set with `gh secret set --user --app codespaces`).
+      # No default: without the secret the backend refuses to start.
+      secret: ${ADEY_JWT_SECRET}
+    # Health and Swagger without a token. The forwarded port itself stays PRIVATE (GitHub login
+    # required) except during a deliberate, short public test.
+    public-docs: true
+  cors:
+    # The Codespace's own forwarded-port domains, e.g. https://<codespace>-8080.app.github.dev
+    allowed-origins:
+      - https://${CODESPACE_NAME:none}-*.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:app.github.dev}
+  # Reserved for the future Chapa provider (not built yet). The Codespaces secrets CHAPA_SECRET_KEY and
+  # CHAPA_WEBHOOK_SECRET arrive as environment variables; nothing reads them until that provider exists,
+  # so the TelePay simulator stays the provider.
+  chapa:
+    secret-key: ${CHAPA_SECRET_KEY:}
+    webhook-secret: ${CHAPA_WEBHOOK_SECRET:}

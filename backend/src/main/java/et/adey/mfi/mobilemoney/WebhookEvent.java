@@ -65,7 +65,7 @@ public class WebhookEvent {
     @Column(name = "raw_body", nullable = false)
     private String rawBody;
 
-    WebhookEvent(TelePayWebhook w, Instant receivedAt, String rawBody) {
+    WebhookEvent(ProviderPaymentEvent w, Instant receivedAt, String rawBody) {
         this.eventId = w.eventId();
         this.chargeId = w.chargeId();
         this.reference = w.reference();

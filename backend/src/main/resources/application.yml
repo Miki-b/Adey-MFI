@@ -62,9 +62,11 @@ app:
   cors:
     # Browser origins allowed to call /api/**. Empty = no cross-origin browser access.
     allowed-origins: []
-  # Mobile money provider ("TelePay"). No defaults here: outside the local profile these MUST be
-  # set through environment variables, or startup fails.
+  # Mobile money. provider picks the adapter: simulator (TelePay simulator) or chapa (Chapa test mode).
+  # TelePay settings below have no defaults here: with provider=simulator outside the local profile
+  # they MUST be set through environment variables, or startup fails.
   mobile-money:
+    provider: ${MOBILE_MONEY_PROVIDER:simulator}
     provider-base-url: ${TELEPAY_BASE_URL:}
     api-key: ${TELEPAY_API_KEY:}
     # Shared secret for webhook signatures (HMAC-SHA256), 32+ characters.
@@ -78,6 +80,22 @@ app:
       max-attempts: 8
       base-delay: 10s
       max-delay: 2m
+    # Chapa only: check PENDING payments with Chapa's verify API (webhooks are only hints there).
+    # First check 10s after the charge, then 5s, 10s, 20s, ... capped at 2m; NEEDS_ATTENTION after 20 checks.
+    verify:
+      polling-enabled: ${MOBILE_MONEY_VERIFY_POLLING:true}
+      poll-interval: 5s
+      first-check-after: 10s
+      max-attempts: 20
+      base-delay: 5s
+      max-delay: 2m
+  # Chapa (used only with app.mobile-money.provider=chapa). TEST keys only: the provider refuses
+  # anything that doesn't start with CHASECK_TEST-. Never commit or log these values.
+  chapa:
+    base-url: https://api.chapa.co/v1
+    secret-key: ${CHAPA_SECRET_KEY:}
+    # The "secret hash" also entered in Chapa's dashboard (Webhooks). Empty = all webhooks refused.
+    webhook-secret: ${CHAPA_WEBHOOK_SECRET:}
   reconciliation:
     # Every night at 00:30 Addis Ababa time, for the previous day.
     cron: "0 30 0 * * *"

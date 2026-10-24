@@ -20,6 +20,10 @@ public record RetryPolicy(int maxAttempts, Duration baseDelay, Duration maxDelay
         return new RetryPolicy(p.maxAttempts(), p.baseDelay(), p.maxDelay());
     }
 
+    public static RetryPolicy from(MobileMoneyProperties.Verify v) {
+        return new RetryPolicy(v.maxAttempts(), v.baseDelay(), v.maxDelay());
+    }
+
     /** Delay before the next try after this many failed attempts (1 = the first failure). */
     public Duration delayAfter(int failedAttempts) {
         if (failedAttempts < 1) {

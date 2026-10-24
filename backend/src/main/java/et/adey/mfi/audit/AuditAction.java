@@ -15,6 +15,8 @@ public enum AuditAction {
     MOBILE_PAYMENT_REQUEST,
     /** A provider webhook arrived: SUCCESS = applied, DENIED = bad signature/timestamp, REJECTED = mismatch/duplicate/unknown. */
     WEBHOOK,
+    /** We asked the provider's verify API about a pending payment and acted on the answer (Chapa). */
+    MOBILE_PAYMENT_VERIFY,
     MOBILE_PAYMENT_POSTED,
     MOBILE_PAYMENT_RETRY,
     MOBILE_PAYMENT_NEEDS_ATTENTION,

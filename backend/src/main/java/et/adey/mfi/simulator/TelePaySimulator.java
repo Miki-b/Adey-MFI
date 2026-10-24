@@ -127,6 +127,10 @@ public class TelePaySimulator {
         return charges.get(chargeId);
     }
 
+    List<Charge> findByReference(String reference) {
+        return charges.values().stream().filter(c -> c.reference.equals(reference)).toList();
+    }
+
     /** The customer pressed "Pay" on their phone. */
     Map<String, Object> approve(Charge c, Chaos chaos) {
         c.status = "SUCCEEDED";

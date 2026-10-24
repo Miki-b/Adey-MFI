@@ -15,5 +15,16 @@ public record MobilePaymentRequest(
         @NotNull @Positive @Digits(integer = 12, fraction = 2) BigDecimal amount,
         @Schema(description = "Wallet phone number, 10 digits starting 09 or 07", example = "0922100001")
         @NotBlank @Pattern(regexp = "^0[79][0-9]{8}$", message = "must be 10 digits starting with 09 or 07")
-        String phone) {
+        String phone,
+        @Schema(description = "Wallet: TELEBIRR (09... numbers) or MPESA (07... numbers). Default TELEBIRR.",
+                example = "TELEBIRR")
+        PaymentMethod method) {
+
+    public MobilePaymentRequest(BigDecimal amount, String phone) {
+        this(amount, phone, null);
+    }
+
+    public PaymentMethod methodOrDefault() {
+        return method == null ? PaymentMethod.TELEBIRR : method;
+    }
 }

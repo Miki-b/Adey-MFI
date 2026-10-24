@@ -1,6 +1,7 @@
 package et.adey.mfi.mobilemoney;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -14,14 +15,16 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
- * Our HTTP client for the mobile money provider ("TelePay"). Locally the provider is the simulator
- * at /sim on this same app, but we talk to it exactly like to a remote service: over HTTP, with an
- * API key. Swapping in the real provider = changing app.mobile-money.provider-base-url and the key.
+ * Plain HTTP client for the TelePay provider (our simulator at /sim on this same app, but called
+ * exactly like a remote service: over HTTP, with an API key). It only speaks TelePay's API;
+ * SimulatorProvider is the adapter that turns it into our MobileMoneyProvider interface.
  */
 @Slf4j
 @Component
+@ConditionalOnProperty(prefix = "app.mobile-money", name = "provider", havingValue = "simulator", matchIfMissing = true)
 public class TelePayClient {
 
     private final RestClient rest;
@@ -59,6 +62,26 @@ public class TelePayClient {
                     .body(Charge.class);
         } catch (RestClientException e) {
             log.warn("TelePay charge request failed: {}", e.getMessage());
+            throw new ProviderUnavailableException("Mobile money provider not reachable: " + e.getMessage());
+        }
+    }
+
+    /** One charge as the provider sees it (for verification). */
+    public record ChargeStatus(String chargeId, String reference, String status, String providerTransactionId,
+                               BigDecimal settledAmount, String currency, Instant settledAt) {
+    }
+
+    /** Look a charge up by OUR reference; empty if the provider has none. */
+    public Optional<ChargeStatus> findCharge(String reference) {
+        try {
+            List<ChargeStatus> found = rest.get().uri("/charges?reference={reference}", reference)
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, (req, res) -> {
+                        throw new ProviderUnavailableException("Provider answered HTTP " + res.getStatusCode().value());
+                    })
+                    .body(new ParameterizedTypeReference<List<ChargeStatus>>() { });
+            return found == null ? Optional.empty() : found.stream().findFirst();
+        } catch (RestClientException e) {
             throw new ProviderUnavailableException("Mobile money provider not reachable: " + e.getMessage());
         }
     }

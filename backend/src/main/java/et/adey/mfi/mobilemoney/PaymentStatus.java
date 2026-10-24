@@ -11,7 +11,8 @@ import java.util.Set;
  *   PENDING ──provider declined──▶ DECLINED
  *      │  ──charge request failed─▶ CHARGE_FAILED
  *      │  ──paid, wrong amount────▶ MISMATCH          (held, never posted automatically)
- *      ▼ paid, webhook verified (or found by reconciliation)
+ *      │  ──unknown provider status / still pending after every check──▶ NEEDS_ATTENTION
+ *      ▼ paid, webhook verified (or confirmed by the provider's verify API, or found by reconciliation)
  *   RECEIVED ──posted to Fineract──────────────────▶ POSTED
  *      │  ──Fineract unavailable──▶ RETRYING ──▶ POSTED
  *      │                                  └──max attempts──▶ NEEDS_ATTENTION
@@ -30,7 +31,7 @@ public enum PaymentStatus {
     NEEDS_ATTENTION;
 
     private static final Map<PaymentStatus, Set<PaymentStatus>> ALLOWED = Map.of(
-            PENDING, EnumSet.of(RECEIVED, DECLINED, CHARGE_FAILED, MISMATCH),
+            PENDING, EnumSet.of(RECEIVED, DECLINED, CHARGE_FAILED, MISMATCH, NEEDS_ATTENTION),
             RECEIVED, EnumSet.of(POSTED, RETRYING, NEEDS_ATTENTION),
             RETRYING, EnumSet.of(RETRYING, POSTED, NEEDS_ATTENTION),
             DECLINED, EnumSet.noneOf(PaymentStatus.class),

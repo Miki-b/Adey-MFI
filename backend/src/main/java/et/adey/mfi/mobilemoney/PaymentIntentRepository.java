@@ -21,5 +21,12 @@ public interface PaymentIntentRepository extends JpaRepository<PaymentIntent, Lo
     List<PaymentIntent> findTop20ByStatusInAndNextAttemptAtLessThanEqualOrderByNextAttemptAtAsc(
             Collection<PaymentStatus> statuses, Instant now);
 
+    /** PENDING payments whose next check with the provider's verify API is due. */
+    List<PaymentIntent> findTop20ByStatusAndProviderAndNextVerifyAtLessThanEqualOrderByNextVerifyAtAsc(
+            PaymentStatus status, String provider, Instant now);
+
+    /** Reconciliation without a settlement listing: our own intents of a period, for one provider. */
+    List<PaymentIntent> findByProviderAndCreatedAtBetweenOrderByIdAsc(String provider, Instant from, Instant to);
+
     List<PaymentIntent> findByPaidAtBetween(Instant from, Instant to);
 }

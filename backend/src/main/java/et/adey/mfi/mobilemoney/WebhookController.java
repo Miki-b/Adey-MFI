@@ -1,79 +1,66 @@
 package et.adey.mfi.mobilemoney;
 
 import et.adey.mfi.common.ApiException;
+import et.adey.mfi.mobilemoney.MobileMoneyProvider.WebhookCheck;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.ObjectMapper;
 
 import java.time.Clock;
 import java.util.Map;
 
 /**
- * The provider calls this URL; no JWT (it isn't one of our users). Instead every call must carry a
- * valid HMAC signature and a fresh timestamp. The body is read as a raw String, because the
- * signature covers the exact bytes: parsing and re-serialising JSON could change spacing or field
- * order and break it.
+ * The provider calls this URL; no JWT (it isn't one of our users). The active provider adapter
+ * decides whether the call is authentic (TelePay: HMAC over timestamp + body; Chapa: HMAC over
+ * the body). The body is read as a raw String, because signatures cover the exact bytes: parsing
+ * and re-serialising JSON could change spacing or field order and break them.
+ *
+ * Then: a TRUSTED event (simulator) goes straight into the inbox; a HINT (Chapa) only triggers
+ * a verify call to the provider (PaymentVerifier). Either way we answer 2xx once the call is
+ * authentic, so the provider stops re-sending.
  */
 @Tag(name = "Mobile money")
 @RestController
 public class WebhookController {
 
-    private final MobileMoneyProperties props;
+    private final MobileMoneyProvider provider;
     private final WebhookInbox inbox;
-    private final ObjectMapper objectMapper;
+    private final PaymentVerifier verifier;
     private final Clock clock;
 
-    public WebhookController(MobileMoneyProperties props, WebhookInbox inbox, ObjectMapper objectMapper, Clock clock) {
-        this.props = props;
+    public WebhookController(MobileMoneyProvider provider, WebhookInbox inbox, PaymentVerifier verifier, Clock clock) {
+        this.provider = provider;
         this.inbox = inbox;
-        this.objectMapper = objectMapper;
+        this.verifier = verifier;
         this.clock = clock;
     }
 
-    @Operation(summary = "Webhook from the mobile money provider (HMAC-signed, no JWT)")
+    @Operation(summary = "Webhook from the mobile money provider (signed, no JWT)")
     @SecurityRequirements
-    @PostMapping(value = "/api/webhooks/mobile-money", consumes = "application/json")
-    public Map<String, Object> receive(
-            @RequestHeader(name = WebhookSignature.TIMESTAMP_HEADER, required = false) String timestamp,
-            @RequestHeader(name = WebhookSignature.SIGNATURE_HEADER, required = false) String signature,
-            @RequestBody String rawBody,
-            HttpServletRequest http) {
-        WebhookSignature.Result check = WebhookSignature.verify(props.webhookSecret(), timestamp, signature, rawBody,
-                clock.instant(), props.timestampTolerance());
-        switch (check) {
-            case MISSING, BAD_SIGNATURE -> {
-                inbox.rejected("signature " + check, http.getRemoteAddr());
-                throw new ApiException(HttpStatus.UNAUTHORIZED, "WEBHOOK_SIGNATURE_INVALID",
-                        "Webhook signature missing or invalid.");
+    @PostMapping("/api/webhooks/mobile-money")
+    public Map<String, Object> receive(@RequestHeader HttpHeaders headers, @RequestBody String rawBody,
+                                       HttpServletRequest http) {
+        WebhookCheck check = provider.parseAndVerifyWebhook(headers, rawBody, clock.instant());
+        return switch (check) {
+            case WebhookCheck.Rejected r -> {
+                inbox.rejected(r.auditReason(), http.getRemoteAddr());
+                throw new ApiException(HttpStatus.valueOf(r.httpStatus()), r.code(), r.message());
             }
-            case STALE_TIMESTAMP -> {
-                inbox.rejected("timestamp " + timestamp + " outside " + props.timestampTolerance(), http.getRemoteAddr());
-                throw new ApiException(HttpStatus.UNAUTHORIZED, "WEBHOOK_TIMESTAMP_INVALID",
-                        "Webhook timestamp is too old or too far in the future.");
+            case WebhookCheck.Trusted t -> {
+                WebhookInbox.Result result = inbox.receive(t.event(), rawBody);
+                yield Map.of("received", true, "eventId", t.event().eventId(), "result", result);
             }
-            case VALID -> { }
-        }
-        TelePayWebhook webhook;
-        try {
-            webhook = objectMapper.readValue(rawBody, TelePayWebhook.class);
-        } catch (JacksonException e) {
-            inbox.rejected("signed but unreadable body", http.getRemoteAddr());
-            throw new ApiException(HttpStatus.BAD_REQUEST, "MALFORMED_REQUEST", "Webhook body is not valid JSON.");
-        }
-        if (webhook.eventId() == null || webhook.eventId().isBlank()) {
-            inbox.rejected("signed but no eventId", http.getRemoteAddr());
-            throw new ApiException(HttpStatus.BAD_REQUEST, "VALIDATION_FAILED", "Webhook has no eventId.");
-        }
-        // 2xx for everything we have stored (even duplicates/mismatches): the provider must stop re-sending.
-        WebhookInbox.Result result = inbox.receive(webhook, rawBody);
-        return Map.of("received", true, "eventId", webhook.eventId(), "result", result);
+            case WebhookCheck.Hint h -> {
+                PaymentVerifier.Result result = verifier.onWebhook(h.reference(), h.event(), rawBody);
+                yield Map.of("received", true, "reference", h.reference(), "result", result);
+            }
+        };
     }
 }

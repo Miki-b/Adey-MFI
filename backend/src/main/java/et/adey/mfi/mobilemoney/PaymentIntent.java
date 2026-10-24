@@ -57,6 +57,11 @@ public class PaymentIntent {
     private BigDecimal amount;
     @Column(nullable = false)
     private String currency;
+    /** Which adapter handled it ("simulator", "chapa"), and which wallet. */
+    @Column(nullable = false)
+    private String provider;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod method;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -76,6 +81,11 @@ public class PaymentIntent {
     private int postingAttempts;
     @Column(name = "next_attempt_at")
     private Instant nextAttemptAt;
+    /** Checks with the provider's verify API while PENDING (Chapa), and when the next one is due. */
+    @Column(name = "verify_attempts", nullable = false)
+    private int verifyAttempts;
+    @Column(name = "next_verify_at")
+    private Instant nextVerifyAt;
     @Column(name = "last_error")
     private String lastError;
     @Column(name = "created_at", nullable = false)
@@ -93,6 +103,15 @@ public class PaymentIntent {
 
     public PaymentIntent(String reference, long loanId, long clientId, long officeId, Long staffId, String requestedBy,
                          String phone, BigDecimal amount, String currency, Instant now) {
+        this(reference, loanId, clientId, officeId, staffId, requestedBy, phone, amount, currency, "simulator",
+                PaymentMethod.TELEBIRR, now);
+    }
+
+    public PaymentIntent(String reference, long loanId, long clientId, long officeId, Long staffId, String requestedBy,
+                         String phone, BigDecimal amount, String currency, String provider, PaymentMethod method,
+                         Instant now) {
+        this.provider = provider;
+        this.method = method;
         this.reference = reference;
         this.loanId = loanId;
         this.clientId = clientId;
@@ -114,6 +133,9 @@ public class PaymentIntent {
             throw new IllegalStateException("Payment intent %d cannot move from %s to %s".formatted(id, status, next));
         }
         transitions.add(new PaymentIntentTransition(status, next, now, note));
+        if (status == PaymentStatus.PENDING) {
+            this.nextVerifyAt = null; // decided: nothing left to verify
+        }
         this.status = next;
         this.updatedAt = now;
     }
@@ -142,6 +164,16 @@ public class PaymentIntent {
     void posted(long fineractTransactionId) {
         this.fineractTransactionId = fineractTransactionId;
         this.nextAttemptAt = null;
+    }
+
+    void scheduleVerification(Instant at) {
+        this.nextVerifyAt = at;
+    }
+
+    void verificationInconclusive(String note, Instant next) {
+        this.verifyAttempts++;
+        recordError(note);
+        this.nextVerifyAt = next;
     }
 
     void recordError(String error) {

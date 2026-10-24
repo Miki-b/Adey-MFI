@@ -23,6 +23,7 @@ import java.util.Map;
  *
  *   POST /sim/charges                       our backend asks for a charge (needs the provider API key)
  *   GET  /sim/charges/{id}                  the charge, incl. every webhook delivery attempt
+ *   GET  /sim/charges?reference=AMP-...     charges with OUR reference (verification; needs the API key)
  *   POST /sim/charges/{id}/approve          "customer pressed Pay"; chaos flags:
  *        ?duplicate=true                    send the webhook twice (same eventId)
  *        ?delaySeconds=20                   wait before sending
@@ -61,6 +62,15 @@ public class SimulatorController {
                 req.currency() == null ? "ETB" : req.currency(), req.callbackUrl());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("chargeId", c.chargeId, "reference", c.reference, "status", c.status));
+    }
+
+    @GetMapping("/charges")
+    public ResponseEntity<Object> byReference(@RequestHeader(name = "Authorization", required = false) String auth,
+                                              @RequestParam String reference) {
+        if (!sim.apiKeyValid(auth)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "invalid API key"));
+        }
+        return ResponseEntity.ok(sim.findByReference(reference).stream().map(TelePaySimulator.Charge::view).toList());
     }
 
     @GetMapping("/charges/{id}")

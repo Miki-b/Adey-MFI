@@ -918,21 +918,6 @@
     "/api/webhooks/mobile-money" : {
       "post" : {
         "operationId" : "receive",
-        "parameters" : [ {
-          "in" : "header",
-          "name" : "X-TelePay-Timestamp",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "in" : "header",
-          "name" : "X-TelePay-Signature",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -957,7 +942,7 @@
           }
         },
         "security" : [ ],
-        "summary" : "Webhook from the mobile money provider (HMAC-signed, no JWT)",
+        "summary" : "Webhook from the mobile money provider (signed, no JWT)",
         "tags" : [ "Mobile money" ]
       }
     }
@@ -1723,6 +1708,12 @@
             "example" : 1833.6,
             "exclusiveMinimum" : 0
           },
+          "method" : {
+            "type" : "string",
+            "description" : "Wallet: TELEBIRR (09... numbers) or MPESA (07... numbers). Default TELEBIRR.",
+            "enum" : [ "TELEBIRR", "MPESA" ],
+            "example" : "TELEBIRR"
+          },
           "phone" : {
             "type" : "string",
             "description" : "Wallet phone number, 10 digits starting 09 or 07",
@@ -1774,6 +1765,10 @@
             "type" : "integer",
             "format" : "int64"
           },
+          "method" : {
+            "type" : "string",
+            "enum" : [ "TELEBIRR", "MPESA" ]
+          },
           "nextAttemptAt" : {
             "type" : "string",
             "format" : "date-time"
@@ -1788,6 +1783,9 @@
           "postingAttempts" : {
             "type" : "integer",
             "format" : "int32"
+          },
+          "provider" : {
+            "type" : "string"
           },
           "providerAmount" : {
             "type" : "number"

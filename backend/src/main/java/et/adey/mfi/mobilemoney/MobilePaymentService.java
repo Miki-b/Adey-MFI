@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Clock;
+import java.time.Instant;
 import java.util.EnumSet;
 import java.util.HexFormat;
 import java.util.List;
@@ -36,20 +37,20 @@ public class MobilePaymentService {
     private final FineractClient fineract;
     private final LoanGuard guard;
     private final PaymentIntentRepository intents;
-    private final TelePayClient telePay;
+    private final MobileMoneyProvider provider;
     private final MobileMoneyProperties props;
     private final AuditService audit;
     private final Clock clock;
     private final AccessPolicy access;
 
     public MobilePaymentService(FineractClient fineract, LoanGuard guard, PaymentIntentRepository intents,
-                                TelePayClient telePay, MobileMoneyProperties props, AuditService audit, Clock clock,
+                                MobileMoneyProvider provider, MobileMoneyProperties props, AuditService audit, Clock clock,
                                 AccessPolicy access) {
         this.access = access;
         this.fineract = fineract;
         this.guard = guard;
         this.intents = intents;
-        this.telePay = telePay;
+        this.provider = provider;
         this.props = props;
         this.audit = audit;
         this.clock = clock;
@@ -59,11 +60,17 @@ public class MobilePaymentService {
      * 1. the loan's client must be the officer's (or in the manager's office), the loan ACTIVE;
      * 2. amount <= total outstanding minus mobile payments already on their way (no overpaying);
      * 3. store the intent (PENDING) BEFORE calling the provider, so we never lose track of a charge;
-     * 4. ask the provider to charge the phone; the client confirms on the handset.
+     * 4. ask the provider (whichever adapter is active) to charge the phone; the client confirms on
+     *    the handset. With Chapa, a PENDING intent is then checked with verify until it is decided.
      */
     public MobilePaymentResponse request(Officer officer, long loanId, MobilePaymentRequest req) {
         return audit.record(officer, AuditAction.MOBILE_PAYMENT_REQUEST, rec -> {
             rec.loanId(loanId).amount(req.amount());
+            PaymentMethod method = req.methodOrDefault();
+            if (!method.acceptsPhone(req.phone())) {
+                throw new ApiException(HttpStatus.BAD_REQUEST, "PHONE_METHOD_MISMATCH",
+                        "%s wallets use numbers starting %s.".formatted(method, method.phonePrefix()));
+            }
             FineractLoan loan = fineract.getLoanWithSchedule(loanId);
             rec.clientId(loan.clientId());
             FineractClientData client = guard.requireClient(officer, loan.clientId());
@@ -85,20 +92,37 @@ public class MobilePaymentService {
 
             PaymentIntent intent = intents.save(new PaymentIntent(newReference(), loanId, loan.clientId(),
                     client.officeId(), client.staffId(), officer.username(), req.phone(), Money.of(req.amount()), props.currency(),
-                    clock.instant()));
+                    provider.name(), method, clock.instant()));
+            Instant now = clock.instant();
             try {
-                TelePayClient.Charge charge = telePay.createCharge(new TelePayClient.ChargeRequest(intent.getReference(),
-                        req.phone(), intent.getAmount(), intent.getCurrency(), props.callbackUrl()));
-                intent.chargeCreated(charge.chargeId());
+                MobileMoneyProvider.ChargeResult charge = provider.createCharge(new MobileMoneyProvider.ChargeRequest(
+                        intent.getReference(), req.phone(), intent.getAmount(), intent.getCurrency(), method));
+                if (charge.providerChargeId() != null) {
+                    intent.chargeCreated(charge.providerChargeId());
+                }
+                if (!charge.accepted()) {
+                    intent.recordError("charge not initiated: " + charge.message());
+                }
+                if (provider.needsVerification()) {
+                    // Give the webhook a head start; a charge that was refused is checked at once.
+                    intent.scheduleVerification(charge.accepted() ? now.plus(props.verify().firstCheckAfter()) : now);
+                }
                 intent = intents.save(intent);
             } catch (ProviderUnavailableException e) {
                 intent.recordError(e.getMessage());
-                intent.moveTo(PaymentStatus.CHARGE_FAILED, clock.instant(), e.getMessage());
-                intents.save(intent);
-                throw e;
+                if (provider.needsVerification()) {
+                    // We don't know whether the charge started (a timeout can hide a success): stay PENDING
+                    // and let verify find out, instead of declaring a failure that may be wrong.
+                    intent.scheduleVerification(now);
+                    intent = intents.save(intent);
+                } else {
+                    intent.moveTo(PaymentStatus.CHARGE_FAILED, now, e.getMessage());
+                    intents.save(intent);
+                    throw e;
+                }
             }
-            log.info("Mobile payment {} ({} ETB) requested on loan {} by {}: charge {}", intent.getReference(),
-                    intent.getAmount(), loanId, officer.username(), intent.getProviderChargeId());
+            log.info("Mobile payment {} ({} ETB, {} via {}) requested on loan {} by {}: charge {}", intent.getReference(),
+                    intent.getAmount(), method, provider.name(), loanId, officer.username(), intent.getProviderChargeId());
             return MobilePaymentResponse.of(intent);
         });
     }

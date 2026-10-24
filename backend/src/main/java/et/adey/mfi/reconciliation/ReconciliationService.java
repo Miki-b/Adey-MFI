@@ -10,7 +10,7 @@ import et.adey.mfi.mobilemoney.MobileMoneyPostingService;
 import et.adey.mfi.mobilemoney.PaymentIntent;
 import et.adey.mfi.mobilemoney.PaymentIntentRepository;
 import et.adey.mfi.mobilemoney.PaymentStatus;
-import et.adey.mfi.mobilemoney.TelePayClient;
+import et.adey.mfi.mobilemoney.SettlementSource;
 import et.adey.mfi.security.AccessPolicy;
 import et.adey.mfi.security.Officer;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class ReconciliationService {
 
     static final String SYSTEM_ACTOR = "system:reconciliation";
 
-    private final TelePayClient telePay;
+    private final SettlementSource settlements;
     private final FineractMobileMoneyReader fineractReader;
     private final PaymentIntentRepository intents;
     private final ReconciliationRunRepository runs;
@@ -45,12 +45,12 @@ public class ReconciliationService {
     private final Clock clock;
     private final boolean scheduleEnabled;
 
-    public ReconciliationService(TelePayClient telePay, FineractMobileMoneyReader fineractReader,
+    public ReconciliationService(SettlementSource settlements, FineractMobileMoneyReader fineractReader,
                                  PaymentIntentRepository intents, ReconciliationRunRepository runs,
                                  ReconciliationFindingRepository findings, MobileMoneyPostingService posting,
                                  AccessPolicy access, AuditService audit, Clock clock,
                                  @Value("${app.reconciliation.enabled:true}") boolean scheduleEnabled) {
-        this.telePay = telePay;
+        this.settlements = settlements;
         this.fineractReader = fineractReader;
         this.intents = intents;
         this.runs = runs;
@@ -80,7 +80,7 @@ public class ReconciliationService {
     ReconciliationRun run(LocalDate date, String actor) {
         ReconciliationRun run = runs.save(new ReconciliationRun(date, actor, clock.instant()));
         try {
-            List<ReconciliationMatcher.ProviderPayment> provider = telePay.settlements(date).stream()
+            List<ReconciliationMatcher.ProviderPayment> provider = settlements.forDate(date).stream()
                     .map(s -> new ReconciliationMatcher.ProviderPayment(s.chargeId(), s.reference(),
                             s.providerTransactionId(), s.amount(), s.settledAt()))
                     .toList();

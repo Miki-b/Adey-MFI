@@ -323,19 +323,32 @@ backend ◀──POST /api/webhooks/mobile-money (HMAC-signed)──────
 nightly / on demand: reconciliation (provider settlements ↔ intents ↔ Fineract receipts)
 ```
 
+**Providers (adapter pattern, Phase 5b).** Our code only talks to the `MobileMoneyProvider` interface
+(createCharge, verifyCharge, parseAndVerifyWebhook, listSettlements, needsVerification). One adapter is
+active, chosen with `app.mobile-money.provider` (env `MOBILE_MONEY_PROVIDER`):
+
+| Provider | Adapter | Webhooks | PENDING payments | Reconciliation source |
+| --- | --- | --- | --- | --- |
+| `simulator` (default) | `SimulatorProvider` → TelePay simulator | trusted (signed timestamp + eventId) | wait for the webhook | the provider's settlement listing |
+| `chapa` | `ChapaProvider` → Chapa test mode | only a hint: always re-checked with Chapa's verify API | verify polled with backoff (`PaymentVerifier`) | verify calls on our own intents (no listing exists) |
+
+The inbox, posting worker and reconciliation matcher are the same for both.
+
 | Method | Path | Who | What |
 | --- | --- | --- | --- |
-| POST | `/api/loans/{id}/mobile-payments` | officer (own clients) / manager (office) | `{amount, phone}`; amount ≤ outstanding − payments already in flight; `Idempotency-Key` supported; 201 with the intent |
+| POST | `/api/loans/{id}/mobile-payments` | officer (own clients) / manager (office) | `{amount, phone, method}`, method `TELEBIRR` (default, 09… numbers) or `MPESA` (07… numbers), else 400 `PHONE_METHOD_MISMATCH`; amount ≤ outstanding − payments already in flight; `Idempotency-Key` supported; 201 with the intent |
 | GET | `/api/mobile-payments/{id}` | same scope | status + full history; poll until `finalState` is true. Works while Fineract is down |
 | GET | `/api/loans/{id}/mobile-payments` | same scope | all intents of a loan, newest first |
-| POST | `/api/webhooks/mobile-money` | the provider (no JWT) | headers `X-TelePay-Timestamp` (unix seconds) and `X-TelePay-Signature: v1=<hex HMAC-SHA256(secret, timestamp + "." + raw body)>`; timestamp within 5 min; repeated `eventId` = no-op |
+| POST | `/api/webhooks/mobile-money` | the provider (no JWT) | **simulator**: headers `X-TelePay-Timestamp` (unix seconds) and `X-TelePay-Signature: v1=<hex HMAC-SHA256(secret, timestamp + "." + raw body)>`; timestamp within 5 min; repeated `eventId` = no-op. **chapa**: header `x-chapa-signature: <hex HMAC-SHA256(secret hash, raw body)>`; then Chapa's verify API decides; answer 200 with `result` (`RECEIVED`, `DECLINED`, `STILL_PENDING`, `IGNORED`, ...) |
 | POST | `/api/reconciliation/run?date=YYYY-MM-DD` | manager | run now (default today); answer = the run's report for your office |
 | GET | `/api/reconciliation/{date}` | manager | latest completed run: counts, totals, findings of your office (+ findings with unknown office) |
 | POST | `/api/reconciliation/findings/{id}/resolve` | manager (own office) | `{note}`. PAID_NOT_POSTED with a known intent is **posted** through the normal posting path; every other finding needs a note |
 
-Payment intent states: `PENDING`, `DECLINED`, `CHARGE_FAILED` (provider unreachable when asking),
+Payment intent states: `PENDING`, `DECLINED`, `CHARGE_FAILED` (provider unreachable when asking; with
+Chapa: the charge never started and Chapa has no record of it),
 `MISMATCH` (provider reported a different amount, held, never posted automatically), `RECEIVED`,
-`RETRYING`, `POSTED`, `NEEDS_ATTENTION`. Every change is stored with its time
+`RETRYING`, `POSTED`, `NEEDS_ATTENTION` (also: unknown provider status, or still pending after every
+verify check). Each intent stores its `provider` and `method`. Every change is stored with its time
 (`payment_intent_transitions`). Webhooks that pass the signature check are kept in
 `webhook_events` (the inbox); rejected ones are only in `audit_log` (action `WEBHOOK`, `DENIED`).
 
@@ -353,6 +366,7 @@ restart), its own HTTP client and signing code, and it reaches the backend only 
 | --- | --- |
 | `POST /sim/charges` | our backend asks for a charge (needs `Authorization: Bearer <TELEPAY_API_KEY>`) |
 | `GET /sim/charges/{id}` | the charge, including every webhook delivery attempt and its HTTP answer |
+| `GET /sim/charges?reference=AMP-…` | charges with our reference (the adapter's `verifyCharge`; needs the API key) |
 | `POST /sim/charges/{id}/approve` | the customer presses "Pay": status SUCCEEDED, webhook sent |
 | `POST /sim/charges/{id}/decline` | the customer presses "Decline": webhook with status DECLINED |
 | `GET /sim/settlements?date=YYYY-MM-DD` | the provider's successful payments that day (needs the API key) |
@@ -369,6 +383,50 @@ restart), its own HTTP client and signing code, and it reaches the backend only 
 | `staleSeconds=600` | sign with a timestamp 10 minutes in the past (401) |
 
 Example (PowerShell): `curl.exe -X POST "http://localhost:8080/sim/charges/ch_abc/approve?drop=true"`
+
+### Chapa provider (test mode, Phase 5b)
+
+Real telebirr and M-Pesa payments through [Chapa](https://developer.chapa.co) **test mode** (no real
+money). Switch on with `MOBILE_MONEY_PROVIDER=chapa` plus `CHAPA_SECRET_KEY`; the Codespace does this
+by itself when the secret exists.
+
+| Setting | Env var | Notes |
+| --- | --- | --- |
+| `app.mobile-money.provider` | `MOBILE_MONEY_PROVIDER` | `simulator` (default) or `chapa` |
+| `app.chapa.secret-key` | `CHAPA_SECRET_KEY` | must start `CHASECK_TEST-`, else the app refuses to start; never logged |
+| `app.chapa.webhook-secret` | `CHAPA_WEBHOOK_SECRET` | the dashboard's "secret hash"; empty = every webhook 401 |
+| `app.mobile-money.verify.polling-enabled` | `MOBILE_MONEY_VERIFY_POLLING` | `false` only to prove the webhook path alone |
+| `app.mobile-money.verify.*` | | first check 10 s after the charge, then 5 s doubling to 2 min, NEEDS_ATTENTION after 20 checks |
+
+How a Chapa payment goes (all seen live, 2026-10-24):
+
+1. `POST https://api.chapa.co/v1/charges?type=telebirr|mpesa` (multipart: `amount, currency, tx_ref, mobile`).
+   `tx_ref` = our reference (`AMP-…`, unique per attempt). Answer `status: success` + `meta.ref_id` (Chapa's
+   reference) = initiated; `status: failed` (even with HTTP 200) = not initiated, checked at once with verify.
+   Network error / 5xx: we don't know if it started, so it stays PENDING and verify finds out.
+2. Chapa pushes a USSD prompt to the phone. **Test numbers complete by themselves within seconds.**
+3. `GET /v1/transaction/verify/{tx_ref}` → `data.status`: `success` → SUCCEEDED, `failed/cancelled` →
+   DECLINED, `pending` → check again later, anything else → NEEDS_ATTENTION. Unknown `tx_ref` →
+   `"Invalid transaction reference"`.
+4. Only when verify says success **and** tx_ref and Chapa reference match ours does a payment event enter
+   the inbox; the inbox checks amount + currency (else MISMATCH) and the posting worker posts it with
+   **Chapa's reference as receipt number**.
+
+Test numbers: telebirr `0900123456`, M-Pesa `0700123456` succeed. Other numbers fail (DECLINED). Chapa's docs
+also list 0900112233 / 0900881111 / 0700112233 / 0700881111, but on 2026-10-24 Chapa rejected 0900112233 as
+"Invalid Test Number".
+
+**Webhook test procedure** (the URL can only be set in Chapa's dashboard, not per request):
+
+1. `CHAPA_WEBHOOK_SECRET` exists as a Codespaces secret (long random value).
+2. `.\scripts\codespace.ps1 public` (port 8080 public **only for this test**).
+3. Chapa dashboard (test mode) → Webhooks: URL `https://<codespace>-8080.app.github.dev/api/webhooks/mobile-money`,
+   secret hash = the `CHAPA_WEBHOOK_SECRET` value.
+4. Optional, to prove the webhook alone completes it: restart the backend with `MOBILE_MONEY_VERIFY_POLLING=false`.
+5. Start a payment with `0900123456`: the log shows `Verified AMP-… (webhook charge.success)`, then POSTED.
+   The raw webhook is in `webhook_events.raw_body`; replaying it changes nothing (`IGNORED`), changing one
+   byte gives 401 `WEBHOOK_SIGNATURE_INVALID`.
+6. `.\scripts\codespace.ps1 private` and check `.\scripts\codespace.ps1 url` says private.
 
 ### OpenAPI for the Flutter client
 

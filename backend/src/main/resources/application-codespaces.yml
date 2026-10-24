@@ -9,7 +9,8 @@ app:
   security:
     jwt:
       # From the Codespaces secret ADEY_JWT_SECRET (set with `gh secret set --user --app codespaces`).
-      # No default: without the secret the backend refuses to start.
+      # If that secret is missing, start-stack.sh generates a random one for this Codespace start only.
+      # No default here: started some other way without it, the backend refuses to start.
       secret: ${ADEY_JWT_SECRET}
     # Health and Swagger without a token. The forwarded port itself stays PRIVATE (GitHub login
     # required) except during a deliberate, short public test.
@@ -18,9 +19,5 @@ app:
     # The Codespace's own forwarded-port domains, e.g. https://<codespace>-8080.app.github.dev
     allowed-origins:
       - https://${CODESPACE_NAME:none}-*.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:app.github.dev}
-  # Reserved for the future Chapa provider (not built yet). The Codespaces secrets CHAPA_SECRET_KEY and
-  # CHAPA_WEBHOOK_SECRET arrive as environment variables; nothing reads them until that provider exists,
-  # so the TelePay simulator stays the provider.
-  chapa:
-    secret-key: ${CHAPA_SECRET_KEY:}
-    webhook-secret: ${CHAPA_WEBHOOK_SECRET:}
+  # The Chapa provider is chosen by .devcontainer/start-stack.sh: MOBILE_MONEY_PROVIDER=chapa when the
+  # Codespaces secret CHAPA_SECRET_KEY exists, otherwise the TelePay simulator (see application.yml).

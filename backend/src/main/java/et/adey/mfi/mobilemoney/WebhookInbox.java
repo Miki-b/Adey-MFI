@@ -48,7 +48,7 @@ public class WebhookInbox {
     public enum Result { ACCEPTED, DUPLICATE, MISMATCH, UNKNOWN_REFERENCE, IGNORED }
 
     /** Stores and applies one verified webhook. Never calls Fineract. */
-    public Result receive(TelePayWebhook w, String rawBody) {
+    public Result receive(ProviderPaymentEvent w, String rawBody) {
         Applied applied;
         try {
             // One transaction: the inbox row and the intent's new status are saved together or not at all.
@@ -64,7 +64,7 @@ public class WebhookInbox {
     record Applied(Result result, PaymentIntent intent, String detail) {
     }
 
-    private Applied store(TelePayWebhook w, String rawBody) {
+    private Applied store(ProviderPaymentEvent w, String rawBody) {
         if (events.existsByEventId(w.eventId())) {
             return new Applied(Result.DUPLICATE, null, "duplicate eventId, ignored");
         }
@@ -113,7 +113,7 @@ public class WebhookInbox {
         return new Applied(Result.ACCEPTED, intent, w.status());
     }
 
-    private void auditResult(TelePayWebhook w, Applied a) {
+    private void auditResult(ProviderPaymentEvent w, Applied a) {
         Long loanId = a.intent() == null ? null : a.intent().getLoanId();
         Long clientId = a.intent() == null ? null : a.intent().getClientId();
         AuditOutcome outcome = a.result() == Result.ACCEPTED ? AuditOutcome.SUCCESS : AuditOutcome.REJECTED;

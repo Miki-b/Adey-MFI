@@ -37,12 +37,25 @@ for v in ADEY_JWT_SECRET CHAPA_SECRET_KEY CHAPA_WEBHOOK_SECRET CODESPACE_NAME GI
   fi
 done
 
+# No JWT secret (e.g. a visitor who opened the "Open in Codespaces" badge): make a random one for
+# this start only. Tokens then stop working after a restart, which is fine for a demo. Never printed.
 if [ -z "${ADEY_JWT_SECRET:-}" ]; then
-  fail "Codespaces secret ADEY_JWT_SECRET is not set for this repo (gh secret set ADEY_JWT_SECRET --user --app codespaces --repos <owner>/<repo>), then rebuild/restart the Codespace"
+  export ADEY_JWT_SECRET="$(head -c 48 /dev/urandom | base64 | tr -d '\n')"
+  log "ADEY_JWT_SECRET not set: generated an ephemeral JWT secret (valid until this Codespace restarts)"
 fi
-for s in CHAPA_SECRET_KEY CHAPA_WEBHOOK_SECRET; do
-  if [ -n "${!s:-}" ]; then log "secret $s present (reserved for the Chapa provider, not used yet)"; else log "secret $s not set (fine: simulator is the provider)"; fi
-done
+
+# Mobile money provider: Chapa (test mode) when its secret key exists, otherwise the TelePay simulator.
+if [ -n "${MOBILE_MONEY_PROVIDER:-}" ]; then
+  log "mobile money provider: $MOBILE_MONEY_PROVIDER (set explicitly)"
+elif [ -n "${CHAPA_SECRET_KEY:-}" ]; then
+  export MOBILE_MONEY_PROVIDER=chapa
+  log "mobile money provider: chapa (CHAPA_SECRET_KEY present; the backend refuses non-test keys)"
+  if [ -n "${CHAPA_WEBHOOK_SECRET:-}" ]; then log "CHAPA_WEBHOOK_SECRET present: signed Chapa webhooks accepted"
+  else log "CHAPA_WEBHOOK_SECRET not set: Chapa webhooks refused, payments complete through verify polling"; fi
+else
+  export MOBILE_MONEY_PROVIDER=simulator
+  log "CHAPA_SECRET_KEY not set: falling back to the TelePay simulator as mobile money provider"
+fi
 
 log "waiting for the Docker engine"
 for i in $(seq 1 90); do docker info > /dev/null 2>&1 && break; sleep 2; done

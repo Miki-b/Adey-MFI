@@ -108,6 +108,11 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   Fineract + seed + backend in the cloud; only port 8080 forwarded (private). Driven from Windows with
   `scripts/codespace.ps1 start|stop|status|logs|url|public|private`. See README "Run everything in GitHub
   Codespaces".
+- Phase 5b done (2026-10-24): adapter pattern for mobile money (`MobileMoneyProvider`; `SimulatorProvider`,
+  `ChapaProvider`), selected with `app.mobile-money.provider=simulator|chapa` (env MOBILE_MONEY_PROVIDER).
+  Chapa test mode for telebirr + M-Pesa: webhooks only a hint, verify-before-post (`PaymentVerifier`, also
+  polls PENDING with backoff), reconciliation by verify calls (`SettlementSource`). Request takes `method`
+  TELEBIRR|MPESA. Flyway V5. 165 tests. Verified live in the Codespace. Notes: notes/08-chapa.md.
 - Next: the Flutter app in app/ (generate the Dart client from backend/openapi.json).
 
 ## Backend facts
@@ -138,9 +143,26 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   excluded on purpose (SecurityConfig.ourBearerTokens).
 - Heavy work (Fineract, tests, builds) can run in the Codespace instead of locally:
   `gh codespace ssh -c <name> -- 'cd /workspaces/Adey-MFI/backend && ./mvnw -q test'`.
-  Codespaces secrets (user, scoped to this repo): ADEY_JWT_SECRET (required), CHAPA_SECRET_KEY,
-  CHAPA_ENCRYPTION_KEY (CHAPA_WEBHOOK_SECRET not created yet). gh needs the `codespace` scope.
+  Codespaces secrets (user, scoped to this repo): ADEY_JWT_SECRET (missing → start-stack.sh generates an
+  ephemeral one), CHAPA_SECRET_KEY (present → provider chapa, else simulator), CHAPA_WEBHOOK_SECRET
+  (also in Chapa's dashboard), CHAPA_ENCRYPTION_KEY (unused). New secrets reach a running Codespace's
+  secrets file without a restart. gh needs the `codespace` scope.
+- The Codespace's fresh seed has different ids than the local Fineract: in Bishoftu the active loan is
+  loan 4 (Bethlehem Assefa, officer hana); samuel has no active loan there.
   Always `scripts/codespace.ps1 stop` at the end (2-core = 2 core-hours/hour; auto-stop after 30 min idle).
 - The seed also bootstraps an EMPTY Fineract (ETB currency, SBL product, Bishoftu Branch, staff). Yohannes
   (client 1, loan 1) exists only in the local Fineract, not in a fresh Codespace.
 - Drive C: has run full before (2026-10-23). If builds or Postgres act strangely, check free space first.
+
+## Chapa facts (test mode, checked live 2026-10-24)
+
+- API `https://api.chapa.co/v1`, `Authorization: Bearer CHASECK_TEST-…` (our app refuses non-test keys).
+- Charge: `POST /charges?type=telebirr|mpesa`, multipart `amount, currency, tx_ref, mobile`. "Not initiated"
+  comes as HTTP 200 with `"status":"failed"`. Success gives `data.meta.ref_id` (= Chapa reference, our receipt).
+- Verify: `GET /transaction/verify/{tx_ref}`; `data.status` is `success`, `failed/cancelled` or `pending`;
+  `amount` is a JSON number; unknown tx_ref → `"Invalid transaction reference"`, data null.
+- Test numbers that work: telebirr 0900123456, M-Pesa 0700123456 (auto-complete in seconds). 0900112233 from
+  the docs was rejected. Any other number → failed/cancelled.
+- Webhook URL + secret hash only in the dashboard. `x-chapa-signature` = hex HMAC-SHA256(secret, raw body)
+  (confirmed live); `chapa-signature` = HMAC(secret, secret), constant, ignored. No timestamp, no event id.
+- No settlement listing for direct charges. Encryption key only for card/OTP flows.

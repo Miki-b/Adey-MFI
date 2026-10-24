@@ -13,6 +13,9 @@ public record MobilePaymentResponse(
         BigDecimal amount,
         String currency,
         String phone,
+        /* "simulator" or "chapa", and TELEBIRR or MPESA. */
+        String provider,
+        PaymentMethod method,
         PaymentStatus status,
         /* true once nothing more will happen on its own (POSTED, DECLINED, CHARGE_FAILED, MISMATCH, NEEDS_ATTENTION). */
         boolean finalState,
@@ -34,7 +37,7 @@ public record MobilePaymentResponse(
 
     static MobilePaymentResponse of(PaymentIntent i) {
         return new MobilePaymentResponse(i.getId(), i.getReference(), i.getLoanId(), i.getClientId(), i.getAmount(),
-                i.getCurrency(), i.getPhone(), i.getStatus(), !i.getStatus().isOpen(), i.getProviderChargeId(),
+                i.getCurrency(), i.getPhone(), i.getProvider(), i.getMethod(), i.getStatus(), !i.getStatus().isOpen(), i.getProviderChargeId(),
                 i.getProviderTransactionId(), i.getProviderAmount(), i.getPaidAt(), i.getFineractTransactionId(),
                 i.getPostingAttempts(), i.getNextAttemptAt(), i.getLastError(), i.getRequestedBy(),
                 i.getCreatedAt(), i.getUpdatedAt(),

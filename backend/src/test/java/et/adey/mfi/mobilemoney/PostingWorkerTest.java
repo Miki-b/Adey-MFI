@@ -67,9 +67,9 @@ class PostingWorkerTest extends ApiTestBase {
         server = MockRestServiceServer.bindTo(builder).build();
         clock = new MovableClock();
         // 3 attempts, 10 s base, so the give-up case is quick to reach.
-        MobileMoneyProperties small = new MobileMoneyProperties(props.providerBaseUrl(), props.apiKey(),
+        MobileMoneyProperties small = new MobileMoneyProperties("simulator", props.providerBaseUrl(), props.apiKey(),
                 props.webhookSecret(), props.callbackUrl(), props.timestampTolerance(), "ETB", "Mobile Money", false,
-                new MobileMoneyProperties.Posting(3, Duration.ofSeconds(10), Duration.ofMinutes(2)));
+                new MobileMoneyProperties.Posting(3, Duration.ofSeconds(10), Duration.ofMinutes(2)), props.verify());
         worker = new MobileMoneyPostingService(new FineractClient(builder.build(), TestJson.mapper()), paymentIntents,
                 small, audit, clock);
     }

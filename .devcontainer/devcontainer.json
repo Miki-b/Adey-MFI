@@ -10,7 +10,9 @@
   // Java 21 image (see Dockerfile: it only removes a broken Yarn apt source).
   "build": { "dockerfile": "Dockerfile" },
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    // SSH server inside the container: needed by "gh codespace ssh" (scripts/codespace.ps1).
+    "ghcr.io/devcontainers/features/sshd:1": {}
   },
   "hostRequirements": {
     "cpus": 2,

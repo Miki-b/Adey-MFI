@@ -1,5 +1,5 @@
 // Dev container for GitHub Codespaces: the whole Adey MFI stack in the cloud.
-// - image: Java 21 (same as backend/pom.xml), Maven via the project's ./mvnw.
+// - image: Java 21 (same as backend/pom.xml) via .devcontainer/Dockerfile, Maven via ./mvnw.
 // - docker-in-docker: a Docker engine INSIDE the Codespace, so infra/docker-compose.yml can run
 //   Postgres + Fineract there (the "docker" CLI talks to that inner engine).
 // - lifecycle: onCreate builds the backend once; postStart (every start, also after a stop) brings
@@ -7,7 +7,8 @@
 // - ports: only 8080 is forwarded, private (GitHub login needed). 8443/5432/5433 are never forwarded.
 {
   "name": "Adey MFI (Fineract + backend)",
-  "image": "mcr.microsoft.com/devcontainers/java:1-21-bookworm",
+  // Java 21 image (see Dockerfile: it only removes a broken Yarn apt source).
+  "build": { "dockerfile": "Dockerfile" },
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },

@@ -19,6 +19,7 @@ application-secret*.yml
 *.iws
 *.ipr
 .vscode/
+!app/.vscode/
 .classpath
 .project
 .settings/

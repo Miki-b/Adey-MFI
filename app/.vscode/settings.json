@@ -1,0 +1,10 @@
+{
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  "search.exclude": {
+    "**/.fvm": true,
+    "packages/adey_api/lib/**/*.g.dart": true
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true
+  }
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DEBUG builds only (src/debug): allow plain http:// so the app can reach a backend on the PC
+     (LAN IP) or the emulator host (10.0.2.2). Release builds use Android's default: HTTPS only. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

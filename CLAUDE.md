@@ -21,7 +21,7 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
 | --- | --- |
 | infra/ | docker-compose.yml: PostgreSQL 18 (host port 5433) + apache/fineract + openmf/web-app:1.14 |
 | backend/ | Spring Boot API (Java 17+, Maven wrapper) |
-| app/ | Flutter app (later) |
+| app/ | Flutter app "Adey Field" (FVM, Riverpod, go_router, generated Dart client in app/packages/adey_api) |
 | calc/ | loan-schedule.xlsx — reference schedule that matches Fineract to the cent |
 | postman/ | Postman collection + local environment |
 | notes/ | Learning notes, one file per stage |
@@ -113,7 +113,11 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   Chapa test mode for telebirr + M-Pesa: webhooks only a hint, verify-before-post (`PaymentVerifier`, also
   polls PENDING with backoff), reconciliation by verify calls (`SettlementSource`). Request takes `method`
   TELEBIRR|MPESA. Flyway V5. 165 tests. Verified live in the Codespace. Notes: notes/08-chapa.md.
-- Next: the Flutter app in app/ (generate the Dart client from backend/openapi.json).
+- Flutter Session A done (2026-10-26): app/ "Adey Field" (plan in app/PLAN.md, sessions A–D): FVM-pinned
+  Flutter 3.41.6, generated client (app/tool/generate_api.ps1), auth with refresh-once interceptor, dashboard
+  (PAR30), clients + details, server URL setting, error mapper, Decimal money, idempotency helper. Notes:
+  notes/09-flutter-foundation.md.
+- Next: Flutter Session B (R4–R7: new client, loan application, cash repayment, mobile money).
 
 ## Backend facts
 
@@ -166,3 +170,20 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
 - Webhook URL + secret hash only in the dashboard. `x-chapa-signature` = hex HMAC-SHA256(secret, raw body)
   (confirmed live); `chapa-signature` = HMAC(secret, secret), constant, ignored. No timestamp, no event id.
 - No settlement listing for direct charges. Encryption key only for card/OTP flows.
+
+## Flutter app facts
+
+- Run Flutter only through FVM, from app/: `fvm flutter ...` / `fvm dart ...` (PowerShell finds `fvm`; Git Bash
+  doesn't have it on PATH). Pinned 3.41.6 (Dart 3.11) => flutter_riverpod pinned `>=3.2.1 <3.3.0` (newer
+  riverpod_generator needs Dart 3.12). FVM's "Can't load Kernel binary" warning is harmless.
+- Never edit app/packages/adey_api; regenerate with `app\tool\generate_api.ps1` after backend/openapi.json changes.
+  Generated fields are all nullable, money is `num` -> repositories convert with `toDecimal` (num.toString()).
+- Riverpod/l10n outputs (*.g.dart, lib/l10n/app_localizations*.dart) are committed; regenerate with
+  `fvm dart run build_runner build --delete-conflicting-outputs` and `fvm flutter gen-l10n`.
+- Don't edit UTF-8 source files with Windows PowerShell 5.1 Get-Content/Set-Content (it mangles "–" etc.); use Python or the editor.
+- intl: use `DateFormat(..., 'en_US')` (built in); plain 'en' needs initializeDateFormatting.
+- Test phone: Samsung Galaxy F22 (SM-E225F) over USB, storage nearly full (uninstall before reinstalling).
+  Best route keeps 8080 private: `gh codespace ports forward 8080:18080` + `adb reverse tcp:8080 tcp:18080`,
+  app preset "USB cable" (http://127.0.0.1:8080, debug builds). The public-port route was flaky (relay 404s). A private port answers 401 `WWW-Authenticate: tunnel`
+  or 302 to github.dev sign-in; the app shows "Codespace port is private".
+- In the Codespace's seed: Bishoftu = office 2 (samuel, hana, tadesse), Adama = office 3 (meron, dawit, selamawit).

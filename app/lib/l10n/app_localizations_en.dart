@@ -468,6 +468,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get serverPresetCodespace => 'Codespace';
 
   @override
+  String get serverPresetUsb => 'USB cable (adb reverse, 127.0.0.1:8080)';
+
+  @override
   String get serverPresetEmulator => 'Android emulator (10.0.2.2:8080)';
 
   @override

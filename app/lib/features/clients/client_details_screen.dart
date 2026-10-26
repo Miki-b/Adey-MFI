@@ -163,7 +163,15 @@ class _LoanCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(child: _Figure(label: l10n.loanPrincipal, value: formatEtb(loan.principal))),
-                Expanded(child: _Figure(label: l10n.loanOutstanding, value: formatEtbOrDash(loan.totalOutstanding))),
+                Expanded(
+                  child: _Figure(
+                    label: l10n.loanOutstanding,
+                    // Before disbursement nothing is owed yet; "ETB 0.00" would read like "paid off".
+                    value: loan.state == LoanState.pending || loan.state == LoanState.approved
+                        ? l10n.notAvailable
+                        : formatEtbOrDash(loan.totalOutstanding),
+                  ),
+                ),
               ],
             ),
             if (loan.installmentsTotal > 0) ...[

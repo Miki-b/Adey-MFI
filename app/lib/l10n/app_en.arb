@@ -153,6 +153,7 @@
   "serverUrlLabel": "Backend URL",
   "serverUrlHelp": "Where the Adey backend runs. HTTPS, except plain http in debug builds.",
   "serverPresetCodespace": "Codespace",
+  "serverPresetUsb": "USB cable (adb reverse, 127.0.0.1:8080)",
   "serverPresetEmulator": "Android emulator (10.0.2.2:8080)",
   "serverPresetLan": "PC on this Wi-Fi",
   "serverSaved": "Server saved. Sign in again.",

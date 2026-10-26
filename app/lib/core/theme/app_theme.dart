@@ -43,7 +43,7 @@ class AppTheme {
       ),
       inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder()),
       filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52), textStyle: const TextStyle(fontSize: 16)),
+        style: FilledButton.styleFrom(minimumSize: const Size(64, 52), textStyle: const TextStyle(fontSize: 16)),
       ),
       navigationBarTheme: NavigationBarThemeData(indicatorColor: scheme.secondaryContainer),
       extensions: [brightness == Brightness.light ? StatusColors.light : StatusColors.dark],

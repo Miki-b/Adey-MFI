@@ -194,6 +194,7 @@ class _ParCard extends StatelessWidget {
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
+      useRootNavigator: true, // above the bottom tabs, not inside the tab's navigator
       builder: (context) => SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),

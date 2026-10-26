@@ -15,6 +15,10 @@ class ServerConfig {
   /// The Android emulator reaches the PC's localhost at 10.0.2.2.
   static const emulatorUrl = 'http://10.0.2.2:8080';
 
+  /// Phone on a USB cable: `adb reverse tcp:8080 tcp:<port>` makes the phone's localhost reach the PC
+  /// (and from there e.g. `gh codespace ports forward`), so the Codespace port can stay private.
+  static const usbUrl = 'http://127.0.0.1:8080';
+
   /// A backend on the PC, reached over Wi-Fi (see backend/README.md "LAN").
   static const lanUrl = 'http://192.168.1.3:8080';
 

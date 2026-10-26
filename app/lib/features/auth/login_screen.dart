@@ -50,6 +50,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
+    // A new server makes the last error meaningless.
+    ref.listen(serverUrlProvider, (_, _) => setState(() => _error = null));
     final expired = ref.watch(sessionNoticeProvider);
     final server = ref.watch(serverUrlProvider);
     final message = _error ?? (expired ? l10n.errorSessionExpired : null);

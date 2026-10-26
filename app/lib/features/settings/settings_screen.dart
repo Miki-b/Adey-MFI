@@ -80,6 +80,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final user = ref.watch(authControllerProvider).value;
     final presets = <(String, String)>[
       (l10n.serverPresetCodespace, ServerConfig.codespaceUrl),
+      if (ServerConfig.allowHttp) (l10n.serverPresetUsb, ServerConfig.usbUrl),
       if (ServerConfig.allowHttp) (l10n.serverPresetEmulator, ServerConfig.emulatorUrl),
       if (ServerConfig.allowHttp) (l10n.serverPresetLan, ServerConfig.lanUrl),
     ];

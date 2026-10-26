@@ -850,6 +850,12 @@ abstract class AppLocalizations {
   /// **'Codespace'**
   String get serverPresetCodespace;
 
+  /// No description provided for @serverPresetUsb.
+  ///
+  /// In en, this message translates to:
+  /// **'USB cable (adb reverse, 127.0.0.1:8080)'**
+  String get serverPresetUsb;
+
   /// No description provided for @serverPresetEmulator.
   ///
   /// In en, this message translates to:

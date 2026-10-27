@@ -1,5 +1,7 @@
 package et.adey.mfi.portfolio;
 
+import org.jspecify.annotations.Nullable;
+
 import et.adey.mfi.loan.LoanStatus;
 
 import java.math.BigDecimal;
@@ -15,17 +17,17 @@ public record LoanListItem(
         String accountNo,
         Long clientId,
         String clientName,
-        String clientMobileNo,
+        @Nullable String clientMobileNo,
         String productName,
-        String loanOfficerName,
+        @Nullable String loanOfficerName,
         LoanStatus status,
-        String statusLabel,
+        @Nullable String statusLabel,
         BigDecimal principal,
         BigDecimal principalOutstanding,
         BigDecimal totalOverdue,
         long daysOverdue,
         boolean inArrears,
-        LocalDate nextDueDate,
-        BigDecimal nextDueAmount,
-        LocalDate submittedOn) {
+        @Nullable LocalDate nextDueDate,
+        @Nullable BigDecimal nextDueAmount,
+        @Nullable LocalDate submittedOn) {
 }

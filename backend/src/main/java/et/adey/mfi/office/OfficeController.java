@@ -20,7 +20,7 @@ public class OfficeController {
         this.officeService = officeService;
     }
 
-    @Operation(summary = "List all offices (branches)")
+    @Operation(operationId = "listOffices", summary = "List all offices (branches)")
     @GetMapping
     public List<OfficeResponse> list() {
         return officeService.listOffices();

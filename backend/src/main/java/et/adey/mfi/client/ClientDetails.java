@@ -1,25 +1,27 @@
 package et.adey.mfi.client;
 
+import org.jspecify.annotations.Nullable;
+
 import java.time.LocalDate;
 
 /** Full client profile. status is Fineract's label, e.g. "Active", "Pending". */
 public record ClientDetails(
         Long id,
         String accountNo,
-        String externalId,
+        @Nullable String externalId,
         String displayName,
-        String firstName,
-        String middleName,
-        String lastName,
-        String mobileNo,
-        LocalDate dateOfBirth,
-        String gender,
-        String status,
+        @Nullable String firstName,
+        @Nullable String middleName,
+        @Nullable String lastName,
+        @Nullable String mobileNo,
+        @Nullable LocalDate dateOfBirth,
+        @Nullable String gender,
+        @Nullable String status,
         boolean active,
-        LocalDate submittedOnDate,
-        LocalDate activationDate,
+        @Nullable LocalDate submittedOnDate,
+        @Nullable LocalDate activationDate,
         Long officeId,
         String officeName,
-        Long staffId,
-        String staffName) {
+        @Nullable Long staffId,
+        @Nullable String staffName) {
 }

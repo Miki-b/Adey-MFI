@@ -42,7 +42,7 @@ public class WebhookController {
         this.clock = clock;
     }
 
-    @Operation(summary = "Webhook from the mobile money provider (signed, no JWT)")
+    @Operation(operationId = "receiveMobileMoneyWebhook", summary = "Webhook from the mobile money provider (signed, no JWT)")
     @SecurityRequirements
     @PostMapping("/api/webhooks/mobile-money")
     public Map<String, Object> receive(@RequestHeader HttpHeaders headers, @RequestBody String rawBody,

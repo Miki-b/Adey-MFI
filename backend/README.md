@@ -431,17 +431,30 @@ also list 0900112233 / 0900881111 / 0700112233 / 0700881111, but on 2026-10-24 C
 ### OpenAPI for the Flutter client
 
 `backend/openapi.json` is the full OpenAPI 3.1 spec. `OpenApiSpecTest` re-exports it on every
-`mvnw test`, so commit it whenever it changes. Generate the Dart client from it, e.g.
-`openapi-generator-cli generate -i backend/openapi.json -g dart-dio -o app/lib/api`.
+`mvnw test`, so commit it whenever it changes. The app generates its Dart client from it with
+`app/tool/generate_api.ps1` (see app/README.md).
+
+What the spec guarantees (`config/OpenApiConfig.java`, checked by `OpenApiSpecTest`):
+- **operationId** on every endpoint (`listClients`, `getClientLoans`, `previewSchedule`, `recordRepayment`,
+  ...): these become the generated method names.
+- **required = always sent and non-null.** A response record's component is required unless it is annotated
+  JSpecify `@Nullable`; primitives are always required. Request records keep their Bean Validation rules.
+  Mark a new response field `@Nullable` if it can ever be null, or generated clients will fail to parse it.
+- **Money** is `type: number, format: decimal`: still a JSON number, but documented as an exact decimal
+  (clients should parse it into a decimal type, not do float arithmetic).
+- **Errors**: every operation documents `4XX`/`5XX` as `Problem` (RFC 7807 + `code`, an enum of every code in
+  `common/ErrorCodes.java`; `ErrorCodeCatalogTest` keeps that list, the source and the table below in sync).
+- Unique schema names: `LoanDetails.summary` is `LoanTotals`, the reconciliation summary is `ReconciliationSummary`.
 
 Conventions:
 - Money is a JSON number with 2 decimals (`1833.60`), ETB. Rates are percent per year (`18.00`).
 - Dates are ISO `yyyy-MM-dd`.
 - Paging is 0-based: `{content, page, size, totalElements, totalPages}`; `size` max 100.
-- `search` matches part of the client's display name and is **case-sensitive**
-  (Fineract runs SQL `LIKE` on PostgreSQL): `Tek` finds "Yohannes Tekle", `tek` does not.
-  Fineract's `/search` endpoint was checked too (2026-10-23): also case-sensitive, and it has
-  no paging or office/staff filters, so we keep `displayName`.
+- `search` matches part of the client's display name, **ignoring case** (`tek` finds "Yohannes Tekle").
+  Fineract's own `displayName` filter is a case-sensitive SQL `LIKE` (its `/search` endpoint too, and that one
+  has no paging or office/staff filters). So with search text the backend reads the caller's scoped client list
+  (sorted by name, in pages of 200) and filters it itself; without search text Fineract pages as before.
+  Limit: at most 2,000 clients are searched (an officer or a branch has far fewer).
 
 Schedule preview example:
 
@@ -477,12 +490,14 @@ may change. Complete list:
 | 400 | `FINERACT_VALIDATION` | Fineract rejected a field (e.g. principal outside the product range) |
 | 400 | `IDEMPOTENCY_KEY_INVALID` | `Idempotency-Key` has the wrong format |
 | 400 | `RESOLUTION_NOTE_REQUIRED` | resolving this reconciliation finding needs a `note` |
+| 400 | `PHONE_METHOD_MISMATCH` | mobile payment: the phone number doesn't belong to the chosen wallet (TELEBIRR = 09…, MPESA = 07…) |
 | 401 | `UNAUTHENTICATED` | no, invalid or expired access token: refresh or log in |
 | 401 | `INVALID_CREDENTIALS` | wrong username or password |
 | 401 | `INVALID_REFRESH_TOKEN` | refresh token expired, revoked or already used: log in again |
 | 401 | `WEBHOOK_SIGNATURE_INVALID` | (provider only) webhook signature missing or wrong |
 | 401 | `WEBHOOK_TIMESTAMP_INVALID` | (provider only) webhook timestamp more than 5 minutes off |
-| 403 | `FORBIDDEN` | not your client / office, manager-only action, or not an officer account |
+| 403 | `FORBIDDEN` | not your client / office, or a manager-only action |
+| 403 | `NOT_AN_OFFICER` | login: valid Fineract user, but not linked to a staff member with the Loan Officer / Branch Manager role |
 | 404 | `NOT_FOUND` | no such client/loan/URL |
 | 405 | `METHOD_NOT_ALLOWED` | wrong HTTP method for this URL |
 | 406 | `NOT_ACCEPTABLE` | unsupported `Accept` header |

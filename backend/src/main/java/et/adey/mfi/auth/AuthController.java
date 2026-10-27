@@ -26,7 +26,7 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @Operation(summary = "Log in with Fineract username + password; returns access and refresh tokens")
+    @Operation(operationId = "login", summary = "Log in with Fineract username + password; returns access and refresh tokens")
     @SecurityRequirements // no bearer token needed
     @PostMapping("/login")
     public TokenResponse login(@Valid @RequestBody LoginRequest request, HttpServletRequest http) {
@@ -35,14 +35,14 @@ public class AuthController {
         return authService.login(request.username(), request.password(), http.getRemoteAddr());
     }
 
-    @Operation(summary = "Exchange a refresh token for a new token pair (the old refresh token stops working)")
+    @Operation(operationId = "refreshTokens", summary = "Exchange a refresh token for a new token pair (the old refresh token stops working)")
     @SecurityRequirements
     @PostMapping("/refresh")
     public TokenResponse refresh(@Valid @RequestBody RefreshRequest request) {
         return authService.refresh(request.refreshToken());
     }
 
-    @Operation(summary = "Log out: revoke the refresh token (the access token expires on its own within 15 min)")
+    @Operation(operationId = "logout", summary = "Log out: revoke the refresh token (the access token expires on its own within 15 min)")
     @SecurityRequirements
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@Valid @RequestBody RefreshRequest request) {
@@ -50,7 +50,7 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "The officer the access token belongs to")
+    @Operation(operationId = "getCurrentOfficer", summary = "The officer the access token belongs to")
     @GetMapping("/me")
     public OfficerResponse me(@AuthenticationPrincipal Officer officer) {
         return OfficerResponse.of(officer);

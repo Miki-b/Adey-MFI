@@ -1,5 +1,8 @@
 package et.adey.mfi.reconciliation;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.jspecify.annotations.Nullable;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -17,15 +20,16 @@ public record ReconciliationReport(
         Summary summary,
         List<FindingResponse> findings) {
 
+    @Schema(name = "ReconciliationSummary") // unique schema name (LoanDetails has a Summary too)
     public record Summary(int matched, int paidNotPosted, int postedNotPaid, int amountMismatch, int unresolved,
                           BigDecimal providerTotal, BigDecimal fineractTotal, BigDecimal matchedTotal) {
     }
 
-    public record FindingResponse(Long id, FindingType type, Long officeId, Long loanId, Long intentId,
-                                  String reference, String receiptNumber, BigDecimal providerAmount,
-                                  BigDecimal intentAmount, BigDecimal fineractAmount, Long fineractTransactionId,
-                                  String detail, boolean resolved, Instant resolvedAt, String resolvedBy,
-                                  String resolutionNote) {
+    public record FindingResponse(Long id, FindingType type, @Nullable Long officeId, @Nullable Long loanId, @Nullable Long intentId,
+                                  @Nullable String reference, @Nullable String receiptNumber, @Nullable BigDecimal providerAmount,
+                                  @Nullable BigDecimal intentAmount, @Nullable BigDecimal fineractAmount, @Nullable Long fineractTransactionId,
+                                  @Nullable String detail, boolean resolved, @Nullable Instant resolvedAt, @Nullable String resolvedBy,
+                                  @Nullable String resolutionNote) {
 
         static FindingResponse of(ReconciliationFinding f) {
             return new FindingResponse(f.getId(), f.getType(), f.getOfficeId(), f.getLoanId(), f.getIntentId(),

@@ -19,7 +19,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -42,17 +45,46 @@ public class ClientService {
         this.audit = audit;
     }
 
+    /** Search reads the caller's whole scope from Fineract in pages of this size... */
+    static final int SCAN_PAGE = 200;
+    /** ...but never more than this many clients (see search()). */
+    static final int SCAN_LIMIT = 2000;
+
     /**
-     * page is 0-based; Fineract wants offset = page * size. The office/staff filter comes from the
-     * token (AccessPolicy.clientScope), so an officer cannot list someone else's clients.
+     * page is 0-based. The office/staff filter comes from the token (AccessPolicy.clientScope), so an
+     * officer cannot list someone else's clients.
+     *
+     * Without search text, Fineract pages for us (offset = page * size). With search text, the match
+     * is CASE-INSENSITIVE ("tek" finds "Yohannes Tekle"): Fineract's displayName filter is a
+     * case-sensitive SQL LIKE we can't change, so we read the caller's scoped list (sorted by name) and
+     * filter it here. Limit: at most SCAN_LIMIT clients are searched (a branch or an officer has far
+     * fewer); beyond that the search would need Fineract-side support, e.g. a lower-case index.
      */
     public PageResponse<ClientSummary> search(Officer officer, String search, int page, int size) {
-        String name = StringUtils.hasText(search) ? search.trim() : null;
         AccessPolicy.ClientScope scope = access.clientScope(officer);
-        FineractPage<FineractClientData> result =
-                fineract.searchClients(name, scope.officeId(), scope.staffId(), page * size, size);
-        return PageResponse.of(result.itemsOrEmpty(), ClientService::toSummary,
-                page, size, result.totalFilteredRecords());
+        if (!StringUtils.hasText(search)) {
+            FineractPage<FineractClientData> result =
+                    fineract.searchClients(null, scope.officeId(), scope.staffId(), page * size, size);
+            return PageResponse.of(result.itemsOrEmpty(), ClientService::toSummary,
+                    page, size, result.totalFilteredRecords());
+        }
+        String needle = search.trim().toLowerCase(Locale.ROOT);
+        List<FineractClientData> matches = new ArrayList<>();
+        for (int offset = 0; offset < SCAN_LIMIT; offset += SCAN_PAGE) {
+            FineractPage<FineractClientData> chunk =
+                    fineract.searchClients(null, scope.officeId(), scope.staffId(), offset, SCAN_PAGE);
+            for (FineractClientData c : chunk.itemsOrEmpty()) {
+                if (c.displayName() != null && c.displayName().toLowerCase(Locale.ROOT).contains(needle)) {
+                    matches.add(c);
+                }
+            }
+            if (offset + SCAN_PAGE >= chunk.totalFilteredRecords()) {
+                break;
+            }
+        }
+        int from = Math.min(page * size, matches.size());
+        int to = Math.min(from + size, matches.size());
+        return PageResponse.of(matches.subList(from, to), ClientService::toSummary, page, size, matches.size());
     }
 
     public ClientDetails getClient(Officer officer, long clientId) {

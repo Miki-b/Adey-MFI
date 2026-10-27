@@ -305,7 +305,8 @@ class SecurityIntegrationTest {
                 1L, "Head Office", null, null, List.of(new FineractRole(1L, "Super user", false)), false));
         mvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\": \"mifos\", \"password\": \"password\"}"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.code").value("NOT_AN_OFFICER"));
     }
 
     // ---- Audit ---------------------------------------------------------------------------

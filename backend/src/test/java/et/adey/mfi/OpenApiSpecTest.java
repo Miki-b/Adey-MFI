@@ -49,5 +49,39 @@ class OpenApiSpecTest extends ApiTestBase {
         assertThat(paths.path("/api/loans/{loanId}/repayments").path("post").path("responses").path("200").toString())
                 .contains("LoanTransactionResponse");
         assertThat(root.path("servers").get(0).path("url").asString()).isEqualTo("http://localhost:8080");
+
+        // Every operation: a unique, meaningful operationId (= the Dart method name) and documented errors.
+        java.util.Set<String> ids = new java.util.HashSet<>();
+        for (var path : paths.properties()) {
+            for (var op : path.getValue().properties()) {
+                String id = op.getValue().path("operationId").asString();
+                assertThat(id).as(op.getKey() + " " + path.getKey()).isNotBlank().doesNotMatch(".*_[0-9]+$|^(get|list)[0-9]+$");
+                assertThat(ids.add(id)).as("duplicate operationId " + id).isTrue();
+                assertThat(op.getValue().path("responses").has("4XX")).as(id + " documents 4XX").isTrue();
+            }
+        }
+        assertThat(ids).contains("listClients", "getClientLoans", "previewSchedule", "getPortfolio", "recordRepayment");
+
+        JsonNode schemas = root.path("components").path("schemas");
+        // LoanDetails.summary is the loan totals, not the reconciliation summary (both Java records are "Summary").
+        assertThat(schemas.path("LoanDetails").path("properties").path("summary").path("$ref").asString())
+                .endsWith("/LoanTotals");
+        assertThat(schemas.path("LoanTotals").path("properties").has("principalOutstanding")).isTrue();
+        assertThat(schemas.path("ReconciliationReport").path("properties").path("summary").path("$ref").asString())
+                .endsWith("/ReconciliationSummary");
+        // Required = always sent and non-null; @Nullable components stay optional.
+        assertThat(schemas.path("Portfolio").path("required").toString()).contains("\"scope\"", "\"par\"")
+                .doesNotContain("\"officers\"");
+        assertThat(schemas.path("ClientDetails").path("required").toString()).contains("\"displayName\"")
+                .doesNotContain("\"mobileNo\"");
+        // Requests keep their Bean Validation rules only.
+        assertThat(schemas.path("RepaymentRequest").path("required").toString()).isEqualTo("[\"amount\"]");
+        // Money is an exact decimal; the role is an enum.
+        assertThat(schemas.path("Par").path("properties").path("par30").path("format").asString()).isEqualTo("decimal");
+        assertThat(schemas.path("RepaymentRequest").path("properties").path("amount").path("format").asString())
+                .isEqualTo("decimal");
+        assertThat(schemas.path("Scope").path("properties").path("role").toString()).contains("MANAGER", "OFFICER");
+        assertThat(schemas.path("Problem").path("properties").path("code").path("enum").toString())
+                .contains("NOT_AN_OFFICER", "PHONE_METHOD_MISMATCH");
     }
 }

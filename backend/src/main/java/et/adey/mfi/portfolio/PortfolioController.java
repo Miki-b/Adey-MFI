@@ -22,7 +22,7 @@ public class PortfolioController {
         this.service = service;
     }
 
-    @Operation(summary = "Loans you may see, filtered. status=PENDING is the approval queue (oldest first); "
+    @Operation(operationId = "listLoans", summary = "Loans you may see, filtered. status=PENDING is the approval queue (oldest first); "
             + "inArrears=true is the collection list (most days overdue first)")
     @GetMapping("/api/loans")
     public List<LoanListItem> list(
@@ -34,7 +34,7 @@ public class PortfolioController {
         return service.listLoans(officer, status, inArrears, clientId);
     }
 
-    @Operation(summary = "Dashboard: counts, outstanding, PAR1/PAR30, due today, overdue (+ per officer for managers)")
+    @Operation(operationId = "getPortfolio", summary = "Dashboard: counts, outstanding, PAR1/PAR30, due today, overdue (+ per officer for managers)")
     @GetMapping("/api/me/portfolio")
     public Portfolio portfolio(@AuthenticationPrincipal Officer officer) {
         return service.portfolio(officer);

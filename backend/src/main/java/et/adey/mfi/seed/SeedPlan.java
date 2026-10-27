@@ -1,5 +1,6 @@
 package et.adey.mfi.seed;
 
+import et.adey.mfi.client.Gender;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -130,7 +131,7 @@ final class SeedPlan {
                 int installmentsPaidInFull, BigDecimal partialPayment) {
     }
 
-    record Client(String externalId, String officerKey, String firstname, String lastname, String mobileNo,
+    record Client(String externalId, String officerKey, String firstname, String lastname, Gender gender, String mobileNo,
                   LocalDate dateOfBirth, LocalDate activatedOn, Loan loan) {
     }
 
@@ -152,39 +153,39 @@ final class SeedPlan {
 
     static final List<Client> CLIENTS = List.of(
             // --- Bishoftu, Samuel ---
-            new Client("SEED-C01", "samuel", "Abebe", "Kebede", "0922100001", LocalDate.of(1988, 3, 12),
+            new Client("SEED-C01", "samuel", "Abebe", "Kebede", Gender.MALE, "0922100001", LocalDate.of(1988, 3, 12),
                     BSH_ACTIVATED, null),
-            new Client("SEED-C02", "samuel", "Almaz", "Tadesse", "0922100002", LocalDate.of(1992, 7, 4),
+            new Client("SEED-C02", "samuel", "Almaz", "Tadesse", Gender.FEMALE, "0922100002", LocalDate.of(1992, 7, 4),
                     BSH_ACTIVATED, loan("SEED-L02", "15000", 12, "2026-10-20", null, null, Scenario.PENDING)),
             // --- Bishoftu, Hana ---
-            new Client("SEED-C03", "hana", "Kidist", "Wolde", "0922100003", LocalDate.of(1990, 11, 23),
+            new Client("SEED-C03", "hana", "Kidist", "Wolde", Gender.FEMALE, "0922100003", LocalDate.of(1990, 11, 23),
                     BSH_ACTIVATED, loan("SEED-L03", "25000", 18, "2026-10-12", "2026-10-15", null, Scenario.APPROVED)),
-            new Client("SEED-C04", "hana", "Yonas", "Mekonnen", "0922100004", LocalDate.of(1985, 1, 30),
+            new Client("SEED-C04", "hana", "Yonas", "Mekonnen", Gender.MALE, "0922100004", LocalDate.of(1985, 1, 30),
                     BSH_ACTIVATED, loan("SEED-L04", "50000", 24, "2026-10-10", null, null, Scenario.REJECTED)),
-            new Client("SEED-C05", "hana", "Bethlehem", "Assefa", "0922100005", LocalDate.of(1995, 5, 17),
+            new Client("SEED-C05", "hana", "Bethlehem", "Assefa", Gender.FEMALE, "0922100005", LocalDate.of(1995, 5, 17),
                     BSH_ACTIVATED, loan("SEED-L05", "10000", 6, "2026-10-06", "2026-10-07", "2026-10-08",
                     Scenario.ACTIVE_NEW)),
-            new Client("SEED-C13", "hana", "Fikirte", "Mengistu", "0922100013", LocalDate.of(1993, 9, 2),
+            new Client("SEED-C13", "hana", "Fikirte", "Mengistu", Gender.FEMALE, "0922100013", LocalDate.of(1993, 9, 2),
                     BSH_ACTIVATED, null),
             // --- Adama, Meron ---
-            new Client("SEED-C06", "meron", "Tigist", "Haile", "0922200006", LocalDate.of(1987, 2, 14),
+            new Client("SEED-C06", "meron", "Tigist", "Haile", Gender.FEMALE, "0922200006", LocalDate.of(1987, 2, 14),
                     ADA_ACTIVATED, loan("SEED-L06", "20000", 12, "2026-05-10", "2026-05-12", "2026-05-15",
                     Scenario.ACTIVE_ON_TIME)),
-            new Client("SEED-C07", "meron", "Getachew", "Ayele", "0922200007", LocalDate.of(1983, 8, 9),
+            new Client("SEED-C07", "meron", "Getachew", "Ayele", Gender.MALE, "0922200007", LocalDate.of(1983, 8, 9),
                     ADA_ACTIVATED, loan("SEED-L07", "30000", 12, "2026-04-05", "2026-04-08", "2026-04-10",
                     Scenario.ACTIVE_PARTLY_PAID, 2, "1000.00")),
-            new Client("SEED-C08", "meron", "Mulu", "Gebre", "0922200008", LocalDate.of(1979, 12, 1),
+            new Client("SEED-C08", "meron", "Mulu", "Gebre", Gender.FEMALE, "0922200008", LocalDate.of(1979, 12, 1),
                     ADA_ACTIVATED, loan("SEED-L08", "8000", 6, "2025-02-20", "2025-02-25", "2025-03-01",
                     Scenario.CLOSED)),
             // --- Adama, Dawit ---
-            new Client("SEED-C09", "dawit", "Solomon", "Tefera", "0922200009", LocalDate.of(1991, 4, 21),
+            new Client("SEED-C09", "dawit", "Solomon", "Tefera", Gender.MALE, "0922200009", LocalDate.of(1991, 4, 21),
                     ADA_ACTIVATED, loan("SEED-L09", "12000", 12, "2026-06-25", "2026-06-28", "2026-07-01",
                     Scenario.ACTIVE_NO_PAYMENTS)),
-            new Client("SEED-C10", "dawit", "Hirut", "Desta", "0922200010", LocalDate.of(1996, 6, 6),
+            new Client("SEED-C10", "dawit", "Hirut", "Desta", Gender.FEMALE, "0922200010", LocalDate.of(1996, 6, 6),
                     ADA_ACTIVATED, loan("SEED-L10", "40000", 24, "2026-10-21", null, null, Scenario.PENDING)),
-            new Client("SEED-C11", "dawit", "Ermias", "Girma", "0922200011", LocalDate.of(1989, 10, 18),
+            new Client("SEED-C11", "dawit", "Ermias", "Girma", Gender.MALE, "0922200011", LocalDate.of(1989, 10, 18),
                     ADA_ACTIVATED, null),
-            new Client("SEED-C12", "dawit", "Meseret", "Bekele", "0922200012", LocalDate.of(1994, 3, 27),
+            new Client("SEED-C12", "dawit", "Meseret", "Bekele", Gender.FEMALE, "0922200012", LocalDate.of(1994, 3, 27),
                     ADA_ACTIVATED, loan("SEED-L12", "18000", 12, "2026-03-01", "2026-03-03", "2026-03-05",
                     Scenario.ACTIVE_ON_TIME)));
 

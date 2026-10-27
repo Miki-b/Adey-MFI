@@ -33,7 +33,7 @@ public class MobilePaymentController {
         this.idempotency = idempotency;
     }
 
-    @Operation(summary = "Ask the client to pay a repayment from their mobile wallet (client confirms on the phone)")
+    @Operation(operationId = "requestMobilePayment", summary = "Ask the client to pay a repayment from their mobile wallet (client confirms on the phone)")
     @PostMapping("/api/loans/{loanId}/mobile-payments")
     public ResponseEntity<MobilePaymentResponse> request(@AuthenticationPrincipal Officer officer,
                                                          @PathVariable long loanId,
@@ -47,13 +47,13 @@ public class MobilePaymentController {
                 .body(outcome.body());
     }
 
-    @Operation(summary = "One mobile payment with its status history (poll this until finalState is true)")
+    @Operation(operationId = "getMobilePayment", summary = "One mobile payment with its status history (poll this until finalState is true)")
     @GetMapping("/api/mobile-payments/{id}")
     public MobilePaymentResponse get(@AuthenticationPrincipal Officer officer, @PathVariable long id) {
         return service.get(officer, id);
     }
 
-    @Operation(summary = "All mobile payments of a loan, newest first")
+    @Operation(operationId = "listLoanMobilePayments", summary = "All mobile payments of a loan, newest first")
     @GetMapping("/api/loans/{loanId}/mobile-payments")
     public List<MobilePaymentResponse> list(@AuthenticationPrincipal Officer officer, @PathVariable long loanId) {
         return service.listForLoan(officer, loanId);

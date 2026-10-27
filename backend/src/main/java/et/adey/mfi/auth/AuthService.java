@@ -12,7 +12,6 @@ import et.adey.mfi.security.Officer;
 import et.adey.mfi.security.Role;
 import et.adey.mfi.security.TokenService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -80,7 +79,7 @@ public class AuthService {
         try {
             officer = toOfficer(auth.userId(), auth.username(), auth.staffId(), auth.staffDisplayName(),
                     auth.officeId(), auth.officeName(), auth.roles());
-        } catch (AccessDeniedException e) {
+        } catch (NotAnOfficerException e) {
             audit.recordLogin(username, null, ip, AuditOutcome.DENIED, "not an officer or manager account");
             throw e;
         }
@@ -119,8 +118,7 @@ public class AuthService {
                     .forEach(r -> Role.fromFineractRoleName(r.name()).ifPresent(roles::add));
         }
         if (staffId == null || roles.isEmpty()) {
-            throw new AccessDeniedException(
-                    "This account is not set up as an Adey MFI loan officer or branch manager.");
+            throw new NotAnOfficerException();
         }
         return new Officer(userId, username, Names.readable(staffDisplayName), staffId, officeId, officeName,
                 Set.copyOf(roles));

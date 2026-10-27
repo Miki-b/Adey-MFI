@@ -27,7 +27,7 @@ public class ReconciliationController {
         this.service = service;
     }
 
-    @Operation(summary = "Run reconciliation for a date now (default today). Manager only")
+    @Operation(operationId = "runReconciliation", summary = "Run reconciliation for a date now (default today). Manager only")
     @PostMapping("/api/reconciliation/run")
     public ReconciliationReport run(@AuthenticationPrincipal Officer officer,
                                     @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -35,14 +35,14 @@ public class ReconciliationController {
         return service.runAsManager(officer, date != null ? date : FineractDates.today());
     }
 
-    @Operation(summary = "Latest reconciliation for a date: summary + findings of your office. Manager only")
+    @Operation(operationId = "getReconciliation", summary = "Latest reconciliation for a date: summary + findings of your office. Manager only")
     @GetMapping("/api/reconciliation/{date}")
     public ReconciliationReport get(@AuthenticationPrincipal Officer officer,
                                     @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return service.view(officer, date);
     }
 
-    @Operation(summary = "Resolve a finding: PAID_NOT_POSTED is posted to Fineract; others need a note. Manager only")
+    @Operation(operationId = "resolveReconciliationFinding", summary = "Resolve a finding: PAID_NOT_POSTED is posted to Fineract; others need a note. Manager only")
     @PostMapping("/api/reconciliation/findings/{id}/resolve")
     public ReconciliationReport.FindingResponse resolve(@AuthenticationPrincipal Officer officer, @PathVariable long id,
                                                         @Valid @RequestBody(required = false) ResolveRequest request) {

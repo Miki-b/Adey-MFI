@@ -1,5 +1,7 @@
 package et.adey.mfi.loan;
 
+import org.jspecify.annotations.Nullable;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -13,14 +15,14 @@ public record LoanSummary(
         String accountNo,
         String productName,
         LoanStatus status,
-        String statusLabel,
+        @Nullable String statusLabel,
         BigDecimal principal,
-        BigDecimal annualInterestRate,
+        @Nullable BigDecimal annualInterestRate,
         int installmentsTotal,
         int installmentsPaid,
         BigDecimal principalOutstanding,
         BigDecimal totalOutstanding,
-        LocalDate nextDueDate,
-        BigDecimal nextDueAmount,
+        @Nullable LocalDate nextDueDate,
+        @Nullable BigDecimal nextDueAmount,
         boolean inArrears) {
 }

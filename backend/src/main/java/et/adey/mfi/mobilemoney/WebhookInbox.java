@@ -47,24 +47,48 @@ public class WebhookInbox {
 
     public enum Result { ACCEPTED, DUPLICATE, MISMATCH, UNKNOWN_REFERENCE, IGNORED }
 
-    /** Stores and applies one verified webhook. Never calls Fineract. */
+    /**
+     * How we learnt the provider's result: its signed webhook (simulator), or our own call to its
+     * verify API (Chapa: after a webhook hint, or by polling). Only wording and audit differ.
+     */
+    public enum Source {
+        WEBHOOK("webhook", ACTOR, AuditAction.WEBHOOK),
+        VERIFY_API("verify API", PaymentVerifier.ACTOR, AuditAction.MOBILE_PAYMENT_VERIFY);
+
+        final String label;
+        final String actor;
+        final AuditAction auditAction;
+
+        Source(String label, String actor, AuditAction auditAction) {
+            this.label = label;
+            this.actor = actor;
+            this.auditAction = auditAction;
+        }
+    }
+
+    /** Stores and applies one provider result that arrived as a signed webhook. */
     public Result receive(ProviderPaymentEvent w, String rawBody) {
+        return receive(w, rawBody, Source.WEBHOOK);
+    }
+
+    /** Stores and applies one provider result. Never calls Fineract. */
+    public Result receive(ProviderPaymentEvent w, String rawBody, Source source) {
         Applied applied;
         try {
             // One transaction: the inbox row and the intent's new status are saved together or not at all.
-            applied = transaction.execute(status -> store(w, rawBody));
+            applied = transaction.execute(status -> store(w, rawBody, source));
         } catch (DataIntegrityViolationException race) {
             // The same eventId arrived twice at the same moment; the other one won.
             applied = new Applied(Result.DUPLICATE, null, "duplicate eventId (concurrent delivery)");
         }
-        auditResult(w, applied);
+        auditResult(w, applied, source);
         return applied.result();
     }
 
     record Applied(Result result, PaymentIntent intent, String detail) {
     }
 
-    private Applied store(ProviderPaymentEvent w, String rawBody) {
+    private Applied store(ProviderPaymentEvent w, String rawBody, Source source) {
         if (events.existsByEventId(w.eventId())) {
             return new Applied(Result.DUPLICATE, null, "duplicate eventId, ignored");
         }
@@ -85,7 +109,8 @@ public class WebhookInbox {
         }
 
         if ("DECLINED".equals(w.status())) {
-            intent.moveTo(PaymentStatus.DECLINED, now, "provider: declined by customer (event " + w.eventId() + ")");
+            intent.moveTo(PaymentStatus.DECLINED, now,
+                    "provider result (" + source.label + "): declined or failed at the provider (event " + w.eventId() + ")");
             event.outcome(WebhookEvent.Outcome.ACCEPTED, intent.getId(), "declined");
         } else if ("SUCCEEDED".equals(w.status())) {
             intent.paid(w.providerTransactionId(), w.amount(), w.timestamp());
@@ -100,7 +125,8 @@ public class WebhookInbox {
                 events.saveAndFlush(event);
                 return new Applied(Result.MISMATCH, intent, why);
             }
-            intent.moveTo(PaymentStatus.RECEIVED, now, "provider: paid, txn " + w.providerTransactionId());
+            intent.moveTo(PaymentStatus.RECEIVED, now,
+                    "provider result (" + source.label + "): paid, txn " + w.providerTransactionId());
             intent.scheduleAttempt(now); // the posting worker picks it up on its next run
             event.outcome(WebhookEvent.Outcome.ACCEPTED, intent.getId(), "paid");
         } else {
@@ -113,13 +139,15 @@ public class WebhookInbox {
         return new Applied(Result.ACCEPTED, intent, w.status());
     }
 
-    private void auditResult(ProviderPaymentEvent w, Applied a) {
+    private void auditResult(ProviderPaymentEvent w, Applied a, Source source) {
         Long loanId = a.intent() == null ? null : a.intent().getLoanId();
         Long clientId = a.intent() == null ? null : a.intent().getClientId();
         AuditOutcome outcome = a.result() == Result.ACCEPTED ? AuditOutcome.SUCCESS : AuditOutcome.REJECTED;
-        audit.recordSystem(ACTOR, AuditAction.WEBHOOK, clientId, loanId, w.amount(), outcome,
-                "event %s ref %s: %s (%s)".formatted(w.eventId(), w.reference(), a.result(), a.detail()));
-        log.info("Webhook {} for {}: {} ({})", w.eventId(), w.reference(), a.result(), a.detail());
+        audit.recordSystem(source.actor, source.auditAction, clientId, loanId, w.amount(), outcome,
+                "provider result %s ref %s via %s: %s (%s)".formatted(w.eventId(), w.reference(), source.label,
+                        a.result(), a.detail()));
+        log.info("Provider result {} for {} via {}: {} ({})", w.eventId(), w.reference(), source.label, a.result(),
+                a.detail());
     }
 
     /** Signature or timestamp wrong: nothing is stored in the inbox, only the audit row. */

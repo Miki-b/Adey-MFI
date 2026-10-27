@@ -1,5 +1,7 @@
 package et.adey.mfi.loan;
 
+import org.jspecify.annotations.Nullable;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -13,7 +15,7 @@ public record LoanTransactionResponse(
         Long id,
         LocalDate date,
         String type,
-        String typeLabel,
+        @Nullable String typeLabel,
         BigDecimal amount,
         BigDecimal principalPortion,
         BigDecimal interestPortion,
@@ -21,6 +23,6 @@ public record LoanTransactionResponse(
         BigDecimal penaltiesPortion,
         BigDecimal overpaymentPortion,
         BigDecimal outstandingBalanceAfter,
-        String paymentType,
+        @Nullable String paymentType,
         boolean reversed) {
 }

@@ -76,7 +76,7 @@ public class PaymentVerifier {
             try {
                 verifyOne(intent.getId(), "poll", null);
             } catch (ObjectOptimisticLockingFailureException e) {
-                log.info("Payment {} was updated concurrently (webhook?); skipping this round", intent.getReference());
+                log.info("Payment {} was updated concurrently (by a webhook?); skipping this round", intent.getReference());
             }
         }
         return due.size();
@@ -173,7 +173,8 @@ public class PaymentVerifier {
                 provider.name() + ":" + intent.getReference() + ":" + v.status(),
                 intent.getProviderChargeId(), intent.getReference(), v.amount(), v.currency(), v.status().name(),
                 v.providerReference(), v.paidAt());
-        WebhookInbox.Result r = inbox.receive(event, rawBody != null ? rawBody : String.valueOf(v.summary()));
+        WebhookInbox.Result r = inbox.receive(event, rawBody != null ? rawBody : String.valueOf(v.summary()),
+                WebhookInbox.Source.VERIFY_API);
         return switch (r) {
             case ACCEPTED -> v.status() == MobileMoneyProvider.VerifiedStatus.SUCCEEDED ? Result.RECEIVED : Result.DECLINED;
             case DUPLICATE -> Result.DUPLICATE;

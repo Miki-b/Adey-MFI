@@ -1,5 +1,7 @@
 package et.adey.mfi.mobilemoney;
 
+import org.jspecify.annotations.Nullable;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
@@ -15,24 +17,24 @@ public record MobilePaymentResponse(
         String phone,
         /* "simulator" or "chapa", and TELEBIRR or MPESA. */
         String provider,
-        PaymentMethod method,
+        @Nullable PaymentMethod method,
         PaymentStatus status,
         /* true once nothing more will happen on its own (POSTED, DECLINED, CHARGE_FAILED, MISMATCH, NEEDS_ATTENTION). */
         boolean finalState,
-        String providerChargeId,
-        String providerTransactionId,
-        BigDecimal providerAmount,
-        Instant paidAt,
-        Long fineractTransactionId,
+        @Nullable String providerChargeId,
+        @Nullable String providerTransactionId,
+        @Nullable BigDecimal providerAmount,
+        @Nullable Instant paidAt,
+        @Nullable Long fineractTransactionId,
         int postingAttempts,
-        Instant nextAttemptAt,
-        String lastError,
+        @Nullable Instant nextAttemptAt,
+        @Nullable String lastError,
         String requestedBy,
         Instant createdAt,
         Instant updatedAt,
         List<Transition> history) {
 
-    public record Transition(PaymentStatus from, PaymentStatus to, Instant at, String note) {
+    public record Transition(@Nullable PaymentStatus from, PaymentStatus to, Instant at, @Nullable String note) {
     }
 
     static MobilePaymentResponse of(PaymentIntent i) {

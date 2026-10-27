@@ -1,5 +1,7 @@
 package et.adey.mfi.loan;
 
+import org.jspecify.annotations.Nullable;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -9,12 +11,12 @@ import java.util.List;
  * lastInstallmentAmount can differ by a few cents because of rounding.
  */
 public record SchedulePreviewResponse(
-        String currency,
-        BigDecimal principal,
+        @Nullable String currency,
+        @Nullable BigDecimal principal,
         int numberOfRepayments,
-        LocalDate expectedDisbursementDate,
-        BigDecimal installmentAmount,
-        BigDecimal lastInstallmentAmount,
+        @Nullable LocalDate expectedDisbursementDate,
+        @Nullable BigDecimal installmentAmount,
+        @Nullable BigDecimal lastInstallmentAmount,
         BigDecimal totalInterest,
         BigDecimal totalRepayable,
         List<SchedulePeriod> periods) {

@@ -19,7 +19,7 @@ public class PaymentTypeController {
         this.paymentTypeService = paymentTypeService;
     }
 
-    @Operation(summary = "Payment types an officer can choose for disbursements and repayments")
+    @Operation(operationId = "listPaymentTypes", summary = "Payment types an officer can choose for disbursements and repayments")
     @GetMapping
     public List<PaymentTypeResponse> list() {
         return paymentTypeService.listPaymentTypes();

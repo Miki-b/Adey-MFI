@@ -1,5 +1,8 @@
 package et.adey.mfi.loan;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.jspecify.annotations.Nullable;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -12,31 +15,32 @@ public record LoanDetails(
         String clientName,
         Long productId,
         String productName,
-        Long loanOfficerId,
-        String loanOfficerName,
+        @Nullable Long loanOfficerId,
+        @Nullable String loanOfficerName,
         LoanStatus status,
-        String statusLabel,
-        String currency,
+        @Nullable String statusLabel,
+        @Nullable String currency,
         BigDecimal principal,
-        BigDecimal approvedPrincipal,
-        BigDecimal annualInterestRate,
+        @Nullable BigDecimal approvedPrincipal,
+        @Nullable BigDecimal annualInterestRate,
         int numberOfRepayments,
-        Dates dates,
+        @Nullable Dates dates,
         Summary summary,
         List<Installment> schedule,
         List<LoanTransactionResponse> transactions) {
 
     public record Dates(
             LocalDate submittedOn,
-            LocalDate approvedOn,
-            LocalDate rejectedOn,
-            LocalDate expectedDisbursement,
-            LocalDate disbursedOn,
-            LocalDate expectedMaturity,
-            LocalDate closedOn) {
+            @Nullable LocalDate approvedOn,
+            @Nullable LocalDate rejectedOn,
+            @Nullable LocalDate expectedDisbursement,
+            @Nullable LocalDate disbursedOn,
+            @Nullable LocalDate expectedMaturity,
+            @Nullable LocalDate closedOn) {
     }
 
     /** Totals. Before disbursement everything outstanding is 0.00. */
+    @Schema(name = "LoanTotals") // a unique schema name: ReconciliationReport has a Summary too
     public record Summary(
             BigDecimal principalDisbursed,
             BigDecimal interestCharged,
@@ -46,7 +50,7 @@ public record LoanDetails(
             BigDecimal interestOutstanding,
             BigDecimal totalOutstanding,
             BigDecimal totalOverdue,
-            LocalDate overdueSince,
+            @Nullable LocalDate overdueSince,
             boolean inArrears) {
     }
 

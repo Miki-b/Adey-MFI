@@ -42,7 +42,7 @@ public class ClientController {
         this.idempotency = idempotency;
     }
 
-    @Operation(summary = "Search clients (paged): an officer sees their own clients, a manager their whole office")
+    @Operation(operationId = "listClients", summary = "Search clients (paged): an officer sees their own clients, a manager their whole office")
     @GetMapping
     public PageResponse<ClientSummary> search(
             @AuthenticationPrincipal Officer officer,
@@ -54,7 +54,7 @@ public class ClientController {
         return clientService.search(officer, search, page, size);
     }
 
-    @Operation(summary = "Create a client in your office (officer: assigned to you; manager: choose staffId)")
+    @Operation(operationId = "createClient", summary = "Create a client in your office (officer: assigned to you; manager: choose staffId)")
     @PostMapping
     public ResponseEntity<ClientDetails> create(@AuthenticationPrincipal Officer officer,
                                                 @IdempotencyKeyHeader @RequestHeader(name = IdempotencyService.HEADER, required = false) String idempotencyKey,
@@ -67,14 +67,14 @@ public class ClientController {
                 .body(outcome.body());
     }
 
-    @Operation(summary = "Edit a client's basic details (only the fields you send are changed)")
+    @Operation(operationId = "updateClient", summary = "Edit a client's basic details (only the fields you send are changed)")
     @PutMapping("/{clientId}")
     public ClientDetails update(@AuthenticationPrincipal Officer officer, @PathVariable long clientId,
                                 @Valid @RequestBody UpdateClientRequest request) {
         return clientService.update(officer, clientId, request);
     }
 
-    @Operation(summary = "Client details (403 if the client is not yours / not in your office)")
+    @Operation(operationId = "getClient", summary = "Client details (403 if the client is not yours / not in your office)")
     @GetMapping("/{clientId}")
     public ClientDetails get(@AuthenticationPrincipal Officer officer, @PathVariable long clientId) {
         return clientService.getClient(officer, clientId);

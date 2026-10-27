@@ -8,6 +8,7 @@ import et.adey.mfi.fineract.model.FineractLoanSchedule.Period;
 import et.adey.mfi.loan.LoanStatus;
 import et.adey.mfi.security.Officer;
 
+import et.adey.mfi.security.Role;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -126,7 +127,7 @@ public final class PortfolioCalculator {
         List<Portfolio.OfficerSummary> officers = officer.isManager() ? officerBreakdown(clients, active, today) : null;
 
         return new Portfolio(today,
-                new Portfolio.Scope(officer.isManager() ? "MANAGER" : "OFFICER", officer.officeId(),
+                new Portfolio.Scope(officer.isManager() ? Role.MANAGER : Role.OFFICER, officer.officeId(),
                         officer.officeName(), officer.isManager() ? null : officer.staffId(),
                         officer.isManager() ? null : officer.displayName()),
                 counts, amounts, par(active, today),

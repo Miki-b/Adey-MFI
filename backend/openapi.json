@@ -36,6 +36,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "security" : [ ],
@@ -59,6 +79,26 @@
         "responses" : {
           "200" : {
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "security" : [ ],
@@ -68,7 +108,7 @@
     },
     "/api/auth/me" : {
       "get" : {
-        "operationId" : "me",
+        "operationId" : "getCurrentOfficer",
         "responses" : {
           "200" : {
             "content" : {
@@ -79,6 +119,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "The officer the access token belongs to",
@@ -87,7 +147,7 @@
     },
     "/api/auth/refresh" : {
       "post" : {
-        "operationId" : "refresh",
+        "operationId" : "refreshTokens",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -108,6 +168,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "security" : [ ],
@@ -117,7 +197,7 @@
     },
     "/api/clients" : {
       "get" : {
-        "operationId" : "search",
+        "operationId" : "listClients",
         "parameters" : [ {
           "description" : "Part of the client's name. Case-sensitive (Fineract on PostgreSQL).",
           "in" : "query",
@@ -159,13 +239,33 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Search clients (paged): an officer sees their own clients, a manager their whole office",
         "tags" : [ "Clients" ]
       },
       "post" : {
-        "operationId" : "create",
+        "operationId" : "createClient",
         "parameters" : [ {
           "description" : "Optional. A unique id (e.g. a UUID) the app creates once per action and sends again on every retry. A retry with the same key and body returns the first response instead of running twice. Valid for 24 hours.",
           "in" : "header",
@@ -196,6 +296,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Create a client in your office (officer: assigned to you; manager: choose staffId)",
@@ -204,7 +324,7 @@
     },
     "/api/clients/{clientId}" : {
       "get" : {
-        "operationId" : "get",
+        "operationId" : "getClient",
         "parameters" : [ {
           "in" : "path",
           "name" : "clientId",
@@ -224,13 +344,33 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Client details (403 if the client is not yours / not in your office)",
         "tags" : [ "Clients" ]
       },
       "put" : {
-        "operationId" : "update",
+        "operationId" : "updateClient",
         "parameters" : [ {
           "in" : "path",
           "name" : "clientId",
@@ -260,6 +400,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Edit a client's basic details (only the fields you send are changed)",
@@ -268,7 +428,7 @@
     },
     "/api/clients/{clientId}/loans" : {
       "get" : {
-        "operationId" : "clientLoans",
+        "operationId" : "getClientLoans",
         "parameters" : [ {
           "in" : "path",
           "name" : "clientId",
@@ -291,6 +451,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "A client's loans with progress and next due installment",
@@ -299,7 +479,7 @@
     },
     "/api/loan-products" : {
       "get" : {
-        "operationId" : "list_4",
+        "operationId" : "listLoanProducts",
         "responses" : {
           "200" : {
             "content" : {
@@ -313,6 +493,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "List loan products with their principal / repayment ranges",
@@ -321,7 +521,7 @@
     },
     "/api/loans" : {
       "get" : {
-        "operationId" : "list",
+        "operationId" : "listLoans",
         "parameters" : [ {
           "in" : "query",
           "name" : "status",
@@ -360,13 +560,33 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Loans you may see, filtered. status=PENDING is the approval queue (oldest first); inArrears=true is the collection list (most days overdue first)",
         "tags" : [ "Portfolio" ]
       },
       "post" : {
-        "operationId" : "submit",
+        "operationId" : "submitLoanApplication",
         "parameters" : [ {
           "description" : "Optional. A unique id (e.g. a UUID) the app creates once per action and sends again on every retry. A retry with the same key and body returns the first response instead of running twice. Valid for 24 hours.",
           "in" : "header",
@@ -397,6 +617,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Submit a loan application (409 if the client already has a loan in progress)",
@@ -426,6 +666,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Preview a repayment schedule without creating a loan",
@@ -434,7 +694,7 @@
     },
     "/api/loans/{loanId}" : {
       "get" : {
-        "operationId" : "get_3",
+        "operationId" : "getLoan",
         "parameters" : [ {
           "in" : "path",
           "name" : "loanId",
@@ -454,6 +714,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Loan details: totals, full schedule and transactions",
@@ -462,7 +742,7 @@
     },
     "/api/loans/{loanId}/approve" : {
       "post" : {
-        "operationId" : "approve",
+        "operationId" : "approveLoan",
         "parameters" : [ {
           "in" : "path",
           "name" : "loanId",
@@ -491,6 +771,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Approve a submitted application (branch manager only)",
@@ -499,7 +799,7 @@
     },
     "/api/loans/{loanId}/disburse" : {
       "post" : {
-        "operationId" : "disburse",
+        "operationId" : "disburseLoan",
         "parameters" : [ {
           "in" : "path",
           "name" : "loanId",
@@ -528,6 +828,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Disburse (pay out) an approved loan; it becomes Active (branch manager only)",
@@ -536,7 +856,7 @@
     },
     "/api/loans/{loanId}/mobile-payments" : {
       "get" : {
-        "operationId" : "list_1",
+        "operationId" : "listLoanMobilePayments",
         "parameters" : [ {
           "in" : "path",
           "name" : "loanId",
@@ -559,13 +879,33 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "All mobile payments of a loan, newest first",
         "tags" : [ "Mobile money" ]
       },
       "post" : {
-        "operationId" : "request",
+        "operationId" : "requestMobilePayment",
         "parameters" : [ {
           "in" : "path",
           "name" : "loanId",
@@ -604,6 +944,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Ask the client to pay a repayment from their mobile wallet (client confirms on the phone)",
@@ -612,7 +972,7 @@
     },
     "/api/loans/{loanId}/reject" : {
       "post" : {
-        "operationId" : "reject",
+        "operationId" : "rejectLoan",
         "parameters" : [ {
           "in" : "path",
           "name" : "loanId",
@@ -641,6 +1001,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Reject a submitted application (branch manager only)",
@@ -649,7 +1029,7 @@
     },
     "/api/loans/{loanId}/repayments" : {
       "post" : {
-        "operationId" : "repay",
+        "operationId" : "recordRepayment",
         "parameters" : [ {
           "in" : "path",
           "name" : "loanId",
@@ -688,6 +1068,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Record a repayment; returns how it was split over principal/interest/fees/penalties",
@@ -696,7 +1096,7 @@
     },
     "/api/loans/{loanId}/undo-approval" : {
       "post" : {
-        "operationId" : "undoApproval",
+        "operationId" : "undoLoanApproval",
         "parameters" : [ {
           "in" : "path",
           "name" : "loanId",
@@ -725,6 +1125,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Undo an approval: back to pending, only before disbursement (branch manager only)",
@@ -733,7 +1153,7 @@
     },
     "/api/me/portfolio" : {
       "get" : {
-        "operationId" : "portfolio",
+        "operationId" : "getPortfolio",
         "responses" : {
           "200" : {
             "content" : {
@@ -744,6 +1164,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Dashboard: counts, outstanding, PAR1/PAR30, due today, overdue (+ per officer for managers)",
@@ -752,7 +1192,7 @@
     },
     "/api/mobile-payments/{id}" : {
       "get" : {
-        "operationId" : "get_2",
+        "operationId" : "getMobilePayment",
         "parameters" : [ {
           "in" : "path",
           "name" : "id",
@@ -772,6 +1212,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "One mobile payment with its status history (poll this until finalState is true)",
@@ -780,7 +1240,7 @@
     },
     "/api/offices" : {
       "get" : {
-        "operationId" : "list_3",
+        "operationId" : "listOffices",
         "responses" : {
           "200" : {
             "content" : {
@@ -794,6 +1254,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "List all offices (branches)",
@@ -802,7 +1282,7 @@
     },
     "/api/payment-types" : {
       "get" : {
-        "operationId" : "list_2",
+        "operationId" : "listPaymentTypes",
         "responses" : {
           "200" : {
             "content" : {
@@ -816,6 +1296,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Payment types an officer can choose for disbursements and repayments",
@@ -824,7 +1324,7 @@
     },
     "/api/reconciliation/findings/{id}/resolve" : {
       "post" : {
-        "operationId" : "resolve",
+        "operationId" : "resolveReconciliationFinding",
         "parameters" : [ {
           "in" : "path",
           "name" : "id",
@@ -853,6 +1353,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Resolve a finding: PAID_NOT_POSTED is posted to Fineract; others need a note. Manager only",
@@ -861,7 +1381,7 @@
     },
     "/api/reconciliation/run" : {
       "post" : {
-        "operationId" : "run",
+        "operationId" : "runReconciliation",
         "parameters" : [ {
           "in" : "query",
           "name" : "date",
@@ -881,6 +1401,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Run reconciliation for a date now (default today). Manager only",
@@ -889,7 +1429,7 @@
     },
     "/api/reconciliation/{date}" : {
       "get" : {
-        "operationId" : "get_1",
+        "operationId" : "getReconciliation",
         "parameters" : [ {
           "in" : "path",
           "name" : "date",
@@ -909,6 +1449,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "summary" : "Latest reconciliation for a date: summary + findings of your office. Manager only",
@@ -917,7 +1477,7 @@
     },
     "/api/webhooks/mobile-money" : {
       "post" : {
-        "operationId" : "receive",
+        "operationId" : "receiveMobileMoneyWebhook",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -939,6 +1499,26 @@
               }
             },
             "description" : "OK"
+          },
+          "4XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Request refused: see `code` (validation, auth, access, business rule)"
+          },
+          "5XX" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Problem"
+                }
+              }
+            },
+            "description" : "Server-side failure: see `code` (INTERNAL_ERROR, FINERACT_UNAVAILABLE, ...)"
           }
         },
         "security" : [ ],
@@ -956,18 +1536,22 @@
             "type" : "string"
           },
           "principalOutstanding" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "totalOverdue" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           }
-        }
+        },
+        "required" : [ "currency", "principalOutstanding", "totalOverdue" ]
       },
       "ApproveLoanRequest" : {
         "type" : "object",
         "properties" : {
           "approvedAmount" : {
             "type" : "number",
+            "format" : "decimal",
             "description" : "Approve less than requested. Defaults to the requested principal.",
             "exclusiveMinimum" : 0
           },
@@ -1046,7 +1630,8 @@
             "type" : "string",
             "format" : "date"
           }
-        }
+        },
+        "required" : [ "accountNo", "active", "displayName", "id", "officeId", "officeName" ]
       },
       "ClientSummary" : {
         "type" : "object",
@@ -1074,7 +1659,8 @@
           "staffName" : {
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "accountNo", "active", "displayName", "id", "officeName" ]
       },
       "CollectionItem" : {
         "type" : "object",
@@ -1083,7 +1669,8 @@
             "type" : "string"
           },
           "amount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "clientId" : {
             "type" : "integer",
@@ -1111,7 +1698,8 @@
             "type" : "integer",
             "format" : "int64"
           }
-        }
+        },
+        "required" : [ "accountNo", "amount", "clientId", "clientName", "daysOverdue", "dueDate", "installment", "loanId" ]
       },
       "Counts" : {
         "type" : "object",
@@ -1136,7 +1724,8 @@
             "type" : "integer",
             "format" : "int32"
           }
-        }
+        },
+        "required" : [ "activeLoans", "approvedNotDisbursed", "clients", "loansInArrears", "pendingApplications" ]
       },
       "CreateClientRequest" : {
         "type" : "object",
@@ -1218,7 +1807,8 @@
             "type" : "string",
             "format" : "date"
           }
-        }
+        },
+        "required" : [ "submittedOn" ]
       },
       "DisburseLoanRequest" : {
         "type" : "object",
@@ -1248,7 +1838,8 @@
             "type" : "string"
           },
           "fineractAmount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "fineractTransactionId" : {
             "type" : "integer",
@@ -1259,7 +1850,8 @@
             "format" : "int64"
           },
           "intentAmount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "intentId" : {
             "type" : "integer",
@@ -1274,7 +1866,8 @@
             "format" : "int64"
           },
           "providerAmount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "receiptNumber" : {
             "type" : "string"
@@ -1299,13 +1892,15 @@
             "type" : "string",
             "enum" : [ "MATCHED", "PAID_NOT_POSTED", "POSTED_NOT_PAID", "AMOUNT_MISMATCH" ]
           }
-        }
+        },
+        "required" : [ "id", "resolved", "type" ]
       },
       "Installment" : {
         "type" : "object",
         "properties" : {
           "balanceAfter" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "complete" : {
             "type" : "boolean"
@@ -1315,31 +1910,39 @@
             "format" : "date"
           },
           "fees" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "interest" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "number" : {
             "type" : "integer",
             "format" : "int32"
           },
           "outstanding" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "paid" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "penalties" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "principal" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "total" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           }
-        }
+        },
+        "required" : [ "balanceAfter", "complete", "dueDate", "fees", "interest", "number", "outstanding", "paid", "penalties", "principal", "total" ]
       },
       "LoanApplicationRequest" : {
         "type" : "object",
@@ -1362,6 +1965,7 @@
           },
           "principal" : {
             "type" : "number",
+            "format" : "decimal",
             "example" : 20000.0,
             "exclusiveMinimum" : 0
           },
@@ -1380,10 +1984,12 @@
             "type" : "string"
           },
           "annualInterestRate" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "approvedPrincipal" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "clientId" : {
             "type" : "integer",
@@ -1414,7 +2020,8 @@
             "format" : "int32"
           },
           "principal" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "productId" : {
             "type" : "integer",
@@ -1437,7 +2044,7 @@
             "type" : "string"
           },
           "summary" : {
-            "$ref" : "#/components/schemas/Summary"
+            "$ref" : "#/components/schemas/LoanTotals"
           },
           "transactions" : {
             "type" : "array",
@@ -1445,7 +2052,8 @@
               "$ref" : "#/components/schemas/LoanTransactionResponse"
             }
           }
-        }
+        },
+        "required" : [ "accountNo", "clientId", "clientName", "loanId", "numberOfRepayments", "principal", "productId", "productName", "schedule", "status", "summary", "transactions" ]
       },
       "LoanListItem" : {
         "type" : "object",
@@ -1478,17 +2086,20 @@
             "type" : "string"
           },
           "nextDueAmount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "nextDueDate" : {
             "type" : "string",
             "format" : "date"
           },
           "principal" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "principalOutstanding" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "productName" : {
             "type" : "string"
@@ -1505,9 +2116,11 @@
             "format" : "date"
           },
           "totalOverdue" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           }
-        }
+        },
+        "required" : [ "accountNo", "clientId", "clientName", "daysOverdue", "inArrears", "loanId", "principal", "principalOutstanding", "productName", "status", "totalOverdue" ]
       },
       "LoanProductResponse" : {
         "type" : "object",
@@ -1517,7 +2130,8 @@
             "enum" : [ "EQUAL_INSTALLMENTS", "EQUAL_PRINCIPAL", "UNKNOWN" ]
           },
           "annualInterestRate" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "currency" : {
             "type" : "string"
@@ -1534,13 +2148,16 @@
             "type" : "string"
           },
           "principalDefault" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "principalMax" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "principalMin" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "repaymentEvery" : {
             "type" : "integer",
@@ -1565,7 +2182,8 @@
           "shortName" : {
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "id", "name" ]
       },
       "LoanStatusResponse" : {
         "type" : "object",
@@ -1584,7 +2202,8 @@
           "statusLabel" : {
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "loanId", "status" ]
       },
       "LoanSummary" : {
         "type" : "object",
@@ -1593,7 +2212,8 @@
             "type" : "string"
           },
           "annualInterestRate" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "inArrears" : {
             "type" : "boolean"
@@ -1611,17 +2231,20 @@
             "format" : "int64"
           },
           "nextDueAmount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "nextDueDate" : {
             "type" : "string",
             "format" : "date"
           },
           "principal" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "principalOutstanding" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "productName" : {
             "type" : "string"
@@ -1634,44 +2257,98 @@
             "type" : "string"
           },
           "totalOutstanding" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           }
-        }
+        },
+        "required" : [ "accountNo", "inArrears", "installmentsPaid", "installmentsTotal", "loanId", "principal", "principalOutstanding", "productName", "status", "totalOutstanding" ]
+      },
+      "LoanTotals" : {
+        "type" : "object",
+        "properties" : {
+          "inArrears" : {
+            "type" : "boolean"
+          },
+          "interestCharged" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "interestOutstanding" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "interestPaid" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "overdueSince" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "principalDisbursed" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "principalOutstanding" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "principalPaid" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "totalOutstanding" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "totalOverdue" : {
+            "type" : "number",
+            "format" : "decimal"
+          }
+        },
+        "required" : [ "inArrears", "interestCharged", "interestOutstanding", "interestPaid", "principalDisbursed", "principalOutstanding", "principalPaid", "totalOutstanding", "totalOverdue" ]
       },
       "LoanTransactionResponse" : {
         "type" : "object",
         "properties" : {
           "amount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "date" : {
             "type" : "string",
             "format" : "date"
           },
           "feesPortion" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "id" : {
             "type" : "integer",
             "format" : "int64"
           },
           "interestPortion" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "outstandingBalanceAfter" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "overpaymentPortion" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "paymentType" : {
             "type" : "string"
           },
           "penaltiesPortion" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "principalPortion" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "reversed" : {
             "type" : "boolean"
@@ -1682,7 +2359,8 @@
           "typeLabel" : {
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "amount", "date", "feesPortion", "id", "interestPortion", "outstandingBalanceAfter", "overpaymentPortion", "penaltiesPortion", "principalPortion", "reversed", "type" ]
       },
       "LoginRequest" : {
         "type" : "object",
@@ -1705,6 +2383,7 @@
         "properties" : {
           "amount" : {
             "type" : "number",
+            "format" : "decimal",
             "example" : 1833.6,
             "exclusiveMinimum" : 0
           },
@@ -1728,7 +2407,8 @@
         "type" : "object",
         "properties" : {
           "amount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "clientId" : {
             "type" : "integer",
@@ -1788,7 +2468,8 @@
             "type" : "string"
           },
           "providerAmount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "providerChargeId" : {
             "type" : "string"
@@ -1810,7 +2491,8 @@
             "type" : "string",
             "format" : "date-time"
           }
-        }
+        },
+        "required" : [ "amount", "clientId", "createdAt", "currency", "finalState", "history", "id", "loanId", "phone", "postingAttempts", "provider", "reference", "requestedBy", "status", "updatedAt" ]
       },
       "OfficeResponse" : {
         "type" : "object",
@@ -1830,7 +2512,8 @@
             "type" : "integer",
             "format" : "int64"
           }
-        }
+        },
+        "required" : [ "id", "name" ]
       },
       "OfficerResponse" : {
         "type" : "object",
@@ -1863,7 +2546,8 @@
           "username" : {
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "displayName", "officeId", "officeName", "roles", "staffId", "userId", "username" ]
       },
       "OfficerSummary" : {
         "type" : "object",
@@ -1880,19 +2564,23 @@
             "type" : "string"
           },
           "par30" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "principalOutstanding" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "staffId" : {
             "type" : "integer",
             "format" : "int64"
           },
           "totalOverdue" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           }
-        }
+        },
+        "required" : [ "activeLoans", "clients", "par30", "principalOutstanding", "totalOverdue" ]
       },
       "PageResponseClientSummary" : {
         "type" : "object",
@@ -1919,24 +2607,30 @@
             "type" : "integer",
             "format" : "int32"
           }
-        }
+        },
+        "required" : [ "content", "page", "size", "totalElements", "totalPages" ]
       },
       "Par" : {
         "type" : "object",
         "properties" : {
           "par1" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "par1Principal" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "par30" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "par30Principal" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           }
-        }
+        },
+        "required" : [ "par1", "par1Principal", "par30", "par30Principal" ]
       },
       "PaymentTypeResponse" : {
         "type" : "object",
@@ -1954,7 +2648,8 @@
           "name" : {
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "cash", "id", "name" ]
       },
       "Portfolio" : {
         "type" : "object",
@@ -2001,7 +2696,58 @@
           "scope" : {
             "$ref" : "#/components/schemas/Scope"
           }
-        }
+        },
+        "required" : [ "amounts", "asOf", "counts", "dueToday", "dueTodayCount", "overdue", "overdueCount", "par", "scope" ]
+      },
+      "Problem" : {
+        "type" : "object",
+        "description" : "RFC 7807 problem detail, plus our stable `code` (see backend/README.md \"Errors\").",
+        "properties" : {
+          "code" : {
+            "type" : "string",
+            "description" : "Stable error code: switch on this, not on detail",
+            "enum" : [ "VALIDATION_FAILED", "MALFORMED_REQUEST", "INVALID_PARAMETER", "INVALID_REQUEST", "FINERACT_VALIDATION", "IDEMPOTENCY_KEY_INVALID", "RESOLUTION_NOTE_REQUIRED", "PHONE_METHOD_MISMATCH", "UNAUTHENTICATED", "INVALID_CREDENTIALS", "INVALID_REFRESH_TOKEN", "WEBHOOK_SIGNATURE_INVALID", "WEBHOOK_TIMESTAMP_INVALID", "FORBIDDEN", "NOT_AN_OFFICER", "NOT_FOUND", "METHOD_NOT_ALLOWED", "NOT_ACCEPTABLE", "UNSUPPORTED_MEDIA_TYPE", "OPEN_LOAN_EXISTS", "DUPLICATE_CLIENT", "IDEMPOTENCY_IN_PROGRESS", "IDEMPOTENCY_OUTCOME_UNKNOWN", "CONFLICT", "FINDING_ALREADY_RESOLVED", "LOAN_WRONG_STATE", "FINERACT_RULE", "IDEMPOTENCY_KEY_REUSED", "AMOUNT_EXCEEDS_OUTSTANDING", "LOAN_NOT_ACTIVE", "TOO_MANY_LOGIN_ATTEMPTS", "INTERNAL_ERROR", "FINERACT_ERROR", "FINERACT_UNAVAILABLE", "PROVIDER_UNAVAILABLE", "POSTING_PENDING" ]
+          },
+          "detail" : {
+            "type" : "string",
+            "description" : "Human-readable explanation (may change; for people, not code)"
+          },
+          "errors" : {
+            "type" : "array",
+            "description" : "Field-level problems (validation errors only)",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "field" : {
+                  "type" : "string",
+                  "description" : "The request field (or parameter) that is wrong"
+                },
+                "message" : {
+                  "type" : "string",
+                  "description" : "What is wrong with it"
+                }
+              },
+              "required" : [ "field", "message" ]
+            }
+          },
+          "instance" : {
+            "type" : "string",
+            "description" : "The request path"
+          },
+          "status" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "Short summary of the HTTP status"
+          },
+          "type" : {
+            "type" : "string",
+            "description" : "Problem type URI"
+          }
+        },
+        "required" : [ "code", "status" ]
       },
       "ReconciliationReport" : {
         "type" : "object",
@@ -2025,12 +2771,51 @@
             "format" : "int64"
           },
           "summary" : {
-            "$ref" : "#/components/schemas/Summary"
+            "$ref" : "#/components/schemas/ReconciliationSummary"
           },
           "triggeredBy" : {
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "date", "findings", "runAt", "runId", "summary", "triggeredBy" ]
+      },
+      "ReconciliationSummary" : {
+        "type" : "object",
+        "properties" : {
+          "amountMismatch" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "fineractTotal" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "matched" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "matchedTotal" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "paidNotPosted" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "postedNotPaid" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "providerTotal" : {
+            "type" : "number",
+            "format" : "decimal"
+          },
+          "unresolved" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        },
+        "required" : [ "amountMismatch", "fineractTotal", "matched", "matchedTotal", "paidNotPosted", "postedNotPaid", "providerTotal", "unresolved" ]
       },
       "RefreshRequest" : {
         "type" : "object",
@@ -2064,6 +2849,7 @@
         "properties" : {
           "amount" : {
             "type" : "number",
+            "format" : "decimal",
             "example" : 1833.6,
             "exclusiveMinimum" : 0
           },
@@ -2101,26 +2887,31 @@
         "type" : "object",
         "properties" : {
           "balanceAfter" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "dueDate" : {
             "type" : "string",
             "format" : "date"
           },
           "interest" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "number" : {
             "type" : "integer",
             "format" : "int32"
           },
           "principal" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "total" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           }
-        }
+        },
+        "required" : [ "balanceAfter", "dueDate", "interest", "number", "principal", "total" ]
       },
       "SchedulePreviewRequest" : {
         "type" : "object",
@@ -2144,6 +2935,7 @@
           },
           "principal" : {
             "type" : "number",
+            "format" : "decimal",
             "example" : 20000.0,
             "exclusiveMinimum" : 0
           },
@@ -2166,10 +2958,12 @@
             "format" : "date"
           },
           "installmentAmount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "lastInstallmentAmount" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "numberOfRepayments" : {
             "type" : "integer",
@@ -2182,15 +2976,19 @@
             }
           },
           "principal" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "totalInterest" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           },
           "totalRepayable" : {
-            "type" : "number"
+            "type" : "number",
+            "format" : "decimal"
           }
-        }
+        },
+        "required" : [ "numberOfRepayments", "periods", "totalInterest", "totalRepayable" ]
       },
       "Scope" : {
         "type" : "object",
@@ -2206,47 +3004,15 @@
             "type" : "string"
           },
           "role" : {
-            "type" : "string"
+            "type" : "string",
+            "enum" : [ "OFFICER", "MANAGER" ]
           },
           "staffId" : {
             "type" : "integer",
             "format" : "int64"
           }
-        }
-      },
-      "Summary" : {
-        "type" : "object",
-        "properties" : {
-          "amountMismatch" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "fineractTotal" : {
-            "type" : "number"
-          },
-          "matched" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "matchedTotal" : {
-            "type" : "number"
-          },
-          "paidNotPosted" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "postedNotPaid" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "providerTotal" : {
-            "type" : "number"
-          },
-          "unresolved" : {
-            "type" : "integer",
-            "format" : "int32"
-          }
-        }
+        },
+        "required" : [ "officeId", "officeName", "role" ]
       },
       "TokenResponse" : {
         "type" : "object",
@@ -2275,7 +3041,8 @@
           "tokenType" : {
             "type" : "string"
           }
-        }
+        },
+        "required" : [ "accessToken", "accessTokenExpiresAt", "expiresIn", "officer", "refreshToken", "refreshTokenExpiresAt", "tokenType" ]
       },
       "Transition" : {
         "type" : "object",
@@ -2295,7 +3062,8 @@
             "type" : "string",
             "enum" : [ "PENDING", "DECLINED", "CHARGE_FAILED", "MISMATCH", "RECEIVED", "RETRYING", "POSTED", "NEEDS_ATTENTION" ]
           }
-        }
+        },
+        "required" : [ "at", "to" ]
       },
       "UndoApprovalRequest" : {
         "type" : "object",

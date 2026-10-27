@@ -90,7 +90,7 @@ class PortfolioCalculatorTest {
 
         Portfolio p = PortfolioCalculator.portfolio(MERON, meronClients, meronLoans, TODAY);
 
-        assertThat(p.scope().role()).isEqualTo("OFFICER");
+        assertThat(p.scope().role()).isEqualTo(et.adey.mfi.security.Role.OFFICER);
         assertThat(p.scope().staffId()).isEqualTo(4L);
         assertThat(p.officers()).isNull();
         assertThat(p.counts().clients()).isEqualTo(3);

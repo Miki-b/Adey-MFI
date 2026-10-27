@@ -41,19 +41,19 @@ public class LoanController {
 
     // ---- Reads ---------------------------------------------------------------------------
 
-    @Operation(summary = "A client's loans with progress and next due installment")
+    @Operation(operationId = "getClientLoans", summary = "A client's loans with progress and next due installment")
     @GetMapping("/api/clients/{clientId}/loans")
     public List<LoanSummary> clientLoans(@AuthenticationPrincipal Officer officer, @PathVariable long clientId) {
         return loanService.getClientLoans(officer, clientId);
     }
 
-    @Operation(summary = "Loan details: totals, full schedule and transactions")
+    @Operation(operationId = "getLoan", summary = "Loan details: totals, full schedule and transactions")
     @GetMapping("/api/loans/{loanId}")
     public LoanDetails get(@AuthenticationPrincipal Officer officer, @PathVariable long loanId) {
         return loanService.getLoan(officer, loanId);
     }
 
-    @Operation(summary = "Preview a repayment schedule without creating a loan")
+    @Operation(operationId = "previewSchedule", summary = "Preview a repayment schedule without creating a loan")
     @PostMapping("/api/loans/schedule-preview")
     public SchedulePreviewResponse previewSchedule(@AuthenticationPrincipal Officer officer,
                                                    @Valid @RequestBody SchedulePreviewRequest request) {
@@ -62,7 +62,7 @@ public class LoanController {
 
     // ---- Lifecycle -----------------------------------------------------------------------
 
-    @Operation(summary = "Submit a loan application (409 if the client already has a loan in progress)")
+    @Operation(operationId = "submitLoanApplication", summary = "Submit a loan application (409 if the client already has a loan in progress)")
     @PostMapping("/api/loans")
     public ResponseEntity<LoanStatusResponse> submit(@AuthenticationPrincipal Officer officer,
                                                      @IdempotencyKeyHeader @RequestHeader(name = IdempotencyService.HEADER, required = false) String idempotencyKey,
@@ -74,35 +74,35 @@ public class LoanController {
         return withReplayHeader(ResponseEntity.created(location), outcome.replayed()).body(outcome.body());
     }
 
-    @Operation(summary = "Approve a submitted application (branch manager only)")
+    @Operation(operationId = "approveLoan", summary = "Approve a submitted application (branch manager only)")
     @PostMapping("/api/loans/{loanId}/approve")
     public LoanStatusResponse approve(@AuthenticationPrincipal Officer officer, @PathVariable long loanId,
                                       @Valid @RequestBody(required = false) ApproveLoanRequest request) {
         return lifecycle.approve(officer, loanId, request);
     }
 
-    @Operation(summary = "Undo an approval: back to pending, only before disbursement (branch manager only)")
+    @Operation(operationId = "undoLoanApproval", summary = "Undo an approval: back to pending, only before disbursement (branch manager only)")
     @PostMapping("/api/loans/{loanId}/undo-approval")
     public LoanStatusResponse undoApproval(@AuthenticationPrincipal Officer officer, @PathVariable long loanId,
                                            @Valid @RequestBody(required = false) UndoApprovalRequest request) {
         return lifecycle.undoApproval(officer, loanId, request);
     }
 
-    @Operation(summary = "Reject a submitted application (branch manager only)")
+    @Operation(operationId = "rejectLoan", summary = "Reject a submitted application (branch manager only)")
     @PostMapping("/api/loans/{loanId}/reject")
     public LoanStatusResponse reject(@AuthenticationPrincipal Officer officer, @PathVariable long loanId,
                                      @Valid @RequestBody(required = false) RejectLoanRequest request) {
         return lifecycle.reject(officer, loanId, request);
     }
 
-    @Operation(summary = "Disburse (pay out) an approved loan; it becomes Active (branch manager only)")
+    @Operation(operationId = "disburseLoan", summary = "Disburse (pay out) an approved loan; it becomes Active (branch manager only)")
     @PostMapping("/api/loans/{loanId}/disburse")
     public LoanStatusResponse disburse(@AuthenticationPrincipal Officer officer, @PathVariable long loanId,
                                        @Valid @RequestBody(required = false) DisburseLoanRequest request) {
         return lifecycle.disburse(officer, loanId, request);
     }
 
-    @Operation(summary = "Record a repayment; returns how it was split over principal/interest/fees/penalties")
+    @Operation(operationId = "recordRepayment", summary = "Record a repayment; returns how it was split over principal/interest/fees/penalties")
     @PostMapping("/api/loans/{loanId}/repayments")
     public ResponseEntity<LoanTransactionResponse> repay(@AuthenticationPrincipal Officer officer,
                                                          @PathVariable long loanId,

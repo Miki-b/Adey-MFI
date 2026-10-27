@@ -1,5 +1,6 @@
 package et.adey.mfi.seed;
 
+import et.adey.mfi.client.GenderCodeValues;
 import et.adey.mfi.common.FineractDates;
 import et.adey.mfi.fineract.FineractClient;
 import et.adey.mfi.fineract.model.FineractClientAccounts.LoanAccount;
@@ -53,14 +54,16 @@ public class DemoSeeder implements ApplicationRunner {
 
     private final FineractClient fineract;
     private final ConfigurableApplicationContext context;
+    private final GenderCodeValues genders;
     private final Map<String, Long> officeIds = new HashMap<>();
     private final Map<String, Long> staffIds = new HashMap<>();
     private final Map<String, Long> staffOffice = new HashMap<>();
     private int created;
 
-    public DemoSeeder(FineractClient fineract, ConfigurableApplicationContext context) {
+    public DemoSeeder(FineractClient fineract, ConfigurableApplicationContext context, GenderCodeValues genders) {
         this.fineract = fineract;
         this.context = context;
+        this.genders = genders;
     }
 
     @Override
@@ -271,7 +274,9 @@ public class DemoSeeder implements ApplicationRunner {
         JsonNode page = fineract.getJson("/clients?externalId={ext}", c.externalId());
         JsonNode items = page.path("pageItems");
         if (items.size() > 0) {
-            return items.get(0).path("id").asLong();
+            long id = items.get(0).path("id").asLong();
+            ensureGender(id, c);
+            return id;
         }
         Map<String, Object> body = new LinkedHashMap<>(withDateFormat(Map.of(
                 "officeId", staffOffice.get(c.officerKey()),
@@ -280,12 +285,24 @@ public class DemoSeeder implements ApplicationRunner {
                 "externalId", c.externalId(), "mobileNo", c.mobileNo(),
                 "dateOfBirth", FineractDates.format(c.dateOfBirth()),
                 "legalFormId", 1, "active", true)));
+        body.put("genderId", genders.idOf(c.gender()));
         body.put("activationDate", FineractDates.format(c.activatedOn()));
         body.put("submittedOnDate", FineractDates.format(c.activatedOn()));
         long id = fineract.postJson("/clients", body).path("resourceId").asLong();
         created++;
         log.info("Client {} {} created (id {})", c.firstname(), c.lastname(), id);
         return id;
+    }
+
+    /** Clients seeded before genders were part of the plan get one (only when it is missing). */
+    private void ensureGender(long clientId, Client c) {
+        JsonNode client = fineract.getJson("/clients/{id}", clientId);
+        if (client.path("gender").path("id").asLong(0) != 0) {
+            return;
+        }
+        fineract.putJson("/clients/{id}", Map.of("genderId", genders.idOf(c.gender())), clientId);
+        created++;
+        log.info("Client {} {}: gender set to {}", c.firstname(), c.lastname(), c.gender());
     }
 
     // ---- Loans ---------------------------------------------------------------------------

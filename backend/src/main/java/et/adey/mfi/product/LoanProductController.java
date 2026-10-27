@@ -19,7 +19,7 @@ public class LoanProductController {
         this.loanProductService = loanProductService;
     }
 
-    @Operation(summary = "List loan products with their principal / repayment ranges")
+    @Operation(operationId = "listLoanProducts", summary = "List loan products with their principal / repayment ranges")
     @GetMapping
     public List<LoanProductResponse> list() {
         return loanProductService.listProducts();

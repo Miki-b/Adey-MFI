@@ -1,5 +1,7 @@
 package et.adey.mfi.client;
 
+import org.jspecify.annotations.Nullable;
+
 import java.time.LocalDate;
 
 /** One row in a client list/search result. */
@@ -8,7 +10,7 @@ public record ClientSummary(
         String displayName,
         String accountNo,
         String officeName,
-        String staffName,
+        @Nullable String staffName,
         boolean active,
-        LocalDate activationDate) {
+        @Nullable LocalDate activationDate) {
 }

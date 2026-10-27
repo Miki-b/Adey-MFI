@@ -20,60 +20,60 @@ class Par {
   /// Returns a new [Par] instance.
   Par({
 
-     this.par1,
+    required  this.par1,
 
-     this.par1Principal,
+    required  this.par1Principal,
 
-     this.par30,
+    required  this.par30,
 
-     this.par30Principal,
+    required  this.par30Principal,
   });
 
   @JsonKey(
     
     name: r'par1',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? par1;
+  final num par1;
 
 
 
   @JsonKey(
     
     name: r'par1Principal',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? par1Principal;
+  final num par1Principal;
 
 
 
   @JsonKey(
     
     name: r'par30',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? par30;
+  final num par30;
 
 
 
   @JsonKey(
     
     name: r'par30Principal',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? par30Principal;
+  final num par30Principal;
 
 
 

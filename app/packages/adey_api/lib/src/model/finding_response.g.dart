@@ -13,7 +13,7 @@ abstract class _$FindingResponseCWProxy {
 
   FindingResponse fineractTransactionId(int? fineractTransactionId);
 
-  FindingResponse id(int? id);
+  FindingResponse id(int id);
 
   FindingResponse intentAmount(num? intentAmount);
 
@@ -31,13 +31,13 @@ abstract class _$FindingResponseCWProxy {
 
   FindingResponse resolutionNote(String? resolutionNote);
 
-  FindingResponse resolved(bool? resolved);
+  FindingResponse resolved(bool resolved);
 
   FindingResponse resolvedAt(DateTime? resolvedAt);
 
   FindingResponse resolvedBy(String? resolvedBy);
 
-  FindingResponse type(FindingResponseTypeEnum? type);
+  FindingResponse type(FindingResponseTypeEnum type);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `FindingResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -49,7 +49,7 @@ abstract class _$FindingResponseCWProxy {
     String? detail,
     num? fineractAmount,
     int? fineractTransactionId,
-    int? id,
+    int id,
     num? intentAmount,
     int? intentId,
     int? loanId,
@@ -58,10 +58,10 @@ abstract class _$FindingResponseCWProxy {
     String? receiptNumber,
     String? reference,
     String? resolutionNote,
-    bool? resolved,
+    bool resolved,
     DateTime? resolvedAt,
     String? resolvedBy,
-    FindingResponseTypeEnum? type,
+    FindingResponseTypeEnum type,
   });
 }
 
@@ -83,7 +83,7 @@ class _$FindingResponseCWProxyImpl implements _$FindingResponseCWProxy {
       this(fineractTransactionId: fineractTransactionId);
 
   @override
-  FindingResponse id(int? id) => this(id: id);
+  FindingResponse id(int id) => this(id: id);
 
   @override
   FindingResponse intentAmount(num? intentAmount) =>
@@ -114,7 +114,7 @@ class _$FindingResponseCWProxyImpl implements _$FindingResponseCWProxy {
       this(resolutionNote: resolutionNote);
 
   @override
-  FindingResponse resolved(bool? resolved) => this(resolved: resolved);
+  FindingResponse resolved(bool resolved) => this(resolved: resolved);
 
   @override
   FindingResponse resolvedAt(DateTime? resolvedAt) =>
@@ -125,7 +125,7 @@ class _$FindingResponseCWProxyImpl implements _$FindingResponseCWProxy {
       this(resolvedBy: resolvedBy);
 
   @override
-  FindingResponse type(FindingResponseTypeEnum? type) => this(type: type);
+  FindingResponse type(FindingResponseTypeEnum type) => this(type: type);
 
   @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `FindingResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -169,7 +169,7 @@ class _$FindingResponseCWProxyImpl implements _$FindingResponseCWProxy {
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as int?,
+          : id as int,
       intentAmount: intentAmount == const $CopyWithPlaceholder()
           ? _value.intentAmount
           // ignore: cast_nullable_to_non_nullable
@@ -205,7 +205,7 @@ class _$FindingResponseCWProxyImpl implements _$FindingResponseCWProxy {
       resolved: resolved == const $CopyWithPlaceholder()
           ? _value.resolved
           // ignore: cast_nullable_to_non_nullable
-          : resolved as bool?,
+          : resolved as bool,
       resolvedAt: resolvedAt == const $CopyWithPlaceholder()
           ? _value.resolvedAt
           // ignore: cast_nullable_to_non_nullable
@@ -217,7 +217,7 @@ class _$FindingResponseCWProxyImpl implements _$FindingResponseCWProxy {
       type: type == const $CopyWithPlaceholder()
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
-          : type as FindingResponseTypeEnum?,
+          : type as FindingResponseTypeEnum,
     );
   }
 }
@@ -234,6 +234,7 @@ extension $FindingResponseCopyWith on FindingResponse {
 
 FindingResponse _$FindingResponseFromJson(Map<String, dynamic> json) =>
     $checkedCreate('FindingResponse', json, ($checkedConvert) {
+      $checkKeys(json, requiredKeys: const ['id', 'resolved', 'type']);
       final val = FindingResponse(
         detail: $checkedConvert('detail', (v) => v as String?),
         fineractAmount: $checkedConvert('fineractAmount', (v) => v as num?),
@@ -241,7 +242,7 @@ FindingResponse _$FindingResponseFromJson(Map<String, dynamic> json) =>
           'fineractTransactionId',
           (v) => (v as num?)?.toInt(),
         ),
-        id: $checkedConvert('id', (v) => (v as num?)?.toInt()),
+        id: $checkedConvert('id', (v) => (v as num).toInt()),
         intentAmount: $checkedConvert('intentAmount', (v) => v as num?),
         intentId: $checkedConvert('intentId', (v) => (v as num?)?.toInt()),
         loanId: $checkedConvert('loanId', (v) => (v as num?)?.toInt()),
@@ -250,7 +251,7 @@ FindingResponse _$FindingResponseFromJson(Map<String, dynamic> json) =>
         receiptNumber: $checkedConvert('receiptNumber', (v) => v as String?),
         reference: $checkedConvert('reference', (v) => v as String?),
         resolutionNote: $checkedConvert('resolutionNote', (v) => v as String?),
-        resolved: $checkedConvert('resolved', (v) => v as bool?),
+        resolved: $checkedConvert('resolved', (v) => v as bool),
         resolvedAt: $checkedConvert(
           'resolvedAt',
           (v) => v == null ? null : DateTime.parse(v as String),
@@ -258,7 +259,7 @@ FindingResponse _$FindingResponseFromJson(Map<String, dynamic> json) =>
         resolvedBy: $checkedConvert('resolvedBy', (v) => v as String?),
         type: $checkedConvert(
           'type',
-          (v) => $enumDecodeNullable(
+          (v) => $enumDecode(
             _$FindingResponseTypeEnumEnumMap,
             v,
             unknownValue: FindingResponseTypeEnum.unknownDefaultOpenApi,
@@ -273,7 +274,7 @@ Map<String, dynamic> _$FindingResponseToJson(FindingResponse instance) =>
       'detail': ?instance.detail,
       'fineractAmount': ?instance.fineractAmount,
       'fineractTransactionId': ?instance.fineractTransactionId,
-      'id': ?instance.id,
+      'id': instance.id,
       'intentAmount': ?instance.intentAmount,
       'intentId': ?instance.intentId,
       'loanId': ?instance.loanId,
@@ -282,10 +283,10 @@ Map<String, dynamic> _$FindingResponseToJson(FindingResponse instance) =>
       'receiptNumber': ?instance.receiptNumber,
       'reference': ?instance.reference,
       'resolutionNote': ?instance.resolutionNote,
-      'resolved': ?instance.resolved,
+      'resolved': instance.resolved,
       'resolvedAt': ?instance.resolvedAt?.toIso8601String(),
       'resolvedBy': ?instance.resolvedBy,
-      'type': ?_$FindingResponseTypeEnumEnumMap[instance.type],
+      'type': _$FindingResponseTypeEnumEnumMap[instance.type]!,
     };
 
 const _$FindingResponseTypeEnumEnumMap = {

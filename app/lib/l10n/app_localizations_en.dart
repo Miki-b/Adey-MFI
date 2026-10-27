@@ -321,8 +321,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchClients => 'Search by name';
 
   @override
-  String get searchCaseSensitive =>
-      'Search is case-sensitive: \"Tek\" finds Tekle, \"tek\" does not.';
+  String get searchHelp => 'Any part of the name, upper or lower case.';
 
   @override
   String get noClients => 'No clients yet.';

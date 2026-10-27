@@ -20,24 +20,24 @@ class PaymentTypeResponse {
   /// Returns a new [PaymentTypeResponse] instance.
   PaymentTypeResponse({
 
-     this.cash,
+    required  this.cash,
 
      this.description,
 
-     this.id,
+    required  this.id,
 
-     this.name,
+    required  this.name,
   });
 
   @JsonKey(
     
     name: r'cash',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final bool? cash;
+  final bool cash;
 
 
 
@@ -56,24 +56,24 @@ class PaymentTypeResponse {
   @JsonKey(
     
     name: r'id',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? id;
+  final int id;
 
 
 
   @JsonKey(
     
     name: r'name',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? name;
+  final String name;
 
 
 

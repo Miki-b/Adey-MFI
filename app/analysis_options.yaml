@@ -6,6 +6,7 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - "**/*.g.dart"
+    - "packages/**"
     - "lib/l10n/app_localizations*.dart"
   language:
     strict-casts: true

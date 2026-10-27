@@ -11,6 +11,7 @@ import 'package:dio/dio.dart';
 
 import 'package:adey_api/src/model/mobile_payment_request.dart';
 import 'package:adey_api/src/model/mobile_payment_response.dart';
+import 'package:adey_api/src/model/problem.dart';
 
 class MobileMoneyApi {
 
@@ -32,7 +33,7 @@ class MobileMoneyApi {
   ///
   /// Returns a [Future] containing a [Response] with a [MobilePaymentResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<MobilePaymentResponse>> get2({ 
+  Future<Response<MobilePaymentResponse>> getMobilePayment({ 
     required int id,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -110,7 +111,7 @@ _responseData = rawData == null ? null : deserialize<MobilePaymentResponse, Mobi
   ///
   /// Returns a [Future] containing a [Response] with a [List<MobilePaymentResponse>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<MobilePaymentResponse>>> list1({ 
+  Future<Response<List<MobilePaymentResponse>>> listLoanMobilePayments({ 
     required int loanId,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -188,7 +189,7 @@ _responseData = rawData == null ? null : deserialize<List<MobilePaymentResponse>
   ///
   /// Returns a [Future] containing a [Response] with a [Map<String, Object?>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<Map<String, Object?>>> receive({ 
+  Future<Response<Map<String, Object?>>> receiveMobileMoneyWebhook({ 
     required String body,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -281,7 +282,7 @@ _responseData = rawData == null ? null : deserialize<Map<String, Object?>, Objec
   ///
   /// Returns a [Future] containing a [Response] with a [MobilePaymentResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<MobilePaymentResponse>> request({ 
+  Future<Response<MobilePaymentResponse>> requestMobilePayment({ 
     required int loanId,
     required MobilePaymentRequest mobilePaymentRequest,
     String? idempotencyKey,

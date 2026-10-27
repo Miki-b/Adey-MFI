@@ -20,42 +20,42 @@ class OfficerSummary {
   /// Returns a new [OfficerSummary] instance.
   OfficerSummary({
 
-     this.activeLoans,
+    required  this.activeLoans,
 
-     this.clients,
+    required  this.clients,
 
      this.officerName,
 
-     this.par30,
+    required  this.par30,
 
-     this.principalOutstanding,
+    required  this.principalOutstanding,
 
      this.staffId,
 
-     this.totalOverdue,
+    required  this.totalOverdue,
   });
 
   @JsonKey(
     
     name: r'activeLoans',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? activeLoans;
+  final int activeLoans;
 
 
 
   @JsonKey(
     
     name: r'clients',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? clients;
+  final int clients;
 
 
 
@@ -74,24 +74,24 @@ class OfficerSummary {
   @JsonKey(
     
     name: r'par30',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? par30;
+  final num par30;
 
 
 
   @JsonKey(
     
     name: r'principalOutstanding',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principalOutstanding;
+  final num principalOutstanding;
 
 
 
@@ -110,12 +110,12 @@ class OfficerSummary {
   @JsonKey(
     
     name: r'totalOverdue',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? totalOverdue;
+  final num totalOverdue;
 
 
 

@@ -15,6 +15,7 @@ import 'package:adey_api/src/model/loan_list_item.dart';
 import 'package:adey_api/src/model/loan_product_response.dart';
 import 'package:adey_api/src/model/loan_status_response.dart';
 import 'package:adey_api/src/model/loan_summary.dart';
+import 'package:adey_api/src/model/loan_totals.dart';
 import 'package:adey_api/src/model/loan_transaction_response.dart';
 import 'package:adey_api/src/model/login_request.dart';
 import 'package:adey_api/src/model/mobile_payment_request.dart';
@@ -26,7 +27,10 @@ import 'package:adey_api/src/model/page_response_client_summary.dart';
 import 'package:adey_api/src/model/par.dart';
 import 'package:adey_api/src/model/payment_type_response.dart';
 import 'package:adey_api/src/model/portfolio.dart';
+import 'package:adey_api/src/model/problem.dart';
+import 'package:adey_api/src/model/problem_errors_inner.dart';
 import 'package:adey_api/src/model/reconciliation_report.dart';
+import 'package:adey_api/src/model/reconciliation_summary.dart';
 import 'package:adey_api/src/model/refresh_request.dart';
 import 'package:adey_api/src/model/reject_loan_request.dart';
 import 'package:adey_api/src/model/repayment_request.dart';
@@ -35,7 +39,6 @@ import 'package:adey_api/src/model/schedule_period.dart';
 import 'package:adey_api/src/model/schedule_preview_request.dart';
 import 'package:adey_api/src/model/schedule_preview_response.dart';
 import 'package:adey_api/src/model/scope.dart';
-import 'package:adey_api/src/model/summary.dart';
 import 'package:adey_api/src/model/token_response.dart';
 import 'package:adey_api/src/model/transition.dart';
 import 'package:adey_api/src/model/undo_approval_request.dart';
@@ -93,6 +96,8 @@ final _regMap = RegExp(r'^Map<String,(.*)>$');
           return LoanStatusResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'LoanSummary':
           return LoanSummary.fromJson(value as Map<String, dynamic>) as ReturnType;
+        case 'LoanTotals':
+          return LoanTotals.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'LoanTransactionResponse':
           return LoanTransactionResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'LoginRequest':
@@ -115,8 +120,14 @@ final _regMap = RegExp(r'^Map<String,(.*)>$');
           return PaymentTypeResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'Portfolio':
           return Portfolio.fromJson(value as Map<String, dynamic>) as ReturnType;
+        case 'Problem':
+          return Problem.fromJson(value as Map<String, dynamic>) as ReturnType;
+        case 'ProblemErrorsInner':
+          return ProblemErrorsInner.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'ReconciliationReport':
           return ReconciliationReport.fromJson(value as Map<String, dynamic>) as ReturnType;
+        case 'ReconciliationSummary':
+          return ReconciliationSummary.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'RefreshRequest':
           return RefreshRequest.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'RejectLoanRequest':
@@ -133,8 +144,6 @@ final _regMap = RegExp(r'^Map<String,(.*)>$');
           return SchedulePreviewResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'Scope':
           return Scope.fromJson(value as Map<String, dynamic>) as ReturnType;
-        case 'Summary':
-          return Summary.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'TokenResponse':
           return TokenResponse.fromJson(value as Map<String, dynamic>) as ReturnType;
         case 'Transition':

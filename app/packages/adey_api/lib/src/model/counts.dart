@@ -20,74 +20,74 @@ class Counts {
   /// Returns a new [Counts] instance.
   Counts({
 
-     this.activeLoans,
+    required  this.activeLoans,
 
-     this.approvedNotDisbursed,
+    required  this.approvedNotDisbursed,
 
-     this.clients,
+    required  this.clients,
 
-     this.loansInArrears,
+    required  this.loansInArrears,
 
-     this.pendingApplications,
+    required  this.pendingApplications,
   });
 
   @JsonKey(
     
     name: r'activeLoans',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? activeLoans;
+  final int activeLoans;
 
 
 
   @JsonKey(
     
     name: r'approvedNotDisbursed',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? approvedNotDisbursed;
+  final int approvedNotDisbursed;
 
 
 
   @JsonKey(
     
     name: r'clients',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? clients;
+  final int clients;
 
 
 
   @JsonKey(
     
     name: r'loansInArrears',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? loansInArrears;
+  final int loansInArrears;
 
 
 
   @JsonKey(
     
     name: r'pendingApplications',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? pendingApplications;
+  final int pendingApplications;
 
 
 

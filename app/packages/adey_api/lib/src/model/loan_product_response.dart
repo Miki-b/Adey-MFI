@@ -26,11 +26,11 @@ class LoanProductResponse {
 
      this.currency,
 
-     this.id,
+    required  this.id,
 
      this.interestMethod,
 
-     this.name,
+    required  this.name,
 
      this.principalDefault,
 
@@ -91,12 +91,12 @@ class LoanProductResponse {
   @JsonKey(
     
     name: r'id',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? id;
+  final int id;
 
 
 
@@ -116,12 +116,12 @@ class LoanProductResponse {
   @JsonKey(
     
     name: r'name',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? name;
+  final String name;
 
 
 

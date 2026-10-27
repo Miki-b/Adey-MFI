@@ -27,20 +27,20 @@ class CollectionEntry {
   final String clientName;
   final String accountNo;
   final int installment;
-  final DateTime? dueDate;
+  final DateTime dueDate;
   final Decimal amount;
   final int daysOverdue;
   final String? mobileNo;
 
   static CollectionEntry fromApi(CollectionItem c) => CollectionEntry(
-        loanId: c.loanId ?? 0,
-        clientId: c.clientId ?? 0,
-        clientName: c.clientName ?? '',
-        accountNo: c.accountNo ?? '',
-        installment: c.installment ?? 0,
+        loanId: c.loanId,
+        clientId: c.clientId,
+        clientName: c.clientName,
+        accountNo: c.accountNo,
+        installment: c.installment,
         dueDate: c.dueDate,
-        amount: toDecimal(c.amount) ?? Decimal.zero,
-        daysOverdue: c.daysOverdue ?? 0,
+        amount: decimalOf(c.amount),
+        daysOverdue: c.daysOverdue,
         mobileNo: c.clientMobileNo,
       );
 }
@@ -86,7 +86,7 @@ class PortfolioView {
     required this.officers,
   });
 
-  final DateTime? asOf;
+  final DateTime asOf;
 
   /// Office name (manager) or the officer's own office.
   final String scopeName;
@@ -109,39 +109,37 @@ class PortfolioView {
   /// Managers only (empty for officers).
   final List<OfficerFigures> officers;
 
-  static PortfolioView fromApi(Portfolio p) {
-    final zero = Decimal.zero;
-    return PortfolioView(
-      asOf: p.asOf,
-      scopeName: p.scope?.officeName ?? '',
-      isOfficeScope: (p.scope?.role ?? '').toUpperCase() == 'MANAGER',
-      clients: p.counts?.clients ?? 0,
-      activeLoans: p.counts?.activeLoans ?? 0,
-      pending: p.counts?.pendingApplications ?? 0,
-      approvedNotDisbursed: p.counts?.approvedNotDisbursed ?? 0,
-      inArrears: p.counts?.loansInArrears ?? 0,
-      principalOutstanding: toDecimal(p.amounts?.principalOutstanding) ?? zero,
-      totalOverdue: toDecimal(p.amounts?.totalOverdue) ?? zero,
-      par1: toDecimal(p.par?.par1) ?? zero,
-      par30: toDecimal(p.par?.par30) ?? zero,
-      par30Principal: toDecimal(p.par?.par30Principal) ?? zero,
-      dueToday: [for (final c in p.dueToday ?? const <CollectionItem>[]) CollectionEntry.fromApi(c)],
-      dueTodayCount: p.dueTodayCount ?? 0,
-      overdue: [for (final c in p.overdue ?? const <CollectionItem>[]) CollectionEntry.fromApi(c)],
-      overdueCount: p.overdueCount ?? 0,
-      officers: [
-        for (final o in p.officers ?? const <OfficerSummary>[])
-          OfficerFigures(
-            name: o.officerName ?? '',
-            clients: o.clients ?? 0,
-            activeLoans: o.activeLoans ?? 0,
-            principalOutstanding: toDecimal(o.principalOutstanding) ?? zero,
-            totalOverdue: toDecimal(o.totalOverdue) ?? zero,
-            par30: toDecimal(o.par30) ?? zero,
-          ),
-      ],
-    );
-  }
+  /// Everything the API marks required is used as is; only optional fields need a fallback.
+  static PortfolioView fromApi(Portfolio p) => PortfolioView(
+        asOf: p.asOf,
+        scopeName: p.scope.officeName,
+        isOfficeScope: p.scope.role == ScopeRoleEnum.MANAGER,
+        clients: p.counts.clients,
+        activeLoans: p.counts.activeLoans,
+        pending: p.counts.pendingApplications,
+        approvedNotDisbursed: p.counts.approvedNotDisbursed,
+        inArrears: p.counts.loansInArrears,
+        principalOutstanding: decimalOf(p.amounts.principalOutstanding),
+        totalOverdue: decimalOf(p.amounts.totalOverdue),
+        par1: decimalOf(p.par.par1),
+        par30: decimalOf(p.par.par30),
+        par30Principal: decimalOf(p.par.par30Principal),
+        dueToday: [for (final c in p.dueToday) CollectionEntry.fromApi(c)],
+        dueTodayCount: p.dueTodayCount,
+        overdue: [for (final c in p.overdue) CollectionEntry.fromApi(c)],
+        overdueCount: p.overdueCount,
+        officers: [
+          for (final o in p.officers ?? const <OfficerSummary>[]) // managers only
+            OfficerFigures(
+              name: o.officerName ?? '',
+              clients: o.clients,
+              activeLoans: o.activeLoans,
+              principalOutstanding: decimalOf(o.principalOutstanding),
+              totalOverdue: decimalOf(o.totalOverdue),
+              par30: decimalOf(o.par30),
+            ),
+        ],
+      );
 }
 
 enum ParLevel { healthy, watch, high }
@@ -160,7 +158,7 @@ class PortfolioRepository {
 
   Future<PortfolioView> load() async {
     try {
-      final response = await _api.getPortfolioApi().portfolio();
+      final response = await _api.getPortfolioApi().getPortfolio();
       return PortfolioView.fromApi(response.data!);
     } catch (e) {
       throw ApiError.from(e);

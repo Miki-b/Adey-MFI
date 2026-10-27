@@ -25,6 +25,7 @@ String errorMessage(AppLocalizations l10n, Object error) {
         : l10n.errorTooManyAttempts(_roundUpMinutes(e.retryAfter!)),
     'UNAUTHENTICATED' || 'INVALID_REFRESH_TOKEN' => l10n.errorSessionExpired,
     'FORBIDDEN' => l10n.errorForbidden,
+    'NOT_AN_OFFICER' => l10n.errorNotOfficer,
     'NOT_FOUND' => l10n.errorNotFound,
     'FINERACT_UNAVAILABLE' => l10n.errorFineractUnavailable,
     'FINERACT_ERROR' => l10n.errorFineractError,
@@ -46,7 +47,8 @@ String errorMessage(AppLocalizations l10n, Object error) {
   return specific ?? e.detail ?? l10n.errorGeneric;
 }
 
-/// Login: a 403 FORBIDDEN on /api/auth/login means "not an officer or manager account".
+/// Login: the backend answers NOT_AN_OFFICER for a valid user without our roles; older backends
+/// sent a plain 403 FORBIDDEN, which on the login call means the same.
 String loginErrorMessage(AppLocalizations l10n, Object error) {
   final e = ApiError.from(error);
   if (e.code == 'FORBIDDEN') return l10n.errorNotOfficer;

@@ -12,6 +12,7 @@ import 'package:dio/dio.dart';
 import 'package:adey_api/src/model/client_details.dart';
 import 'package:adey_api/src/model/create_client_request.dart';
 import 'package:adey_api/src/model/page_response_client_summary.dart';
+import 'package:adey_api/src/model/problem.dart';
 import 'package:adey_api/src/model/update_client_request.dart';
 
 class ClientsApi {
@@ -19,84 +20,6 @@ class ClientsApi {
   final Dio _dio;
 
   const ClientsApi(this._dio);
-
-  /// Client details (403 if the client is not yours / not in your office)
-  /// 
-  ///
-  /// Parameters:
-  /// * [clientId] 
-  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
-  /// * [headers] - Can be used to add additional headers to the request
-  /// * [extras] - Can be used to add flags to the request
-  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
-  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
-  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
-  ///
-  /// Returns a [Future] containing a [Response] with a [ClientDetails] as data
-  /// Throws [DioException] if API call or serialization fails
-  Future<Response<ClientDetails>> callGet({ 
-    required int clientId,
-    CancelToken? cancelToken,
-    Map<String, dynamic>? headers,
-    Map<String, dynamic>? extra,
-    ValidateStatus? validateStatus,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
-  }) async {
-    final _path = r'/api/clients/{clientId}'.replaceAll('{' r'clientId' '}', clientId.toString());
-    final _options = Options(
-      method: r'GET',
-      headers: <String, dynamic>{
-        ...?headers,
-      },
-      extra: <String, dynamic>{
-        'secure': <Map<String, String>>[
-          {
-            'type': 'http',
-            'scheme': 'bearer',
-            'name': 'bearerAuth',
-          },
-        ],
-        ...?extra,
-      },
-      validateStatus: validateStatus,
-    );
-
-    final _response = await _dio.request<Object>(
-      _path,
-      options: _options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
-    );
-
-    ClientDetails? _responseData;
-
-    try {
-final rawData = _response.data;
-_responseData = rawData == null ? null : deserialize<ClientDetails, ClientDetails>(rawData, 'ClientDetails', growable: true);
-
-    } catch (error, stackTrace) {
-      throw DioException(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioExceptionType.unknown,
-        error: error,
-        stackTrace: stackTrace,
-      );
-    }
-
-    return Response<ClientDetails>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
-    );
-  }
 
   /// Create a client in your office (officer: assigned to you; manager: choose staffId)
   /// 
@@ -113,7 +36,7 @@ _responseData = rawData == null ? null : deserialize<ClientDetails, ClientDetail
   ///
   /// Returns a [Future] containing a [Response] with a [ClientDetails] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ClientDetails>> create({ 
+  Future<Response<ClientDetails>> createClient({ 
     required CreateClientRequest createClientRequest,
     String? idempotencyKey,
     CancelToken? cancelToken,
@@ -198,6 +121,84 @@ _responseData = rawData == null ? null : deserialize<ClientDetails, ClientDetail
     );
   }
 
+  /// Client details (403 if the client is not yours / not in your office)
+  /// 
+  ///
+  /// Parameters:
+  /// * [clientId] 
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [ClientDetails] as data
+  /// Throws [DioException] if API call or serialization fails
+  Future<Response<ClientDetails>> getClient({ 
+    required int clientId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/api/clients/{clientId}'.replaceAll('{' r'clientId' '}', clientId.toString());
+    final _options = Options(
+      method: r'GET',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'http',
+            'scheme': 'bearer',
+            'name': 'bearerAuth',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    ClientDetails? _responseData;
+
+    try {
+final rawData = _response.data;
+_responseData = rawData == null ? null : deserialize<ClientDetails, ClientDetails>(rawData, 'ClientDetails', growable: true);
+
+    } catch (error, stackTrace) {
+      throw DioException(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioExceptionType.unknown,
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    return Response<ClientDetails>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
   /// Search clients (paged): an officer sees their own clients, a manager their whole office
   /// 
   ///
@@ -214,7 +215,7 @@ _responseData = rawData == null ? null : deserialize<ClientDetails, ClientDetail
   ///
   /// Returns a [Future] containing a [Response] with a [PageResponseClientSummary] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<PageResponseClientSummary>> search({ 
+  Future<Response<PageResponseClientSummary>> listClients({ 
     String? search,
     int? page = 0,
     int? size = 20,
@@ -302,7 +303,7 @@ _responseData = rawData == null ? null : deserialize<PageResponseClientSummary, 
   ///
   /// Returns a [Future] containing a [Response] with a [ClientDetails] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ClientDetails>> update({ 
+  Future<Response<ClientDetails>> updateClient({ 
     required int clientId,
     required UpdateClientRequest updateClientRequest,
     CancelToken? cancelToken,

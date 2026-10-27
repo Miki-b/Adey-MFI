@@ -7,15 +7,15 @@ part of 'counts.dart';
 // **************************************************************************
 
 abstract class _$CountsCWProxy {
-  Counts activeLoans(int? activeLoans);
+  Counts activeLoans(int activeLoans);
 
-  Counts approvedNotDisbursed(int? approvedNotDisbursed);
+  Counts approvedNotDisbursed(int approvedNotDisbursed);
 
-  Counts clients(int? clients);
+  Counts clients(int clients);
 
-  Counts loansInArrears(int? loansInArrears);
+  Counts loansInArrears(int loansInArrears);
 
-  Counts pendingApplications(int? pendingApplications);
+  Counts pendingApplications(int pendingApplications);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Counts(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -24,11 +24,11 @@ abstract class _$CountsCWProxy {
   /// Counts(...).copyWith(id: 12, name: "My name")
   /// ````
   Counts call({
-    int? activeLoans,
-    int? approvedNotDisbursed,
-    int? clients,
-    int? loansInArrears,
-    int? pendingApplications,
+    int activeLoans,
+    int approvedNotDisbursed,
+    int clients,
+    int loansInArrears,
+    int pendingApplications,
   });
 }
 
@@ -39,21 +39,21 @@ class _$CountsCWProxyImpl implements _$CountsCWProxy {
   final Counts _value;
 
   @override
-  Counts activeLoans(int? activeLoans) => this(activeLoans: activeLoans);
+  Counts activeLoans(int activeLoans) => this(activeLoans: activeLoans);
 
   @override
-  Counts approvedNotDisbursed(int? approvedNotDisbursed) =>
+  Counts approvedNotDisbursed(int approvedNotDisbursed) =>
       this(approvedNotDisbursed: approvedNotDisbursed);
 
   @override
-  Counts clients(int? clients) => this(clients: clients);
+  Counts clients(int clients) => this(clients: clients);
 
   @override
-  Counts loansInArrears(int? loansInArrears) =>
+  Counts loansInArrears(int loansInArrears) =>
       this(loansInArrears: loansInArrears);
 
   @override
-  Counts pendingApplications(int? pendingApplications) =>
+  Counts pendingApplications(int pendingApplications) =>
       this(pendingApplications: pendingApplications);
 
   @override
@@ -74,23 +74,23 @@ class _$CountsCWProxyImpl implements _$CountsCWProxy {
       activeLoans: activeLoans == const $CopyWithPlaceholder()
           ? _value.activeLoans
           // ignore: cast_nullable_to_non_nullable
-          : activeLoans as int?,
+          : activeLoans as int,
       approvedNotDisbursed: approvedNotDisbursed == const $CopyWithPlaceholder()
           ? _value.approvedNotDisbursed
           // ignore: cast_nullable_to_non_nullable
-          : approvedNotDisbursed as int?,
+          : approvedNotDisbursed as int,
       clients: clients == const $CopyWithPlaceholder()
           ? _value.clients
           // ignore: cast_nullable_to_non_nullable
-          : clients as int?,
+          : clients as int,
       loansInArrears: loansInArrears == const $CopyWithPlaceholder()
           ? _value.loansInArrears
           // ignore: cast_nullable_to_non_nullable
-          : loansInArrears as int?,
+          : loansInArrears as int,
       pendingApplications: pendingApplications == const $CopyWithPlaceholder()
           ? _value.pendingApplications
           // ignore: cast_nullable_to_non_nullable
-          : pendingApplications as int?,
+          : pendingApplications as int,
     );
   }
 }
@@ -105,34 +105,41 @@ extension $CountsCopyWith on Counts {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Counts _$CountsFromJson(Map<String, dynamic> json) => $checkedCreate(
-  'Counts',
-  json,
-  ($checkedConvert) {
-    final val = Counts(
-      activeLoans: $checkedConvert('activeLoans', (v) => (v as num?)?.toInt()),
-      approvedNotDisbursed: $checkedConvert(
-        'approvedNotDisbursed',
-        (v) => (v as num?)?.toInt(),
-      ),
-      clients: $checkedConvert('clients', (v) => (v as num?)?.toInt()),
-      loansInArrears: $checkedConvert(
-        'loansInArrears',
-        (v) => (v as num?)?.toInt(),
-      ),
-      pendingApplications: $checkedConvert(
-        'pendingApplications',
-        (v) => (v as num?)?.toInt(),
-      ),
-    );
-    return val;
-  },
-);
+Counts _$CountsFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('Counts', json, ($checkedConvert) {
+      $checkKeys(
+        json,
+        requiredKeys: const [
+          'activeLoans',
+          'approvedNotDisbursed',
+          'clients',
+          'loansInArrears',
+          'pendingApplications',
+        ],
+      );
+      final val = Counts(
+        activeLoans: $checkedConvert('activeLoans', (v) => (v as num).toInt()),
+        approvedNotDisbursed: $checkedConvert(
+          'approvedNotDisbursed',
+          (v) => (v as num).toInt(),
+        ),
+        clients: $checkedConvert('clients', (v) => (v as num).toInt()),
+        loansInArrears: $checkedConvert(
+          'loansInArrears',
+          (v) => (v as num).toInt(),
+        ),
+        pendingApplications: $checkedConvert(
+          'pendingApplications',
+          (v) => (v as num).toInt(),
+        ),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$CountsToJson(Counts instance) => <String, dynamic>{
-  'activeLoans': ?instance.activeLoans,
-  'approvedNotDisbursed': ?instance.approvedNotDisbursed,
-  'clients': ?instance.clients,
-  'loansInArrears': ?instance.loansInArrears,
-  'pendingApplications': ?instance.pendingApplications,
+  'activeLoans': instance.activeLoans,
+  'approvedNotDisbursed': instance.approvedNotDisbursed,
+  'clients': instance.clients,
+  'loansInArrears': instance.loansInArrears,
+  'pendingApplications': instance.pendingApplications,
 };

@@ -4,7 +4,7 @@
 
 // ignore_for_file: unused_element
 import 'package:adey_api/src/model/finding_response.dart';
-import 'package:adey_api/src/model/summary.dart';
+import 'package:adey_api/src/model/reconciliation_summary.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -22,88 +22,88 @@ class ReconciliationReport {
   /// Returns a new [ReconciliationReport] instance.
   ReconciliationReport({
 
-     this.date,
+    required  this.date,
 
-     this.findings,
+    required  this.findings,
 
-     this.runAt,
+    required  this.runAt,
 
-     this.runId,
+    required  this.runId,
 
-     this.summary,
+    required  this.summary,
 
-     this.triggeredBy,
+    required  this.triggeredBy,
   });
 
   @JsonKey(
     
     name: r'date',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? date;
+  final DateTime date;
 
 
 
   @JsonKey(
     
     name: r'findings',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final List<FindingResponse>? findings;
+  final List<FindingResponse> findings;
 
 
 
   @JsonKey(
     
     name: r'runAt',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? runAt;
+  final DateTime runAt;
 
 
 
   @JsonKey(
     
     name: r'runId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? runId;
+  final int runId;
 
 
 
   @JsonKey(
     
     name: r'summary',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final Summary? summary;
+  final ReconciliationSummary summary;
 
 
 
   @JsonKey(
     
     name: r'triggeredBy',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? triggeredBy;
+  final String triggeredBy;
 
 
 

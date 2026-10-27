@@ -21,25 +21,25 @@ class MobilePaymentResponse {
   /// Returns a new [MobilePaymentResponse] instance.
   MobilePaymentResponse({
 
-     this.amount,
+    required  this.amount,
 
-     this.clientId,
+    required  this.clientId,
 
-     this.createdAt,
+    required  this.createdAt,
 
-     this.currency,
+    required  this.currency,
 
-     this.finalState,
+    required  this.finalState,
 
      this.fineractTransactionId,
 
-     this.history,
+    required  this.history,
 
-     this.id,
+    required  this.id,
 
      this.lastError,
 
-     this.loanId,
+    required  this.loanId,
 
      this.method,
 
@@ -47,11 +47,11 @@ class MobilePaymentResponse {
 
      this.paidAt,
 
-     this.phone,
+    required  this.phone,
 
-     this.postingAttempts,
+    required  this.postingAttempts,
 
-     this.provider,
+    required  this.provider,
 
      this.providerAmount,
 
@@ -59,72 +59,72 @@ class MobilePaymentResponse {
 
      this.providerTransactionId,
 
-     this.reference,
+    required  this.reference,
 
-     this.requestedBy,
+    required  this.requestedBy,
 
-     this.status,
+    required  this.status,
 
-     this.updatedAt,
+    required  this.updatedAt,
   });
 
   @JsonKey(
     
     name: r'amount',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? amount;
+  final num amount;
 
 
 
   @JsonKey(
     
     name: r'clientId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? clientId;
+  final int clientId;
 
 
 
   @JsonKey(
     
     name: r'createdAt',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? createdAt;
+  final DateTime createdAt;
 
 
 
   @JsonKey(
     
     name: r'currency',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? currency;
+  final String currency;
 
 
 
   @JsonKey(
     
     name: r'finalState',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final bool? finalState;
+  final bool finalState;
 
 
 
@@ -143,24 +143,24 @@ class MobilePaymentResponse {
   @JsonKey(
     
     name: r'history',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final List<Transition>? history;
+  final List<Transition> history;
 
 
 
   @JsonKey(
     
     name: r'id',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? id;
+  final int id;
 
 
 
@@ -179,12 +179,12 @@ class MobilePaymentResponse {
   @JsonKey(
     
     name: r'loanId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? loanId;
+  final int loanId;
 
 
 
@@ -228,36 +228,36 @@ class MobilePaymentResponse {
   @JsonKey(
     
     name: r'phone',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? phone;
+  final String phone;
 
 
 
   @JsonKey(
     
     name: r'postingAttempts',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? postingAttempts;
+  final int postingAttempts;
 
 
 
   @JsonKey(
     
     name: r'provider',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? provider;
+  final String provider;
 
 
 
@@ -300,49 +300,49 @@ class MobilePaymentResponse {
   @JsonKey(
     
     name: r'reference',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? reference;
+  final String reference;
 
 
 
   @JsonKey(
     
     name: r'requestedBy',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? requestedBy;
+  final String requestedBy;
 
 
 
   @JsonKey(
     
     name: r'status',
-    required: false,
+    required: true,
     includeIfNull: false,
   unknownEnumValue: MobilePaymentResponseStatusEnum.unknownDefaultOpenApi,
   )
 
 
-  final MobilePaymentResponseStatusEnum? status;
+  final MobilePaymentResponseStatusEnum status;
 
 
 
   @JsonKey(
     
     name: r'updatedAt',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? updatedAt;
+  final DateTime updatedAt;
 
 
 

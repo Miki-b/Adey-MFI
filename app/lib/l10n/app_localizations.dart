@@ -598,11 +598,11 @@ abstract class AppLocalizations {
   /// **'Search by name'**
   String get searchClients;
 
-  /// No description provided for @searchCaseSensitive.
+  /// No description provided for @searchHelp.
   ///
   /// In en, this message translates to:
-  /// **'Search is case-sensitive: \"Tek\" finds Tekle, \"tek\" does not.'**
-  String get searchCaseSensitive;
+  /// **'Any part of the name, upper or lower case.'**
+  String get searchHelp;
 
   /// No description provided for @noClients.
   ///

@@ -20,9 +20,9 @@ class OfficeResponse {
   /// Returns a new [OfficeResponse] instance.
   OfficeResponse({
 
-     this.id,
+    required  this.id,
 
-     this.name,
+    required  this.name,
 
      this.openingDate,
 
@@ -32,24 +32,24 @@ class OfficeResponse {
   @JsonKey(
     
     name: r'id',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? id;
+  final int id;
 
 
 
   @JsonKey(
     
     name: r'name',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? name;
+  final String name;
 
 
 

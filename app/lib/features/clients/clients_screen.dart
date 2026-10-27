@@ -51,7 +51,7 @@ class _ClientsScreenState extends ConsumerState<ClientsScreen> {
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.search),
                 hintText: l10n.searchClients,
-                helperText: l10n.searchCaseSensitive,
+                helperText: l10n.searchHelp,
                 helperMaxLines: 2,
                 suffixIcon: _search.text.isEmpty
                     ? null

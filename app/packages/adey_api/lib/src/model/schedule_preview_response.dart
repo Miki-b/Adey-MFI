@@ -29,15 +29,15 @@ class SchedulePreviewResponse {
 
      this.lastInstallmentAmount,
 
-     this.numberOfRepayments,
+    required  this.numberOfRepayments,
 
-     this.periods,
+    required  this.periods,
 
      this.principal,
 
-     this.totalInterest,
+    required  this.totalInterest,
 
-     this.totalRepayable,
+    required  this.totalRepayable,
   });
 
   @JsonKey(
@@ -91,24 +91,24 @@ class SchedulePreviewResponse {
   @JsonKey(
     
     name: r'numberOfRepayments',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? numberOfRepayments;
+  final int numberOfRepayments;
 
 
 
   @JsonKey(
     
     name: r'periods',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final List<SchedulePeriod>? periods;
+  final List<SchedulePeriod> periods;
 
 
 
@@ -127,24 +127,24 @@ class SchedulePreviewResponse {
   @JsonKey(
     
     name: r'totalInterest',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? totalInterest;
+  final num totalInterest;
 
 
 
   @JsonKey(
     
     name: r'totalRepayable',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? totalRepayable;
+  final num totalRepayable;
 
 
 

@@ -20,13 +20,13 @@ class Scope {
   /// Returns a new [Scope] instance.
   Scope({
 
-     this.officeId,
+    required  this.officeId,
 
-     this.officeName,
+    required  this.officeName,
 
      this.officerName,
 
-     this.role,
+    required  this.role,
 
      this.staffId,
   });
@@ -34,24 +34,24 @@ class Scope {
   @JsonKey(
     
     name: r'officeId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? officeId;
+  final int officeId;
 
 
 
   @JsonKey(
     
     name: r'officeName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? officeName;
+  final String officeName;
 
 
 
@@ -70,12 +70,13 @@ class Scope {
   @JsonKey(
     
     name: r'role',
-    required: false,
+    required: true,
     includeIfNull: false,
+  unknownEnumValue: ScopeRoleEnum.unknownDefaultOpenApi,
   )
 
 
-  final String? role;
+  final ScopeRoleEnum role;
 
 
 
@@ -119,4 +120,21 @@ class Scope {
   }
 
 }
+
+enum ScopeRoleEnum {
+@JsonValue(r'OFFICER')
+OFFICER(r'OFFICER'),
+@JsonValue(r'MANAGER')
+MANAGER(r'MANAGER'),
+@JsonValue(r'unknown_default_open_api')
+unknownDefaultOpenApi(r'unknown_default_open_api');
+
+const ScopeRoleEnum(this.value);
+
+final String value;
+
+@override
+String toString() => value;
+}
+
 

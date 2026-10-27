@@ -7,17 +7,17 @@ part of 'client_summary.dart';
 // **************************************************************************
 
 abstract class _$ClientSummaryCWProxy {
-  ClientSummary accountNo(String? accountNo);
+  ClientSummary accountNo(String accountNo);
 
   ClientSummary activationDate(DateTime? activationDate);
 
-  ClientSummary active(bool? active);
+  ClientSummary active(bool active);
 
-  ClientSummary displayName(String? displayName);
+  ClientSummary displayName(String displayName);
 
-  ClientSummary id(int? id);
+  ClientSummary id(int id);
 
-  ClientSummary officeName(String? officeName);
+  ClientSummary officeName(String officeName);
 
   ClientSummary staffName(String? staffName);
 
@@ -28,12 +28,12 @@ abstract class _$ClientSummaryCWProxy {
   /// ClientSummary(...).copyWith(id: 12, name: "My name")
   /// ````
   ClientSummary call({
-    String? accountNo,
+    String accountNo,
     DateTime? activationDate,
-    bool? active,
-    String? displayName,
-    int? id,
-    String? officeName,
+    bool active,
+    String displayName,
+    int id,
+    String officeName,
     String? staffName,
   });
 }
@@ -45,24 +45,24 @@ class _$ClientSummaryCWProxyImpl implements _$ClientSummaryCWProxy {
   final ClientSummary _value;
 
   @override
-  ClientSummary accountNo(String? accountNo) => this(accountNo: accountNo);
+  ClientSummary accountNo(String accountNo) => this(accountNo: accountNo);
 
   @override
   ClientSummary activationDate(DateTime? activationDate) =>
       this(activationDate: activationDate);
 
   @override
-  ClientSummary active(bool? active) => this(active: active);
+  ClientSummary active(bool active) => this(active: active);
 
   @override
-  ClientSummary displayName(String? displayName) =>
+  ClientSummary displayName(String displayName) =>
       this(displayName: displayName);
 
   @override
-  ClientSummary id(int? id) => this(id: id);
+  ClientSummary id(int id) => this(id: id);
 
   @override
-  ClientSummary officeName(String? officeName) => this(officeName: officeName);
+  ClientSummary officeName(String officeName) => this(officeName: officeName);
 
   @override
   ClientSummary staffName(String? staffName) => this(staffName: staffName);
@@ -87,7 +87,7 @@ class _$ClientSummaryCWProxyImpl implements _$ClientSummaryCWProxy {
       accountNo: accountNo == const $CopyWithPlaceholder()
           ? _value.accountNo
           // ignore: cast_nullable_to_non_nullable
-          : accountNo as String?,
+          : accountNo as String,
       activationDate: activationDate == const $CopyWithPlaceholder()
           ? _value.activationDate
           // ignore: cast_nullable_to_non_nullable
@@ -95,19 +95,19 @@ class _$ClientSummaryCWProxyImpl implements _$ClientSummaryCWProxy {
       active: active == const $CopyWithPlaceholder()
           ? _value.active
           // ignore: cast_nullable_to_non_nullable
-          : active as bool?,
+          : active as bool,
       displayName: displayName == const $CopyWithPlaceholder()
           ? _value.displayName
           // ignore: cast_nullable_to_non_nullable
-          : displayName as String?,
+          : displayName as String,
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as int?,
+          : id as int,
       officeName: officeName == const $CopyWithPlaceholder()
           ? _value.officeName
           // ignore: cast_nullable_to_non_nullable
-          : officeName as String?,
+          : officeName as String,
       staffName: staffName == const $CopyWithPlaceholder()
           ? _value.staffName
           // ignore: cast_nullable_to_non_nullable
@@ -128,16 +128,26 @@ extension $ClientSummaryCopyWith on ClientSummary {
 
 ClientSummary _$ClientSummaryFromJson(Map<String, dynamic> json) =>
     $checkedCreate('ClientSummary', json, ($checkedConvert) {
+      $checkKeys(
+        json,
+        requiredKeys: const [
+          'accountNo',
+          'active',
+          'displayName',
+          'id',
+          'officeName',
+        ],
+      );
       final val = ClientSummary(
-        accountNo: $checkedConvert('accountNo', (v) => v as String?),
+        accountNo: $checkedConvert('accountNo', (v) => v as String),
         activationDate: $checkedConvert(
           'activationDate',
           (v) => v == null ? null : DateTime.parse(v as String),
         ),
-        active: $checkedConvert('active', (v) => v as bool?),
-        displayName: $checkedConvert('displayName', (v) => v as String?),
-        id: $checkedConvert('id', (v) => (v as num?)?.toInt()),
-        officeName: $checkedConvert('officeName', (v) => v as String?),
+        active: $checkedConvert('active', (v) => v as bool),
+        displayName: $checkedConvert('displayName', (v) => v as String),
+        id: $checkedConvert('id', (v) => (v as num).toInt()),
+        officeName: $checkedConvert('officeName', (v) => v as String),
         staffName: $checkedConvert('staffName', (v) => v as String?),
       );
       return val;
@@ -145,11 +155,11 @@ ClientSummary _$ClientSummaryFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ClientSummaryToJson(ClientSummary instance) =>
     <String, dynamic>{
-      'accountNo': ?instance.accountNo,
+      'accountNo': instance.accountNo,
       'activationDate': ?instance.activationDate?.toIso8601String(),
-      'active': ?instance.active,
-      'displayName': ?instance.displayName,
-      'id': ?instance.id,
-      'officeName': ?instance.officeName,
+      'active': instance.active,
+      'displayName': instance.displayName,
+      'id': instance.id,
+      'officeName': instance.officeName,
       'staffName': ?instance.staffName,
     };

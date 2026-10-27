@@ -21,74 +21,74 @@ class PageResponseClientSummary {
   /// Returns a new [PageResponseClientSummary] instance.
   PageResponseClientSummary({
 
-     this.content,
+    required  this.content,
 
-     this.page,
+    required  this.page,
 
-     this.size,
+    required  this.size,
 
-     this.totalElements,
+    required  this.totalElements,
 
-     this.totalPages,
+    required  this.totalPages,
   });
 
   @JsonKey(
     
     name: r'content',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final List<ClientSummary>? content;
+  final List<ClientSummary> content;
 
 
 
   @JsonKey(
     
     name: r'page',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? page;
+  final int page;
 
 
 
   @JsonKey(
     
     name: r'size',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? size;
+  final int size;
 
 
 
   @JsonKey(
     
     name: r'totalElements',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? totalElements;
+  final int totalElements;
 
 
 
   @JsonKey(
     
     name: r'totalPages',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? totalPages;
+  final int totalPages;
 
 
 

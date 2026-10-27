@@ -26,7 +26,7 @@ class FindingResponse {
 
      this.fineractTransactionId,
 
-     this.id,
+    required  this.id,
 
      this.intentAmount,
 
@@ -44,13 +44,13 @@ class FindingResponse {
 
      this.resolutionNote,
 
-     this.resolved,
+    required  this.resolved,
 
      this.resolvedAt,
 
      this.resolvedBy,
 
-     this.type,
+    required  this.type,
   });
 
   @JsonKey(
@@ -92,12 +92,12 @@ class FindingResponse {
   @JsonKey(
     
     name: r'id',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? id;
+  final int id;
 
 
 
@@ -200,12 +200,12 @@ class FindingResponse {
   @JsonKey(
     
     name: r'resolved',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final bool? resolved;
+  final bool resolved;
 
 
 
@@ -236,13 +236,13 @@ class FindingResponse {
   @JsonKey(
     
     name: r'type',
-    required: false,
+    required: true,
     includeIfNull: false,
   unknownEnumValue: FindingResponseTypeEnum.unknownDefaultOpenApi,
   )
 
 
-  final FindingResponseTypeEnum? type;
+  final FindingResponseTypeEnum type;
 
 
 

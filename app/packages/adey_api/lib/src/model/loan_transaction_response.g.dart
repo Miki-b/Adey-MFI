@@ -7,29 +7,29 @@ part of 'loan_transaction_response.dart';
 // **************************************************************************
 
 abstract class _$LoanTransactionResponseCWProxy {
-  LoanTransactionResponse amount(num? amount);
+  LoanTransactionResponse amount(num amount);
 
-  LoanTransactionResponse date(DateTime? date);
+  LoanTransactionResponse date(DateTime date);
 
-  LoanTransactionResponse feesPortion(num? feesPortion);
+  LoanTransactionResponse feesPortion(num feesPortion);
 
-  LoanTransactionResponse id(int? id);
+  LoanTransactionResponse id(int id);
 
-  LoanTransactionResponse interestPortion(num? interestPortion);
+  LoanTransactionResponse interestPortion(num interestPortion);
 
-  LoanTransactionResponse outstandingBalanceAfter(num? outstandingBalanceAfter);
+  LoanTransactionResponse outstandingBalanceAfter(num outstandingBalanceAfter);
 
-  LoanTransactionResponse overpaymentPortion(num? overpaymentPortion);
+  LoanTransactionResponse overpaymentPortion(num overpaymentPortion);
 
   LoanTransactionResponse paymentType(String? paymentType);
 
-  LoanTransactionResponse penaltiesPortion(num? penaltiesPortion);
+  LoanTransactionResponse penaltiesPortion(num penaltiesPortion);
 
-  LoanTransactionResponse principalPortion(num? principalPortion);
+  LoanTransactionResponse principalPortion(num principalPortion);
 
-  LoanTransactionResponse reversed(bool? reversed);
+  LoanTransactionResponse reversed(bool reversed);
 
-  LoanTransactionResponse type(String? type);
+  LoanTransactionResponse type(String type);
 
   LoanTransactionResponse typeLabel(String? typeLabel);
 
@@ -40,18 +40,18 @@ abstract class _$LoanTransactionResponseCWProxy {
   /// LoanTransactionResponse(...).copyWith(id: 12, name: "My name")
   /// ````
   LoanTransactionResponse call({
-    num? amount,
-    DateTime? date,
-    num? feesPortion,
-    int? id,
-    num? interestPortion,
-    num? outstandingBalanceAfter,
-    num? overpaymentPortion,
+    num amount,
+    DateTime date,
+    num feesPortion,
+    int id,
+    num interestPortion,
+    num outstandingBalanceAfter,
+    num overpaymentPortion,
     String? paymentType,
-    num? penaltiesPortion,
-    num? principalPortion,
-    bool? reversed,
-    String? type,
+    num penaltiesPortion,
+    num principalPortion,
+    bool reversed,
+    String type,
     String? typeLabel,
   });
 }
@@ -64,29 +64,29 @@ class _$LoanTransactionResponseCWProxyImpl
   final LoanTransactionResponse _value;
 
   @override
-  LoanTransactionResponse amount(num? amount) => this(amount: amount);
+  LoanTransactionResponse amount(num amount) => this(amount: amount);
 
   @override
-  LoanTransactionResponse date(DateTime? date) => this(date: date);
+  LoanTransactionResponse date(DateTime date) => this(date: date);
 
   @override
-  LoanTransactionResponse feesPortion(num? feesPortion) =>
+  LoanTransactionResponse feesPortion(num feesPortion) =>
       this(feesPortion: feesPortion);
 
   @override
-  LoanTransactionResponse id(int? id) => this(id: id);
+  LoanTransactionResponse id(int id) => this(id: id);
 
   @override
-  LoanTransactionResponse interestPortion(num? interestPortion) =>
+  LoanTransactionResponse interestPortion(num interestPortion) =>
       this(interestPortion: interestPortion);
 
   @override
   LoanTransactionResponse outstandingBalanceAfter(
-    num? outstandingBalanceAfter,
+    num outstandingBalanceAfter,
   ) => this(outstandingBalanceAfter: outstandingBalanceAfter);
 
   @override
-  LoanTransactionResponse overpaymentPortion(num? overpaymentPortion) =>
+  LoanTransactionResponse overpaymentPortion(num overpaymentPortion) =>
       this(overpaymentPortion: overpaymentPortion);
 
   @override
@@ -94,18 +94,18 @@ class _$LoanTransactionResponseCWProxyImpl
       this(paymentType: paymentType);
 
   @override
-  LoanTransactionResponse penaltiesPortion(num? penaltiesPortion) =>
+  LoanTransactionResponse penaltiesPortion(num penaltiesPortion) =>
       this(penaltiesPortion: penaltiesPortion);
 
   @override
-  LoanTransactionResponse principalPortion(num? principalPortion) =>
+  LoanTransactionResponse principalPortion(num principalPortion) =>
       this(principalPortion: principalPortion);
 
   @override
-  LoanTransactionResponse reversed(bool? reversed) => this(reversed: reversed);
+  LoanTransactionResponse reversed(bool reversed) => this(reversed: reversed);
 
   @override
-  LoanTransactionResponse type(String? type) => this(type: type);
+  LoanTransactionResponse type(String type) => this(type: type);
 
   @override
   LoanTransactionResponse typeLabel(String? typeLabel) =>
@@ -137,32 +137,32 @@ class _$LoanTransactionResponseCWProxyImpl
       amount: amount == const $CopyWithPlaceholder()
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
-          : amount as num?,
+          : amount as num,
       date: date == const $CopyWithPlaceholder()
           ? _value.date
           // ignore: cast_nullable_to_non_nullable
-          : date as DateTime?,
+          : date as DateTime,
       feesPortion: feesPortion == const $CopyWithPlaceholder()
           ? _value.feesPortion
           // ignore: cast_nullable_to_non_nullable
-          : feesPortion as num?,
+          : feesPortion as num,
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as int?,
+          : id as int,
       interestPortion: interestPortion == const $CopyWithPlaceholder()
           ? _value.interestPortion
           // ignore: cast_nullable_to_non_nullable
-          : interestPortion as num?,
+          : interestPortion as num,
       outstandingBalanceAfter:
           outstandingBalanceAfter == const $CopyWithPlaceholder()
           ? _value.outstandingBalanceAfter
           // ignore: cast_nullable_to_non_nullable
-          : outstandingBalanceAfter as num?,
+          : outstandingBalanceAfter as num,
       overpaymentPortion: overpaymentPortion == const $CopyWithPlaceholder()
           ? _value.overpaymentPortion
           // ignore: cast_nullable_to_non_nullable
-          : overpaymentPortion as num?,
+          : overpaymentPortion as num,
       paymentType: paymentType == const $CopyWithPlaceholder()
           ? _value.paymentType
           // ignore: cast_nullable_to_non_nullable
@@ -170,19 +170,19 @@ class _$LoanTransactionResponseCWProxyImpl
       penaltiesPortion: penaltiesPortion == const $CopyWithPlaceholder()
           ? _value.penaltiesPortion
           // ignore: cast_nullable_to_non_nullable
-          : penaltiesPortion as num?,
+          : penaltiesPortion as num,
       principalPortion: principalPortion == const $CopyWithPlaceholder()
           ? _value.principalPortion
           // ignore: cast_nullable_to_non_nullable
-          : principalPortion as num?,
+          : principalPortion as num,
       reversed: reversed == const $CopyWithPlaceholder()
           ? _value.reversed
           // ignore: cast_nullable_to_non_nullable
-          : reversed as bool?,
+          : reversed as bool,
       type: type == const $CopyWithPlaceholder()
           ? _value.type
           // ignore: cast_nullable_to_non_nullable
-          : type as String?,
+          : type as String,
       typeLabel: typeLabel == const $CopyWithPlaceholder()
           ? _value.typeLabel
           // ignore: cast_nullable_to_non_nullable
@@ -205,25 +205,38 @@ extension $LoanTransactionResponseCopyWith on LoanTransactionResponse {
 LoanTransactionResponse _$LoanTransactionResponseFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('LoanTransactionResponse', json, ($checkedConvert) {
-  final val = LoanTransactionResponse(
-    amount: $checkedConvert('amount', (v) => v as num?),
-    date: $checkedConvert(
+  $checkKeys(
+    json,
+    requiredKeys: const [
+      'amount',
       'date',
-      (v) => v == null ? null : DateTime.parse(v as String),
-    ),
-    feesPortion: $checkedConvert('feesPortion', (v) => v as num?),
-    id: $checkedConvert('id', (v) => (v as num?)?.toInt()),
-    interestPortion: $checkedConvert('interestPortion', (v) => v as num?),
+      'feesPortion',
+      'id',
+      'interestPortion',
+      'outstandingBalanceAfter',
+      'overpaymentPortion',
+      'penaltiesPortion',
+      'principalPortion',
+      'reversed',
+      'type',
+    ],
+  );
+  final val = LoanTransactionResponse(
+    amount: $checkedConvert('amount', (v) => v as num),
+    date: $checkedConvert('date', (v) => DateTime.parse(v as String)),
+    feesPortion: $checkedConvert('feesPortion', (v) => v as num),
+    id: $checkedConvert('id', (v) => (v as num).toInt()),
+    interestPortion: $checkedConvert('interestPortion', (v) => v as num),
     outstandingBalanceAfter: $checkedConvert(
       'outstandingBalanceAfter',
-      (v) => v as num?,
+      (v) => v as num,
     ),
-    overpaymentPortion: $checkedConvert('overpaymentPortion', (v) => v as num?),
+    overpaymentPortion: $checkedConvert('overpaymentPortion', (v) => v as num),
     paymentType: $checkedConvert('paymentType', (v) => v as String?),
-    penaltiesPortion: $checkedConvert('penaltiesPortion', (v) => v as num?),
-    principalPortion: $checkedConvert('principalPortion', (v) => v as num?),
-    reversed: $checkedConvert('reversed', (v) => v as bool?),
-    type: $checkedConvert('type', (v) => v as String?),
+    penaltiesPortion: $checkedConvert('penaltiesPortion', (v) => v as num),
+    principalPortion: $checkedConvert('principalPortion', (v) => v as num),
+    reversed: $checkedConvert('reversed', (v) => v as bool),
+    type: $checkedConvert('type', (v) => v as String),
     typeLabel: $checkedConvert('typeLabel', (v) => v as String?),
   );
   return val;
@@ -232,17 +245,17 @@ LoanTransactionResponse _$LoanTransactionResponseFromJson(
 Map<String, dynamic> _$LoanTransactionResponseToJson(
   LoanTransactionResponse instance,
 ) => <String, dynamic>{
-  'amount': ?instance.amount,
-  'date': ?instance.date?.toIso8601String(),
-  'feesPortion': ?instance.feesPortion,
-  'id': ?instance.id,
-  'interestPortion': ?instance.interestPortion,
-  'outstandingBalanceAfter': ?instance.outstandingBalanceAfter,
-  'overpaymentPortion': ?instance.overpaymentPortion,
+  'amount': instance.amount,
+  'date': instance.date.toIso8601String(),
+  'feesPortion': instance.feesPortion,
+  'id': instance.id,
+  'interestPortion': instance.interestPortion,
+  'outstandingBalanceAfter': instance.outstandingBalanceAfter,
+  'overpaymentPortion': instance.overpaymentPortion,
   'paymentType': ?instance.paymentType,
-  'penaltiesPortion': ?instance.penaltiesPortion,
-  'principalPortion': ?instance.principalPortion,
-  'reversed': ?instance.reversed,
-  'type': ?instance.type,
+  'penaltiesPortion': instance.penaltiesPortion,
+  'principalPortion': instance.principalPortion,
+  'reversed': instance.reversed,
+  'type': instance.type,
   'typeLabel': ?instance.typeLabel,
 };

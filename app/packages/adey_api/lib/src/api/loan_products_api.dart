@@ -10,6 +10,7 @@ import 'package:adey_api/src/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:adey_api/src/model/loan_product_response.dart';
+import 'package:adey_api/src/model/problem.dart';
 
 class LoanProductsApi {
 
@@ -30,7 +31,7 @@ class LoanProductsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [List<LoanProductResponse>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<LoanProductResponse>>> list4({ 
+  Future<Response<List<LoanProductResponse>>> listLoanProducts({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,

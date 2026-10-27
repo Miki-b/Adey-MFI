@@ -17,15 +17,15 @@ abstract class _$SchedulePreviewResponseCWProxy {
 
   SchedulePreviewResponse lastInstallmentAmount(num? lastInstallmentAmount);
 
-  SchedulePreviewResponse numberOfRepayments(int? numberOfRepayments);
+  SchedulePreviewResponse numberOfRepayments(int numberOfRepayments);
 
-  SchedulePreviewResponse periods(List<SchedulePeriod>? periods);
+  SchedulePreviewResponse periods(List<SchedulePeriod> periods);
 
   SchedulePreviewResponse principal(num? principal);
 
-  SchedulePreviewResponse totalInterest(num? totalInterest);
+  SchedulePreviewResponse totalInterest(num totalInterest);
 
-  SchedulePreviewResponse totalRepayable(num? totalRepayable);
+  SchedulePreviewResponse totalRepayable(num totalRepayable);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `SchedulePreviewResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -38,11 +38,11 @@ abstract class _$SchedulePreviewResponseCWProxy {
     DateTime? expectedDisbursementDate,
     num? installmentAmount,
     num? lastInstallmentAmount,
-    int? numberOfRepayments,
-    List<SchedulePeriod>? periods,
+    int numberOfRepayments,
+    List<SchedulePeriod> periods,
     num? principal,
-    num? totalInterest,
-    num? totalRepayable,
+    num totalInterest,
+    num totalRepayable,
   });
 }
 
@@ -71,11 +71,11 @@ class _$SchedulePreviewResponseCWProxyImpl
       this(lastInstallmentAmount: lastInstallmentAmount);
 
   @override
-  SchedulePreviewResponse numberOfRepayments(int? numberOfRepayments) =>
+  SchedulePreviewResponse numberOfRepayments(int numberOfRepayments) =>
       this(numberOfRepayments: numberOfRepayments);
 
   @override
-  SchedulePreviewResponse periods(List<SchedulePeriod>? periods) =>
+  SchedulePreviewResponse periods(List<SchedulePeriod> periods) =>
       this(periods: periods);
 
   @override
@@ -83,11 +83,11 @@ class _$SchedulePreviewResponseCWProxyImpl
       this(principal: principal);
 
   @override
-  SchedulePreviewResponse totalInterest(num? totalInterest) =>
+  SchedulePreviewResponse totalInterest(num totalInterest) =>
       this(totalInterest: totalInterest);
 
   @override
-  SchedulePreviewResponse totalRepayable(num? totalRepayable) =>
+  SchedulePreviewResponse totalRepayable(num totalRepayable) =>
       this(totalRepayable: totalRepayable);
 
   @override
@@ -130,11 +130,11 @@ class _$SchedulePreviewResponseCWProxyImpl
       numberOfRepayments: numberOfRepayments == const $CopyWithPlaceholder()
           ? _value.numberOfRepayments
           // ignore: cast_nullable_to_non_nullable
-          : numberOfRepayments as int?,
+          : numberOfRepayments as int,
       periods: periods == const $CopyWithPlaceholder()
           ? _value.periods
           // ignore: cast_nullable_to_non_nullable
-          : periods as List<SchedulePeriod>?,
+          : periods as List<SchedulePeriod>,
       principal: principal == const $CopyWithPlaceholder()
           ? _value.principal
           // ignore: cast_nullable_to_non_nullable
@@ -142,11 +142,11 @@ class _$SchedulePreviewResponseCWProxyImpl
       totalInterest: totalInterest == const $CopyWithPlaceholder()
           ? _value.totalInterest
           // ignore: cast_nullable_to_non_nullable
-          : totalInterest as num?,
+          : totalInterest as num,
       totalRepayable: totalRepayable == const $CopyWithPlaceholder()
           ? _value.totalRepayable
           // ignore: cast_nullable_to_non_nullable
-          : totalRepayable as num?,
+          : totalRepayable as num,
     );
   }
 }
@@ -165,6 +165,15 @@ extension $SchedulePreviewResponseCopyWith on SchedulePreviewResponse {
 SchedulePreviewResponse _$SchedulePreviewResponseFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('SchedulePreviewResponse', json, ($checkedConvert) {
+  $checkKeys(
+    json,
+    requiredKeys: const [
+      'numberOfRepayments',
+      'periods',
+      'totalInterest',
+      'totalRepayable',
+    ],
+  );
   final val = SchedulePreviewResponse(
     currency: $checkedConvert('currency', (v) => v as String?),
     expectedDisbursementDate: $checkedConvert(
@@ -178,17 +187,17 @@ SchedulePreviewResponse _$SchedulePreviewResponseFromJson(
     ),
     numberOfRepayments: $checkedConvert(
       'numberOfRepayments',
-      (v) => (v as num?)?.toInt(),
+      (v) => (v as num).toInt(),
     ),
     periods: $checkedConvert(
       'periods',
-      (v) => (v as List<dynamic>?)
-          ?.map((e) => SchedulePeriod.fromJson(e as Map<String, dynamic>))
+      (v) => (v as List<dynamic>)
+          .map((e) => SchedulePeriod.fromJson(e as Map<String, dynamic>))
           .toList(),
     ),
     principal: $checkedConvert('principal', (v) => v as num?),
-    totalInterest: $checkedConvert('totalInterest', (v) => v as num?),
-    totalRepayable: $checkedConvert('totalRepayable', (v) => v as num?),
+    totalInterest: $checkedConvert('totalInterest', (v) => v as num),
+    totalRepayable: $checkedConvert('totalRepayable', (v) => v as num),
   );
   return val;
 });
@@ -201,9 +210,9 @@ Map<String, dynamic> _$SchedulePreviewResponseToJson(
       ?.toIso8601String(),
   'installmentAmount': ?instance.installmentAmount,
   'lastInstallmentAmount': ?instance.lastInstallmentAmount,
-  'numberOfRepayments': ?instance.numberOfRepayments,
-  'periods': ?instance.periods?.map((e) => e.toJson()).toList(),
+  'numberOfRepayments': instance.numberOfRepayments,
+  'periods': instance.periods.map((e) => e.toJson()).toList(),
   'principal': ?instance.principal,
-  'totalInterest': ?instance.totalInterest,
-  'totalRepayable': ?instance.totalRepayable,
+  'totalInterest': instance.totalInterest,
+  'totalRepayable': instance.totalRepayable,
 };

@@ -104,7 +104,7 @@
 
   "clientsTitle": "Clients",
   "searchClients": "Search by name",
-  "searchCaseSensitive": "Search is case-sensitive: \"Tek\" finds Tekle, \"tek\" does not.",
+  "searchHelp": "Any part of the name, upper or lower case.",
   "noClients": "No clients yet.",
   "noClientsFound": "No client name contains \"{query}\".",
   "@noClientsFound": {"placeholders": {"query": {"type": "String"}}},

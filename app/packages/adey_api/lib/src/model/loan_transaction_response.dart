@@ -20,29 +20,29 @@ class LoanTransactionResponse {
   /// Returns a new [LoanTransactionResponse] instance.
   LoanTransactionResponse({
 
-     this.amount,
+    required  this.amount,
 
-     this.date,
+    required  this.date,
 
-     this.feesPortion,
+    required  this.feesPortion,
 
-     this.id,
+    required  this.id,
 
-     this.interestPortion,
+    required  this.interestPortion,
 
-     this.outstandingBalanceAfter,
+    required  this.outstandingBalanceAfter,
 
-     this.overpaymentPortion,
+    required  this.overpaymentPortion,
 
      this.paymentType,
 
-     this.penaltiesPortion,
+    required  this.penaltiesPortion,
 
-     this.principalPortion,
+    required  this.principalPortion,
 
-     this.reversed,
+    required  this.reversed,
 
-     this.type,
+    required  this.type,
 
      this.typeLabel,
   });
@@ -50,84 +50,84 @@ class LoanTransactionResponse {
   @JsonKey(
     
     name: r'amount',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? amount;
+  final num amount;
 
 
 
   @JsonKey(
     
     name: r'date',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? date;
+  final DateTime date;
 
 
 
   @JsonKey(
     
     name: r'feesPortion',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? feesPortion;
+  final num feesPortion;
 
 
 
   @JsonKey(
     
     name: r'id',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? id;
+  final int id;
 
 
 
   @JsonKey(
     
     name: r'interestPortion',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? interestPortion;
+  final num interestPortion;
 
 
 
   @JsonKey(
     
     name: r'outstandingBalanceAfter',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? outstandingBalanceAfter;
+  final num outstandingBalanceAfter;
 
 
 
   @JsonKey(
     
     name: r'overpaymentPortion',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? overpaymentPortion;
+  final num overpaymentPortion;
 
 
 
@@ -146,48 +146,48 @@ class LoanTransactionResponse {
   @JsonKey(
     
     name: r'penaltiesPortion',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? penaltiesPortion;
+  final num penaltiesPortion;
 
 
 
   @JsonKey(
     
     name: r'principalPortion',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principalPortion;
+  final num principalPortion;
 
 
 
   @JsonKey(
     
     name: r'reversed',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final bool? reversed;
+  final bool reversed;
 
 
 
   @JsonKey(
     
     name: r'type',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? type;
+  final String type;
 
 
 

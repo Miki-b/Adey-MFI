@@ -4,7 +4,7 @@
 
 // ignore_for_file: unused_element
 import 'package:adey_api/src/model/loan_transaction_response.dart';
-import 'package:adey_api/src/model/summary.dart';
+import 'package:adey_api/src/model/loan_totals.dart';
 import 'package:adey_api/src/model/dates.dart';
 import 'package:adey_api/src/model/installment.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
@@ -24,54 +24,54 @@ class LoanDetails {
   /// Returns a new [LoanDetails] instance.
   LoanDetails({
 
-     this.accountNo,
+    required  this.accountNo,
 
      this.annualInterestRate,
 
      this.approvedPrincipal,
 
-     this.clientId,
+    required  this.clientId,
 
-     this.clientName,
+    required  this.clientName,
 
      this.currency,
 
      this.dates,
 
-     this.loanId,
+    required  this.loanId,
 
      this.loanOfficerId,
 
      this.loanOfficerName,
 
-     this.numberOfRepayments,
+    required  this.numberOfRepayments,
 
-     this.principal,
+    required  this.principal,
 
-     this.productId,
+    required  this.productId,
 
-     this.productName,
+    required  this.productName,
 
-     this.schedule,
+    required  this.schedule,
 
-     this.status,
+    required  this.status,
 
      this.statusLabel,
 
-     this.summary,
+    required  this.summary,
 
-     this.transactions,
+    required  this.transactions,
   });
 
   @JsonKey(
     
     name: r'accountNo',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? accountNo;
+  final String accountNo;
 
 
 
@@ -102,24 +102,24 @@ class LoanDetails {
   @JsonKey(
     
     name: r'clientId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? clientId;
+  final int clientId;
 
 
 
   @JsonKey(
     
     name: r'clientName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? clientName;
+  final String clientName;
 
 
 
@@ -150,12 +150,12 @@ class LoanDetails {
   @JsonKey(
     
     name: r'loanId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? loanId;
+  final int loanId;
 
 
 
@@ -186,73 +186,73 @@ class LoanDetails {
   @JsonKey(
     
     name: r'numberOfRepayments',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? numberOfRepayments;
+  final int numberOfRepayments;
 
 
 
   @JsonKey(
     
     name: r'principal',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principal;
+  final num principal;
 
 
 
   @JsonKey(
     
     name: r'productId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? productId;
+  final int productId;
 
 
 
   @JsonKey(
     
     name: r'productName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? productName;
+  final String productName;
 
 
 
   @JsonKey(
     
     name: r'schedule',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final List<Installment>? schedule;
+  final List<Installment> schedule;
 
 
 
   @JsonKey(
     
     name: r'status',
-    required: false,
+    required: true,
     includeIfNull: false,
   unknownEnumValue: LoanDetailsStatusEnum.unknownDefaultOpenApi,
   )
 
 
-  final LoanDetailsStatusEnum? status;
+  final LoanDetailsStatusEnum status;
 
 
 
@@ -271,24 +271,24 @@ class LoanDetails {
   @JsonKey(
     
     name: r'summary',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final Summary? summary;
+  final LoanTotals summary;
 
 
 
   @JsonKey(
     
     name: r'transactions',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final List<LoanTransactionResponse>? transactions;
+  final List<LoanTransactionResponse> transactions;
 
 
 

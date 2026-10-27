@@ -21,102 +21,102 @@ class TokenResponse {
   /// Returns a new [TokenResponse] instance.
   TokenResponse({
 
-     this.accessToken,
+    required  this.accessToken,
 
-     this.accessTokenExpiresAt,
+    required  this.accessTokenExpiresAt,
 
-     this.expiresIn,
+    required  this.expiresIn,
 
-     this.officer,
+    required  this.officer,
 
-     this.refreshToken,
+    required  this.refreshToken,
 
-     this.refreshTokenExpiresAt,
+    required  this.refreshTokenExpiresAt,
 
-     this.tokenType,
+    required  this.tokenType,
   });
 
   @JsonKey(
     
     name: r'accessToken',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? accessToken;
+  final String accessToken;
 
 
 
   @JsonKey(
     
     name: r'accessTokenExpiresAt',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? accessTokenExpiresAt;
+  final DateTime accessTokenExpiresAt;
 
 
 
   @JsonKey(
     
     name: r'expiresIn',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? expiresIn;
+  final int expiresIn;
 
 
 
   @JsonKey(
     
     name: r'officer',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final OfficerResponse? officer;
+  final OfficerResponse officer;
 
 
 
   @JsonKey(
     
     name: r'refreshToken',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? refreshToken;
+  final String refreshToken;
 
 
 
   @JsonKey(
     
     name: r'refreshTokenExpiresAt',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? refreshTokenExpiresAt;
+  final DateTime refreshTokenExpiresAt;
 
 
 
   @JsonKey(
     
     name: r'tokenType',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? tokenType;
+  final String tokenType;
 
 
 

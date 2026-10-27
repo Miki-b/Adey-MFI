@@ -7,13 +7,13 @@ part of 'scope.dart';
 // **************************************************************************
 
 abstract class _$ScopeCWProxy {
-  Scope officeId(int? officeId);
+  Scope officeId(int officeId);
 
-  Scope officeName(String? officeName);
+  Scope officeName(String officeName);
 
   Scope officerName(String? officerName);
 
-  Scope role(String? role);
+  Scope role(ScopeRoleEnum role);
 
   Scope staffId(int? staffId);
 
@@ -24,10 +24,10 @@ abstract class _$ScopeCWProxy {
   /// Scope(...).copyWith(id: 12, name: "My name")
   /// ````
   Scope call({
-    int? officeId,
-    String? officeName,
+    int officeId,
+    String officeName,
     String? officerName,
-    String? role,
+    ScopeRoleEnum role,
     int? staffId,
   });
 }
@@ -39,16 +39,16 @@ class _$ScopeCWProxyImpl implements _$ScopeCWProxy {
   final Scope _value;
 
   @override
-  Scope officeId(int? officeId) => this(officeId: officeId);
+  Scope officeId(int officeId) => this(officeId: officeId);
 
   @override
-  Scope officeName(String? officeName) => this(officeName: officeName);
+  Scope officeName(String officeName) => this(officeName: officeName);
 
   @override
   Scope officerName(String? officerName) => this(officerName: officerName);
 
   @override
-  Scope role(String? role) => this(role: role);
+  Scope role(ScopeRoleEnum role) => this(role: role);
 
   @override
   Scope staffId(int? staffId) => this(staffId: staffId);
@@ -71,11 +71,11 @@ class _$ScopeCWProxyImpl implements _$ScopeCWProxy {
       officeId: officeId == const $CopyWithPlaceholder()
           ? _value.officeId
           // ignore: cast_nullable_to_non_nullable
-          : officeId as int?,
+          : officeId as int,
       officeName: officeName == const $CopyWithPlaceholder()
           ? _value.officeName
           // ignore: cast_nullable_to_non_nullable
-          : officeName as String?,
+          : officeName as String,
       officerName: officerName == const $CopyWithPlaceholder()
           ? _value.officerName
           // ignore: cast_nullable_to_non_nullable
@@ -83,7 +83,7 @@ class _$ScopeCWProxyImpl implements _$ScopeCWProxy {
       role: role == const $CopyWithPlaceholder()
           ? _value.role
           // ignore: cast_nullable_to_non_nullable
-          : role as String?,
+          : role as ScopeRoleEnum,
       staffId: staffId == const $CopyWithPlaceholder()
           ? _value.staffId
           // ignore: cast_nullable_to_non_nullable
@@ -104,20 +104,34 @@ extension $ScopeCopyWith on Scope {
 
 Scope _$ScopeFromJson(Map<String, dynamic> json) =>
     $checkedCreate('Scope', json, ($checkedConvert) {
+      $checkKeys(json, requiredKeys: const ['officeId', 'officeName', 'role']);
       final val = Scope(
-        officeId: $checkedConvert('officeId', (v) => (v as num?)?.toInt()),
-        officeName: $checkedConvert('officeName', (v) => v as String?),
+        officeId: $checkedConvert('officeId', (v) => (v as num).toInt()),
+        officeName: $checkedConvert('officeName', (v) => v as String),
         officerName: $checkedConvert('officerName', (v) => v as String?),
-        role: $checkedConvert('role', (v) => v as String?),
+        role: $checkedConvert(
+          'role',
+          (v) => $enumDecode(
+            _$ScopeRoleEnumEnumMap,
+            v,
+            unknownValue: ScopeRoleEnum.unknownDefaultOpenApi,
+          ),
+        ),
         staffId: $checkedConvert('staffId', (v) => (v as num?)?.toInt()),
       );
       return val;
     });
 
 Map<String, dynamic> _$ScopeToJson(Scope instance) => <String, dynamic>{
-  'officeId': ?instance.officeId,
-  'officeName': ?instance.officeName,
+  'officeId': instance.officeId,
+  'officeName': instance.officeName,
   'officerName': ?instance.officerName,
-  'role': ?instance.role,
+  'role': _$ScopeRoleEnumEnumMap[instance.role]!,
   'staffId': ?instance.staffId,
+};
+
+const _$ScopeRoleEnumEnumMap = {
+  ScopeRoleEnum.OFFICER: 'OFFICER',
+  ScopeRoleEnum.MANAGER: 'MANAGER',
+  ScopeRoleEnum.unknownDefaultOpenApi: 'unknown_default_open_api',
 };

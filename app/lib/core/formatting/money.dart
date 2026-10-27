@@ -8,6 +8,9 @@ import 'package:decimal/decimal.dart';
 /// 0.1 + 0.2 is 0.30000000000000004. If a screen ever needs a sum, it adds Decimals.
 Decimal? toDecimal(num? value) => value == null ? null : Decimal.parse(value.toString());
 
+/// [toDecimal] for fields the API always sends (required in the spec).
+Decimal decimalOf(num value) => Decimal.parse(value.toString());
+
 /// "ETB 1,833.60". Negative: "-ETB 50.00". Always 2 decimals (half-up rounding if more came in).
 String formatEtb(Decimal amount, {String currency = 'ETB'}) {
   final negative = amount < Decimal.zero;

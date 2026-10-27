@@ -103,6 +103,7 @@ void main() {
     test('login: FORBIDDEN means "not an officer account"; elsewhere it is plain forbidden', () {
       final forbidden = problem(403, {'code': 'FORBIDDEN'});
       expect(loginErrorMessage(l10n, forbidden), l10n.errorNotOfficer);
+      expect(loginErrorMessage(l10n, problem(403, {'code': 'NOT_AN_OFFICER'})), l10n.errorNotOfficer);
       expect(errorMessage(l10n, forbidden), l10n.errorForbidden);
       expect(loginErrorMessage(l10n, problem(401, {'code': 'INVALID_CREDENTIALS'})), l10n.errorInvalidCredentials);
     });

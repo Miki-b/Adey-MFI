@@ -7,13 +7,13 @@ part of 'transition.dart';
 // **************************************************************************
 
 abstract class _$TransitionCWProxy {
-  Transition at(DateTime? at);
+  Transition at(DateTime at);
 
   Transition from(TransitionFromEnum? from);
 
   Transition note(String? note);
 
-  Transition to(TransitionToEnum? to);
+  Transition to(TransitionToEnum to);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transition(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -22,10 +22,10 @@ abstract class _$TransitionCWProxy {
   /// Transition(...).copyWith(id: 12, name: "My name")
   /// ````
   Transition call({
-    DateTime? at,
+    DateTime at,
     TransitionFromEnum? from,
     String? note,
-    TransitionToEnum? to,
+    TransitionToEnum to,
   });
 }
 
@@ -36,7 +36,7 @@ class _$TransitionCWProxyImpl implements _$TransitionCWProxy {
   final Transition _value;
 
   @override
-  Transition at(DateTime? at) => this(at: at);
+  Transition at(DateTime at) => this(at: at);
 
   @override
   Transition from(TransitionFromEnum? from) => this(from: from);
@@ -45,7 +45,7 @@ class _$TransitionCWProxyImpl implements _$TransitionCWProxy {
   Transition note(String? note) => this(note: note);
 
   @override
-  Transition to(TransitionToEnum? to) => this(to: to);
+  Transition to(TransitionToEnum to) => this(to: to);
 
   @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Transition(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -64,7 +64,7 @@ class _$TransitionCWProxyImpl implements _$TransitionCWProxy {
       at: at == const $CopyWithPlaceholder()
           ? _value.at
           // ignore: cast_nullable_to_non_nullable
-          : at as DateTime?,
+          : at as DateTime,
       from: from == const $CopyWithPlaceholder()
           ? _value.from
           // ignore: cast_nullable_to_non_nullable
@@ -76,7 +76,7 @@ class _$TransitionCWProxyImpl implements _$TransitionCWProxy {
       to: to == const $CopyWithPlaceholder()
           ? _value.to
           // ignore: cast_nullable_to_non_nullable
-          : to as TransitionToEnum?,
+          : to as TransitionToEnum,
     );
   }
 }
@@ -93,11 +93,9 @@ extension $TransitionCopyWith on Transition {
 
 Transition _$TransitionFromJson(Map<String, dynamic> json) =>
     $checkedCreate('Transition', json, ($checkedConvert) {
+      $checkKeys(json, requiredKeys: const ['at', 'to']);
       final val = Transition(
-        at: $checkedConvert(
-          'at',
-          (v) => v == null ? null : DateTime.parse(v as String),
-        ),
+        at: $checkedConvert('at', (v) => DateTime.parse(v as String)),
         from: $checkedConvert(
           'from',
           (v) => $enumDecodeNullable(
@@ -109,7 +107,7 @@ Transition _$TransitionFromJson(Map<String, dynamic> json) =>
         note: $checkedConvert('note', (v) => v as String?),
         to: $checkedConvert(
           'to',
-          (v) => $enumDecodeNullable(
+          (v) => $enumDecode(
             _$TransitionToEnumEnumMap,
             v,
             unknownValue: TransitionToEnum.unknownDefaultOpenApi,
@@ -121,10 +119,10 @@ Transition _$TransitionFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$TransitionToJson(Transition instance) =>
     <String, dynamic>{
-      'at': ?instance.at?.toIso8601String(),
+      'at': instance.at.toIso8601String(),
       'from': ?_$TransitionFromEnumEnumMap[instance.from],
       'note': ?instance.note,
-      'to': ?_$TransitionToEnumEnumMap[instance.to],
+      'to': _$TransitionToEnumEnumMap[instance.to]!,
     };
 
 const _$TransitionFromEnumEnumMap = {

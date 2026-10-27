@@ -20,44 +20,44 @@ class LoanSummary {
   /// Returns a new [LoanSummary] instance.
   LoanSummary({
 
-     this.accountNo,
+    required  this.accountNo,
 
      this.annualInterestRate,
 
-     this.inArrears,
+    required  this.inArrears,
 
-     this.installmentsPaid,
+    required  this.installmentsPaid,
 
-     this.installmentsTotal,
+    required  this.installmentsTotal,
 
-     this.loanId,
+    required  this.loanId,
 
      this.nextDueAmount,
 
      this.nextDueDate,
 
-     this.principal,
+    required  this.principal,
 
-     this.principalOutstanding,
+    required  this.principalOutstanding,
 
-     this.productName,
+    required  this.productName,
 
-     this.status,
+    required  this.status,
 
      this.statusLabel,
 
-     this.totalOutstanding,
+    required  this.totalOutstanding,
   });
 
   @JsonKey(
     
     name: r'accountNo',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? accountNo;
+  final String accountNo;
 
 
 
@@ -76,48 +76,48 @@ class LoanSummary {
   @JsonKey(
     
     name: r'inArrears',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final bool? inArrears;
+  final bool inArrears;
 
 
 
   @JsonKey(
     
     name: r'installmentsPaid',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? installmentsPaid;
+  final int installmentsPaid;
 
 
 
   @JsonKey(
     
     name: r'installmentsTotal',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? installmentsTotal;
+  final int installmentsTotal;
 
 
 
   @JsonKey(
     
     name: r'loanId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? loanId;
+  final int loanId;
 
 
 
@@ -148,49 +148,49 @@ class LoanSummary {
   @JsonKey(
     
     name: r'principal',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principal;
+  final num principal;
 
 
 
   @JsonKey(
     
     name: r'principalOutstanding',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principalOutstanding;
+  final num principalOutstanding;
 
 
 
   @JsonKey(
     
     name: r'productName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? productName;
+  final String productName;
 
 
 
   @JsonKey(
     
     name: r'status',
-    required: false,
+    required: true,
     includeIfNull: false,
   unknownEnumValue: LoanSummaryStatusEnum.unknownDefaultOpenApi,
   )
 
 
-  final LoanSummaryStatusEnum? status;
+  final LoanSummaryStatusEnum status;
 
 
 
@@ -209,12 +209,12 @@ class LoanSummary {
   @JsonKey(
     
     name: r'totalOutstanding',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? totalOutstanding;
+  final num totalOutstanding;
 
 
 

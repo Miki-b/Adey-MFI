@@ -26,84 +26,84 @@ class Portfolio {
   /// Returns a new [Portfolio] instance.
   Portfolio({
 
-     this.amounts,
+    required  this.amounts,
 
-     this.asOf,
+    required  this.asOf,
 
-     this.counts,
+    required  this.counts,
 
-     this.dueToday,
+    required  this.dueToday,
 
-     this.dueTodayCount,
+    required  this.dueTodayCount,
 
      this.officers,
 
-     this.overdue,
+    required  this.overdue,
 
-     this.overdueCount,
+    required  this.overdueCount,
 
-     this.par,
+    required  this.par,
 
-     this.scope,
+    required  this.scope,
   });
 
   @JsonKey(
     
     name: r'amounts',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final Amounts? amounts;
+  final Amounts amounts;
 
 
 
   @JsonKey(
     
     name: r'asOf',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? asOf;
+  final DateTime asOf;
 
 
 
   @JsonKey(
     
     name: r'counts',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final Counts? counts;
+  final Counts counts;
 
 
 
   @JsonKey(
     
     name: r'dueToday',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final List<CollectionItem>? dueToday;
+  final List<CollectionItem> dueToday;
 
 
 
   @JsonKey(
     
     name: r'dueTodayCount',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? dueTodayCount;
+  final int dueTodayCount;
 
 
 
@@ -122,48 +122,48 @@ class Portfolio {
   @JsonKey(
     
     name: r'overdue',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final List<CollectionItem>? overdue;
+  final List<CollectionItem> overdue;
 
 
 
   @JsonKey(
     
     name: r'overdueCount',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? overdueCount;
+  final int overdueCount;
 
 
 
   @JsonKey(
     
     name: r'par',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final Par? par;
+  final Par par;
 
 
 
   @JsonKey(
     
     name: r'scope',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final Scope? scope;
+  final Scope scope;
 
 
 

@@ -20,15 +20,15 @@ class ClientDetails {
   /// Returns a new [ClientDetails] instance.
   ClientDetails({
 
-     this.accountNo,
+    required  this.accountNo,
 
      this.activationDate,
 
-     this.active,
+    required  this.active,
 
      this.dateOfBirth,
 
-     this.displayName,
+    required  this.displayName,
 
      this.externalId,
 
@@ -36,7 +36,7 @@ class ClientDetails {
 
      this.gender,
 
-     this.id,
+    required  this.id,
 
      this.lastName,
 
@@ -44,9 +44,9 @@ class ClientDetails {
 
      this.mobileNo,
 
-     this.officeId,
+    required  this.officeId,
 
-     this.officeName,
+    required  this.officeName,
 
      this.staffId,
 
@@ -60,12 +60,12 @@ class ClientDetails {
   @JsonKey(
     
     name: r'accountNo',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? accountNo;
+  final String accountNo;
 
 
 
@@ -84,12 +84,12 @@ class ClientDetails {
   @JsonKey(
     
     name: r'active',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final bool? active;
+  final bool active;
 
 
 
@@ -108,12 +108,12 @@ class ClientDetails {
   @JsonKey(
     
     name: r'displayName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? displayName;
+  final String displayName;
 
 
 
@@ -156,12 +156,12 @@ class ClientDetails {
   @JsonKey(
     
     name: r'id',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? id;
+  final int id;
 
 
 
@@ -204,24 +204,24 @@ class ClientDetails {
   @JsonKey(
     
     name: r'officeId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? officeId;
+  final int officeId;
 
 
 
   @JsonKey(
     
     name: r'officeName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? officeName;
+  final String officeName;
 
 
 

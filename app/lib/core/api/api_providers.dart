@@ -40,9 +40,9 @@ Dio dio(Ref ref) {
       tokens: ref.watch(tokenStoreProvider),
       retryClient: bare,
       refresh: (refreshToken) async {
-        final response = await authApi.refresh(refreshRequest: RefreshRequest(refreshToken: refreshToken));
+        final response = await authApi.refreshTokens(refreshRequest: RefreshRequest(refreshToken: refreshToken));
         final body = response.data!;
-        return TokenPair(accessToken: body.accessToken!, refreshToken: body.refreshToken!);
+        return TokenPair(accessToken: body.accessToken, refreshToken: body.refreshToken);
       },
       // Read lazily (at call time), so dio and the auth controller don't depend on each other at build time.
       onSessionExpired: () => ref.read(authControllerProvider.notifier).sessionExpired(),

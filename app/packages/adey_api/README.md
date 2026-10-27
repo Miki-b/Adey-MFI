@@ -49,13 +49,12 @@ import 'package:adey_api/adey_api.dart';
 
 
 final api = AdeyApi().getAuthApi();
-final LoginRequest loginRequest = ; // LoginRequest | 
 
 try {
-    final response = await api.login(loginRequest);
+    final response = await api.getCurrentOfficer();
     print(response);
 } on DioException catch (e) {
-    print("Exception when calling AuthApi->login: $e\n");
+    print("Exception when calling AuthApi->getCurrentOfficer: $e\n");
 }
 
 ```
@@ -66,35 +65,35 @@ All URIs are relative to *http://localhost:8080*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+[*AuthApi*](doc/AuthApi.md) | [**getCurrentOfficer**](doc/AuthApi.md#getcurrentofficer) | **GET** /api/auth/me | The officer the access token belongs to
 [*AuthApi*](doc/AuthApi.md) | [**login**](doc/AuthApi.md#login) | **POST** /api/auth/login | Log in with Fineract username + password; returns access and refresh tokens
 [*AuthApi*](doc/AuthApi.md) | [**logout**](doc/AuthApi.md#logout) | **POST** /api/auth/logout | Log out: revoke the refresh token (the access token expires on its own within 15 min)
-[*AuthApi*](doc/AuthApi.md) | [**me**](doc/AuthApi.md#me) | **GET** /api/auth/me | The officer the access token belongs to
-[*AuthApi*](doc/AuthApi.md) | [**refresh**](doc/AuthApi.md#refresh) | **POST** /api/auth/refresh | Exchange a refresh token for a new token pair (the old refresh token stops working)
-[*ClientsApi*](doc/ClientsApi.md) | [**callGet**](doc/ClientsApi.md#callget) | **GET** /api/clients/{clientId} | Client details (403 if the client is not yours / not in your office)
-[*ClientsApi*](doc/ClientsApi.md) | [**create**](doc/ClientsApi.md#create) | **POST** /api/clients | Create a client in your office (officer: assigned to you; manager: choose staffId)
-[*ClientsApi*](doc/ClientsApi.md) | [**search**](doc/ClientsApi.md#search) | **GET** /api/clients | Search clients (paged): an officer sees their own clients, a manager their whole office
-[*ClientsApi*](doc/ClientsApi.md) | [**update**](doc/ClientsApi.md#update) | **PUT** /api/clients/{clientId} | Edit a client&#39;s basic details (only the fields you send are changed)
-[*LoanProductsApi*](doc/LoanProductsApi.md) | [**list4**](doc/LoanProductsApi.md#list4) | **GET** /api/loan-products | List loan products with their principal / repayment ranges
-[*LoansApi*](doc/LoansApi.md) | [**approve**](doc/LoansApi.md#approve) | **POST** /api/loans/{loanId}/approve | Approve a submitted application (branch manager only)
-[*LoansApi*](doc/LoansApi.md) | [**clientLoans**](doc/LoansApi.md#clientloans) | **GET** /api/clients/{clientId}/loans | A client&#39;s loans with progress and next due installment
-[*LoansApi*](doc/LoansApi.md) | [**disburse**](doc/LoansApi.md#disburse) | **POST** /api/loans/{loanId}/disburse | Disburse (pay out) an approved loan; it becomes Active (branch manager only)
-[*LoansApi*](doc/LoansApi.md) | [**get3**](doc/LoansApi.md#get3) | **GET** /api/loans/{loanId} | Loan details: totals, full schedule and transactions
+[*AuthApi*](doc/AuthApi.md) | [**refreshTokens**](doc/AuthApi.md#refreshtokens) | **POST** /api/auth/refresh | Exchange a refresh token for a new token pair (the old refresh token stops working)
+[*ClientsApi*](doc/ClientsApi.md) | [**createClient**](doc/ClientsApi.md#createclient) | **POST** /api/clients | Create a client in your office (officer: assigned to you; manager: choose staffId)
+[*ClientsApi*](doc/ClientsApi.md) | [**getClient**](doc/ClientsApi.md#getclient) | **GET** /api/clients/{clientId} | Client details (403 if the client is not yours / not in your office)
+[*ClientsApi*](doc/ClientsApi.md) | [**listClients**](doc/ClientsApi.md#listclients) | **GET** /api/clients | Search clients (paged): an officer sees their own clients, a manager their whole office
+[*ClientsApi*](doc/ClientsApi.md) | [**updateClient**](doc/ClientsApi.md#updateclient) | **PUT** /api/clients/{clientId} | Edit a client&#39;s basic details (only the fields you send are changed)
+[*LoanProductsApi*](doc/LoanProductsApi.md) | [**listLoanProducts**](doc/LoanProductsApi.md#listloanproducts) | **GET** /api/loan-products | List loan products with their principal / repayment ranges
+[*LoansApi*](doc/LoansApi.md) | [**approveLoan**](doc/LoansApi.md#approveloan) | **POST** /api/loans/{loanId}/approve | Approve a submitted application (branch manager only)
+[*LoansApi*](doc/LoansApi.md) | [**disburseLoan**](doc/LoansApi.md#disburseloan) | **POST** /api/loans/{loanId}/disburse | Disburse (pay out) an approved loan; it becomes Active (branch manager only)
+[*LoansApi*](doc/LoansApi.md) | [**getClientLoans**](doc/LoansApi.md#getclientloans) | **GET** /api/clients/{clientId}/loans | A client&#39;s loans with progress and next due installment
+[*LoansApi*](doc/LoansApi.md) | [**getLoan**](doc/LoansApi.md#getloan) | **GET** /api/loans/{loanId} | Loan details: totals, full schedule and transactions
 [*LoansApi*](doc/LoansApi.md) | [**previewSchedule**](doc/LoansApi.md#previewschedule) | **POST** /api/loans/schedule-preview | Preview a repayment schedule without creating a loan
-[*LoansApi*](doc/LoansApi.md) | [**reject**](doc/LoansApi.md#reject) | **POST** /api/loans/{loanId}/reject | Reject a submitted application (branch manager only)
-[*LoansApi*](doc/LoansApi.md) | [**repay**](doc/LoansApi.md#repay) | **POST** /api/loans/{loanId}/repayments | Record a repayment; returns how it was split over principal/interest/fees/penalties
-[*LoansApi*](doc/LoansApi.md) | [**submit**](doc/LoansApi.md#submit) | **POST** /api/loans | Submit a loan application (409 if the client already has a loan in progress)
-[*LoansApi*](doc/LoansApi.md) | [**undoApproval**](doc/LoansApi.md#undoapproval) | **POST** /api/loans/{loanId}/undo-approval | Undo an approval: back to pending, only before disbursement (branch manager only)
-[*MobileMoneyApi*](doc/MobileMoneyApi.md) | [**get2**](doc/MobileMoneyApi.md#get2) | **GET** /api/mobile-payments/{id} | One mobile payment with its status history (poll this until finalState is true)
-[*MobileMoneyApi*](doc/MobileMoneyApi.md) | [**list1**](doc/MobileMoneyApi.md#list1) | **GET** /api/loans/{loanId}/mobile-payments | All mobile payments of a loan, newest first
-[*MobileMoneyApi*](doc/MobileMoneyApi.md) | [**receive**](doc/MobileMoneyApi.md#receive) | **POST** /api/webhooks/mobile-money | Webhook from the mobile money provider (signed, no JWT)
-[*MobileMoneyApi*](doc/MobileMoneyApi.md) | [**request**](doc/MobileMoneyApi.md#request) | **POST** /api/loans/{loanId}/mobile-payments | Ask the client to pay a repayment from their mobile wallet (client confirms on the phone)
-[*OfficesApi*](doc/OfficesApi.md) | [**list3**](doc/OfficesApi.md#list3) | **GET** /api/offices | List all offices (branches)
-[*PaymentTypesApi*](doc/PaymentTypesApi.md) | [**list2**](doc/PaymentTypesApi.md#list2) | **GET** /api/payment-types | Payment types an officer can choose for disbursements and repayments
-[*PortfolioApi*](doc/PortfolioApi.md) | [**list**](doc/PortfolioApi.md#list) | **GET** /api/loans | Loans you may see, filtered. status&#x3D;PENDING is the approval queue (oldest first); inArrears&#x3D;true is the collection list (most days overdue first)
-[*PortfolioApi*](doc/PortfolioApi.md) | [**portfolio**](doc/PortfolioApi.md#portfolio) | **GET** /api/me/portfolio | Dashboard: counts, outstanding, PAR1/PAR30, due today, overdue (+ per officer for managers)
-[*ReconciliationApi*](doc/ReconciliationApi.md) | [**get1**](doc/ReconciliationApi.md#get1) | **GET** /api/reconciliation/{date} | Latest reconciliation for a date: summary + findings of your office. Manager only
-[*ReconciliationApi*](doc/ReconciliationApi.md) | [**resolve**](doc/ReconciliationApi.md#resolve) | **POST** /api/reconciliation/findings/{id}/resolve | Resolve a finding: PAID_NOT_POSTED is posted to Fineract; others need a note. Manager only
-[*ReconciliationApi*](doc/ReconciliationApi.md) | [**run**](doc/ReconciliationApi.md#run) | **POST** /api/reconciliation/run | Run reconciliation for a date now (default today). Manager only
+[*LoansApi*](doc/LoansApi.md) | [**recordRepayment**](doc/LoansApi.md#recordrepayment) | **POST** /api/loans/{loanId}/repayments | Record a repayment; returns how it was split over principal/interest/fees/penalties
+[*LoansApi*](doc/LoansApi.md) | [**rejectLoan**](doc/LoansApi.md#rejectloan) | **POST** /api/loans/{loanId}/reject | Reject a submitted application (branch manager only)
+[*LoansApi*](doc/LoansApi.md) | [**submitLoanApplication**](doc/LoansApi.md#submitloanapplication) | **POST** /api/loans | Submit a loan application (409 if the client already has a loan in progress)
+[*LoansApi*](doc/LoansApi.md) | [**undoLoanApproval**](doc/LoansApi.md#undoloanapproval) | **POST** /api/loans/{loanId}/undo-approval | Undo an approval: back to pending, only before disbursement (branch manager only)
+[*MobileMoneyApi*](doc/MobileMoneyApi.md) | [**getMobilePayment**](doc/MobileMoneyApi.md#getmobilepayment) | **GET** /api/mobile-payments/{id} | One mobile payment with its status history (poll this until finalState is true)
+[*MobileMoneyApi*](doc/MobileMoneyApi.md) | [**listLoanMobilePayments**](doc/MobileMoneyApi.md#listloanmobilepayments) | **GET** /api/loans/{loanId}/mobile-payments | All mobile payments of a loan, newest first
+[*MobileMoneyApi*](doc/MobileMoneyApi.md) | [**receiveMobileMoneyWebhook**](doc/MobileMoneyApi.md#receivemobilemoneywebhook) | **POST** /api/webhooks/mobile-money | Webhook from the mobile money provider (signed, no JWT)
+[*MobileMoneyApi*](doc/MobileMoneyApi.md) | [**requestMobilePayment**](doc/MobileMoneyApi.md#requestmobilepayment) | **POST** /api/loans/{loanId}/mobile-payments | Ask the client to pay a repayment from their mobile wallet (client confirms on the phone)
+[*OfficesApi*](doc/OfficesApi.md) | [**listOffices**](doc/OfficesApi.md#listoffices) | **GET** /api/offices | List all offices (branches)
+[*PaymentTypesApi*](doc/PaymentTypesApi.md) | [**listPaymentTypes**](doc/PaymentTypesApi.md#listpaymenttypes) | **GET** /api/payment-types | Payment types an officer can choose for disbursements and repayments
+[*PortfolioApi*](doc/PortfolioApi.md) | [**getPortfolio**](doc/PortfolioApi.md#getportfolio) | **GET** /api/me/portfolio | Dashboard: counts, outstanding, PAR1/PAR30, due today, overdue (+ per officer for managers)
+[*PortfolioApi*](doc/PortfolioApi.md) | [**listLoans**](doc/PortfolioApi.md#listloans) | **GET** /api/loans | Loans you may see, filtered. status&#x3D;PENDING is the approval queue (oldest first); inArrears&#x3D;true is the collection list (most days overdue first)
+[*ReconciliationApi*](doc/ReconciliationApi.md) | [**getReconciliation**](doc/ReconciliationApi.md#getreconciliation) | **GET** /api/reconciliation/{date} | Latest reconciliation for a date: summary + findings of your office. Manager only
+[*ReconciliationApi*](doc/ReconciliationApi.md) | [**resolveReconciliationFinding**](doc/ReconciliationApi.md#resolvereconciliationfinding) | **POST** /api/reconciliation/findings/{id}/resolve | Resolve a finding: PAID_NOT_POSTED is posted to Fineract; others need a note. Manager only
+[*ReconciliationApi*](doc/ReconciliationApi.md) | [**runReconciliation**](doc/ReconciliationApi.md#runreconciliation) | **POST** /api/reconciliation/run | Run reconciliation for a date now (default today). Manager only
 
 
 ## Documentation For Models
@@ -116,6 +115,7 @@ Class | Method | HTTP request | Description
  - [LoanProductResponse](doc/LoanProductResponse.md)
  - [LoanStatusResponse](doc/LoanStatusResponse.md)
  - [LoanSummary](doc/LoanSummary.md)
+ - [LoanTotals](doc/LoanTotals.md)
  - [LoanTransactionResponse](doc/LoanTransactionResponse.md)
  - [LoginRequest](doc/LoginRequest.md)
  - [MobilePaymentRequest](doc/MobilePaymentRequest.md)
@@ -127,7 +127,10 @@ Class | Method | HTTP request | Description
  - [Par](doc/Par.md)
  - [PaymentTypeResponse](doc/PaymentTypeResponse.md)
  - [Portfolio](doc/Portfolio.md)
+ - [Problem](doc/Problem.md)
+ - [ProblemErrorsInner](doc/ProblemErrorsInner.md)
  - [ReconciliationReport](doc/ReconciliationReport.md)
+ - [ReconciliationSummary](doc/ReconciliationSummary.md)
  - [RefreshRequest](doc/RefreshRequest.md)
  - [RejectLoanRequest](doc/RejectLoanRequest.md)
  - [RepaymentRequest](doc/RepaymentRequest.md)
@@ -136,7 +139,6 @@ Class | Method | HTTP request | Description
  - [SchedulePreviewRequest](doc/SchedulePreviewRequest.md)
  - [SchedulePreviewResponse](doc/SchedulePreviewResponse.md)
  - [Scope](doc/Scope.md)
- - [Summary](doc/Summary.md)
  - [TokenResponse](doc/TokenResponse.md)
  - [Transition](doc/Transition.md)
  - [UndoApprovalRequest](doc/UndoApprovalRequest.md)

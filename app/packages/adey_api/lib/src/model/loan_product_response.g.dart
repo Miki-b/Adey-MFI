@@ -15,13 +15,13 @@ abstract class _$LoanProductResponseCWProxy {
 
   LoanProductResponse currency(String? currency);
 
-  LoanProductResponse id(int? id);
+  LoanProductResponse id(int id);
 
   LoanProductResponse interestMethod(
     LoanProductResponseInterestMethodEnum? interestMethod,
   );
 
-  LoanProductResponse name(String? name);
+  LoanProductResponse name(String name);
 
   LoanProductResponse principalDefault(num? principalDefault);
 
@@ -53,9 +53,9 @@ abstract class _$LoanProductResponseCWProxy {
     LoanProductResponseAmortizationEnum? amortization,
     num? annualInterestRate,
     String? currency,
-    int? id,
+    int id,
     LoanProductResponseInterestMethodEnum? interestMethod,
-    String? name,
+    String name,
     num? principalDefault,
     num? principalMax,
     num? principalMin,
@@ -87,7 +87,7 @@ class _$LoanProductResponseCWProxyImpl implements _$LoanProductResponseCWProxy {
   LoanProductResponse currency(String? currency) => this(currency: currency);
 
   @override
-  LoanProductResponse id(int? id) => this(id: id);
+  LoanProductResponse id(int id) => this(id: id);
 
   @override
   LoanProductResponse interestMethod(
@@ -95,7 +95,7 @@ class _$LoanProductResponseCWProxyImpl implements _$LoanProductResponseCWProxy {
   ) => this(interestMethod: interestMethod);
 
   @override
-  LoanProductResponse name(String? name) => this(name: name);
+  LoanProductResponse name(String name) => this(name: name);
 
   @override
   LoanProductResponse principalDefault(num? principalDefault) =>
@@ -174,7 +174,7 @@ class _$LoanProductResponseCWProxyImpl implements _$LoanProductResponseCWProxy {
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as int?,
+          : id as int,
       interestMethod: interestMethod == const $CopyWithPlaceholder()
           ? _value.interestMethod
           // ignore: cast_nullable_to_non_nullable
@@ -182,7 +182,7 @@ class _$LoanProductResponseCWProxyImpl implements _$LoanProductResponseCWProxy {
       name: name == const $CopyWithPlaceholder()
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
-          : name as String?,
+          : name as String,
       principalDefault: principalDefault == const $CopyWithPlaceholder()
           ? _value.principalDefault
           // ignore: cast_nullable_to_non_nullable
@@ -237,6 +237,7 @@ extension $LoanProductResponseCopyWith on LoanProductResponse {
 LoanProductResponse _$LoanProductResponseFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('LoanProductResponse', json, ($checkedConvert) {
+  $checkKeys(json, requiredKeys: const ['id', 'name']);
   final val = LoanProductResponse(
     amortization: $checkedConvert(
       'amortization',
@@ -248,7 +249,7 @@ LoanProductResponse _$LoanProductResponseFromJson(
     ),
     annualInterestRate: $checkedConvert('annualInterestRate', (v) => v as num?),
     currency: $checkedConvert('currency', (v) => v as String?),
-    id: $checkedConvert('id', (v) => (v as num?)?.toInt()),
+    id: $checkedConvert('id', (v) => (v as num).toInt()),
     interestMethod: $checkedConvert(
       'interestMethod',
       (v) => $enumDecodeNullable(
@@ -258,7 +259,7 @@ LoanProductResponse _$LoanProductResponseFromJson(
             LoanProductResponseInterestMethodEnum.unknownDefaultOpenApi,
       ),
     ),
-    name: $checkedConvert('name', (v) => v as String?),
+    name: $checkedConvert('name', (v) => v as String),
     principalDefault: $checkedConvert('principalDefault', (v) => v as num?),
     principalMax: $checkedConvert('principalMax', (v) => v as num?),
     principalMin: $checkedConvert('principalMin', (v) => v as num?),
@@ -299,10 +300,10 @@ Map<String, dynamic> _$LoanProductResponseToJson(
       ?_$LoanProductResponseAmortizationEnumEnumMap[instance.amortization],
   'annualInterestRate': ?instance.annualInterestRate,
   'currency': ?instance.currency,
-  'id': ?instance.id,
+  'id': instance.id,
   'interestMethod':
       ?_$LoanProductResponseInterestMethodEnumEnumMap[instance.interestMethod],
-  'name': ?instance.name,
+  'name': instance.name,
   'principalDefault': ?instance.principalDefault,
   'principalMax': ?instance.principalMax,
   'principalMin': ?instance.principalMin,

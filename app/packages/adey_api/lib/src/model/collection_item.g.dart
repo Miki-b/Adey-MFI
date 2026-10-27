@@ -7,23 +7,23 @@ part of 'collection_item.dart';
 // **************************************************************************
 
 abstract class _$CollectionItemCWProxy {
-  CollectionItem accountNo(String? accountNo);
+  CollectionItem accountNo(String accountNo);
 
-  CollectionItem amount(num? amount);
+  CollectionItem amount(num amount);
 
-  CollectionItem clientId(int? clientId);
+  CollectionItem clientId(int clientId);
 
   CollectionItem clientMobileNo(String? clientMobileNo);
 
-  CollectionItem clientName(String? clientName);
+  CollectionItem clientName(String clientName);
 
-  CollectionItem daysOverdue(int? daysOverdue);
+  CollectionItem daysOverdue(int daysOverdue);
 
-  CollectionItem dueDate(DateTime? dueDate);
+  CollectionItem dueDate(DateTime dueDate);
 
-  CollectionItem installment(int? installment);
+  CollectionItem installment(int installment);
 
-  CollectionItem loanId(int? loanId);
+  CollectionItem loanId(int loanId);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CollectionItem(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -32,15 +32,15 @@ abstract class _$CollectionItemCWProxy {
   /// CollectionItem(...).copyWith(id: 12, name: "My name")
   /// ````
   CollectionItem call({
-    String? accountNo,
-    num? amount,
-    int? clientId,
+    String accountNo,
+    num amount,
+    int clientId,
     String? clientMobileNo,
-    String? clientName,
-    int? daysOverdue,
-    DateTime? dueDate,
-    int? installment,
-    int? loanId,
+    String clientName,
+    int daysOverdue,
+    DateTime dueDate,
+    int installment,
+    int loanId,
   });
 }
 
@@ -51,34 +51,32 @@ class _$CollectionItemCWProxyImpl implements _$CollectionItemCWProxy {
   final CollectionItem _value;
 
   @override
-  CollectionItem accountNo(String? accountNo) => this(accountNo: accountNo);
+  CollectionItem accountNo(String accountNo) => this(accountNo: accountNo);
 
   @override
-  CollectionItem amount(num? amount) => this(amount: amount);
+  CollectionItem amount(num amount) => this(amount: amount);
 
   @override
-  CollectionItem clientId(int? clientId) => this(clientId: clientId);
+  CollectionItem clientId(int clientId) => this(clientId: clientId);
 
   @override
   CollectionItem clientMobileNo(String? clientMobileNo) =>
       this(clientMobileNo: clientMobileNo);
 
   @override
-  CollectionItem clientName(String? clientName) => this(clientName: clientName);
+  CollectionItem clientName(String clientName) => this(clientName: clientName);
 
   @override
-  CollectionItem daysOverdue(int? daysOverdue) =>
-      this(daysOverdue: daysOverdue);
+  CollectionItem daysOverdue(int daysOverdue) => this(daysOverdue: daysOverdue);
 
   @override
-  CollectionItem dueDate(DateTime? dueDate) => this(dueDate: dueDate);
+  CollectionItem dueDate(DateTime dueDate) => this(dueDate: dueDate);
 
   @override
-  CollectionItem installment(int? installment) =>
-      this(installment: installment);
+  CollectionItem installment(int installment) => this(installment: installment);
 
   @override
-  CollectionItem loanId(int? loanId) => this(loanId: loanId);
+  CollectionItem loanId(int loanId) => this(loanId: loanId);
 
   @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CollectionItem(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -102,15 +100,15 @@ class _$CollectionItemCWProxyImpl implements _$CollectionItemCWProxy {
       accountNo: accountNo == const $CopyWithPlaceholder()
           ? _value.accountNo
           // ignore: cast_nullable_to_non_nullable
-          : accountNo as String?,
+          : accountNo as String,
       amount: amount == const $CopyWithPlaceholder()
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
-          : amount as num?,
+          : amount as num,
       clientId: clientId == const $CopyWithPlaceholder()
           ? _value.clientId
           // ignore: cast_nullable_to_non_nullable
-          : clientId as int?,
+          : clientId as int,
       clientMobileNo: clientMobileNo == const $CopyWithPlaceholder()
           ? _value.clientMobileNo
           // ignore: cast_nullable_to_non_nullable
@@ -118,23 +116,23 @@ class _$CollectionItemCWProxyImpl implements _$CollectionItemCWProxy {
       clientName: clientName == const $CopyWithPlaceholder()
           ? _value.clientName
           // ignore: cast_nullable_to_non_nullable
-          : clientName as String?,
+          : clientName as String,
       daysOverdue: daysOverdue == const $CopyWithPlaceholder()
           ? _value.daysOverdue
           // ignore: cast_nullable_to_non_nullable
-          : daysOverdue as int?,
+          : daysOverdue as int,
       dueDate: dueDate == const $CopyWithPlaceholder()
           ? _value.dueDate
           // ignore: cast_nullable_to_non_nullable
-          : dueDate as DateTime?,
+          : dueDate as DateTime,
       installment: installment == const $CopyWithPlaceholder()
           ? _value.installment
           // ignore: cast_nullable_to_non_nullable
-          : installment as int?,
+          : installment as int,
       loanId: loanId == const $CopyWithPlaceholder()
           ? _value.loanId
           // ignore: cast_nullable_to_non_nullable
-          : loanId as int?,
+          : loanId as int,
     );
   }
 }
@@ -149,35 +147,44 @@ extension $CollectionItemCopyWith on CollectionItem {
 // JsonSerializableGenerator
 // **************************************************************************
 
-CollectionItem _$CollectionItemFromJson(
-  Map<String, dynamic> json,
-) => $checkedCreate('CollectionItem', json, ($checkedConvert) {
-  final val = CollectionItem(
-    accountNo: $checkedConvert('accountNo', (v) => v as String?),
-    amount: $checkedConvert('amount', (v) => v as num?),
-    clientId: $checkedConvert('clientId', (v) => (v as num?)?.toInt()),
-    clientMobileNo: $checkedConvert('clientMobileNo', (v) => v as String?),
-    clientName: $checkedConvert('clientName', (v) => v as String?),
-    daysOverdue: $checkedConvert('daysOverdue', (v) => (v as num?)?.toInt()),
-    dueDate: $checkedConvert(
-      'dueDate',
-      (v) => v == null ? null : DateTime.parse(v as String),
-    ),
-    installment: $checkedConvert('installment', (v) => (v as num?)?.toInt()),
-    loanId: $checkedConvert('loanId', (v) => (v as num?)?.toInt()),
-  );
-  return val;
-});
+CollectionItem _$CollectionItemFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('CollectionItem', json, ($checkedConvert) {
+      $checkKeys(
+        json,
+        requiredKeys: const [
+          'accountNo',
+          'amount',
+          'clientId',
+          'clientName',
+          'daysOverdue',
+          'dueDate',
+          'installment',
+          'loanId',
+        ],
+      );
+      final val = CollectionItem(
+        accountNo: $checkedConvert('accountNo', (v) => v as String),
+        amount: $checkedConvert('amount', (v) => v as num),
+        clientId: $checkedConvert('clientId', (v) => (v as num).toInt()),
+        clientMobileNo: $checkedConvert('clientMobileNo', (v) => v as String?),
+        clientName: $checkedConvert('clientName', (v) => v as String),
+        daysOverdue: $checkedConvert('daysOverdue', (v) => (v as num).toInt()),
+        dueDate: $checkedConvert('dueDate', (v) => DateTime.parse(v as String)),
+        installment: $checkedConvert('installment', (v) => (v as num).toInt()),
+        loanId: $checkedConvert('loanId', (v) => (v as num).toInt()),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$CollectionItemToJson(CollectionItem instance) =>
     <String, dynamic>{
-      'accountNo': ?instance.accountNo,
-      'amount': ?instance.amount,
-      'clientId': ?instance.clientId,
+      'accountNo': instance.accountNo,
+      'amount': instance.amount,
+      'clientId': instance.clientId,
       'clientMobileNo': ?instance.clientMobileNo,
-      'clientName': ?instance.clientName,
-      'daysOverdue': ?instance.daysOverdue,
-      'dueDate': ?instance.dueDate?.toIso8601String(),
-      'installment': ?instance.installment,
-      'loanId': ?instance.loanId,
+      'clientName': instance.clientName,
+      'daysOverdue': instance.daysOverdue,
+      'dueDate': instance.dueDate.toIso8601String(),
+      'installment': instance.installment,
+      'loanId': instance.loanId,
     };

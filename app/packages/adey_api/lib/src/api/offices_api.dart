@@ -10,6 +10,7 @@ import 'package:adey_api/src/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:adey_api/src/model/office_response.dart';
+import 'package:adey_api/src/model/problem.dart';
 
 class OfficesApi {
 
@@ -30,7 +31,7 @@ class OfficesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [List<OfficeResponse>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<OfficeResponse>>> list3({ 
+  Future<Response<List<OfficeResponse>>> listOffices({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,

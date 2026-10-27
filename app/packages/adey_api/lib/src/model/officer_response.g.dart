@@ -7,19 +7,19 @@ part of 'officer_response.dart';
 // **************************************************************************
 
 abstract class _$OfficerResponseCWProxy {
-  OfficerResponse displayName(String? displayName);
+  OfficerResponse displayName(String displayName);
 
-  OfficerResponse officeId(int? officeId);
+  OfficerResponse officeId(int officeId);
 
-  OfficerResponse officeName(String? officeName);
+  OfficerResponse officeName(String officeName);
 
-  OfficerResponse roles(List<OfficerResponseRolesEnum>? roles);
+  OfficerResponse roles(List<OfficerResponseRolesEnum> roles);
 
-  OfficerResponse staffId(int? staffId);
+  OfficerResponse staffId(int staffId);
 
-  OfficerResponse userId(int? userId);
+  OfficerResponse userId(int userId);
 
-  OfficerResponse username(String? username);
+  OfficerResponse username(String username);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `OfficerResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -28,13 +28,13 @@ abstract class _$OfficerResponseCWProxy {
   /// OfficerResponse(...).copyWith(id: 12, name: "My name")
   /// ````
   OfficerResponse call({
-    String? displayName,
-    int? officeId,
-    String? officeName,
-    List<OfficerResponseRolesEnum>? roles,
-    int? staffId,
-    int? userId,
-    String? username,
+    String displayName,
+    int officeId,
+    String officeName,
+    List<OfficerResponseRolesEnum> roles,
+    int staffId,
+    int userId,
+    String username,
   });
 }
 
@@ -45,28 +45,27 @@ class _$OfficerResponseCWProxyImpl implements _$OfficerResponseCWProxy {
   final OfficerResponse _value;
 
   @override
-  OfficerResponse displayName(String? displayName) =>
+  OfficerResponse displayName(String displayName) =>
       this(displayName: displayName);
 
   @override
-  OfficerResponse officeId(int? officeId) => this(officeId: officeId);
+  OfficerResponse officeId(int officeId) => this(officeId: officeId);
 
   @override
-  OfficerResponse officeName(String? officeName) =>
-      this(officeName: officeName);
+  OfficerResponse officeName(String officeName) => this(officeName: officeName);
 
   @override
-  OfficerResponse roles(List<OfficerResponseRolesEnum>? roles) =>
+  OfficerResponse roles(List<OfficerResponseRolesEnum> roles) =>
       this(roles: roles);
 
   @override
-  OfficerResponse staffId(int? staffId) => this(staffId: staffId);
+  OfficerResponse staffId(int staffId) => this(staffId: staffId);
 
   @override
-  OfficerResponse userId(int? userId) => this(userId: userId);
+  OfficerResponse userId(int userId) => this(userId: userId);
 
   @override
-  OfficerResponse username(String? username) => this(username: username);
+  OfficerResponse username(String username) => this(username: username);
 
   @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `OfficerResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -88,31 +87,31 @@ class _$OfficerResponseCWProxyImpl implements _$OfficerResponseCWProxy {
       displayName: displayName == const $CopyWithPlaceholder()
           ? _value.displayName
           // ignore: cast_nullable_to_non_nullable
-          : displayName as String?,
+          : displayName as String,
       officeId: officeId == const $CopyWithPlaceholder()
           ? _value.officeId
           // ignore: cast_nullable_to_non_nullable
-          : officeId as int?,
+          : officeId as int,
       officeName: officeName == const $CopyWithPlaceholder()
           ? _value.officeName
           // ignore: cast_nullable_to_non_nullable
-          : officeName as String?,
+          : officeName as String,
       roles: roles == const $CopyWithPlaceholder()
           ? _value.roles
           // ignore: cast_nullable_to_non_nullable
-          : roles as List<OfficerResponseRolesEnum>?,
+          : roles as List<OfficerResponseRolesEnum>,
       staffId: staffId == const $CopyWithPlaceholder()
           ? _value.staffId
           // ignore: cast_nullable_to_non_nullable
-          : staffId as int?,
+          : staffId as int,
       userId: userId == const $CopyWithPlaceholder()
           ? _value.userId
           // ignore: cast_nullable_to_non_nullable
-          : userId as int?,
+          : userId as int,
       username: username == const $CopyWithPlaceholder()
           ? _value.username
           // ignore: cast_nullable_to_non_nullable
-          : username as String?,
+          : username as String,
     );
   }
 }
@@ -129,14 +128,26 @@ extension $OfficerResponseCopyWith on OfficerResponse {
 
 OfficerResponse _$OfficerResponseFromJson(Map<String, dynamic> json) =>
     $checkedCreate('OfficerResponse', json, ($checkedConvert) {
+      $checkKeys(
+        json,
+        requiredKeys: const [
+          'displayName',
+          'officeId',
+          'officeName',
+          'roles',
+          'staffId',
+          'userId',
+          'username',
+        ],
+      );
       final val = OfficerResponse(
-        displayName: $checkedConvert('displayName', (v) => v as String?),
-        officeId: $checkedConvert('officeId', (v) => (v as num?)?.toInt()),
-        officeName: $checkedConvert('officeName', (v) => v as String?),
+        displayName: $checkedConvert('displayName', (v) => v as String),
+        officeId: $checkedConvert('officeId', (v) => (v as num).toInt()),
+        officeName: $checkedConvert('officeName', (v) => v as String),
         roles: $checkedConvert(
           'roles',
-          (v) => (v as List<dynamic>?)
-              ?.map(
+          (v) => (v as List<dynamic>)
+              .map(
                 (e) => $enumDecode(
                   _$OfficerResponseRolesEnumEnumMap,
                   e,
@@ -145,24 +156,24 @@ OfficerResponse _$OfficerResponseFromJson(Map<String, dynamic> json) =>
               )
               .toList(),
         ),
-        staffId: $checkedConvert('staffId', (v) => (v as num?)?.toInt()),
-        userId: $checkedConvert('userId', (v) => (v as num?)?.toInt()),
-        username: $checkedConvert('username', (v) => v as String?),
+        staffId: $checkedConvert('staffId', (v) => (v as num).toInt()),
+        userId: $checkedConvert('userId', (v) => (v as num).toInt()),
+        username: $checkedConvert('username', (v) => v as String),
       );
       return val;
     });
 
 Map<String, dynamic> _$OfficerResponseToJson(OfficerResponse instance) =>
     <String, dynamic>{
-      'displayName': ?instance.displayName,
-      'officeId': ?instance.officeId,
-      'officeName': ?instance.officeName,
-      'roles': ?instance.roles
-          ?.map((e) => _$OfficerResponseRolesEnumEnumMap[e]!)
+      'displayName': instance.displayName,
+      'officeId': instance.officeId,
+      'officeName': instance.officeName,
+      'roles': instance.roles
+          .map((e) => _$OfficerResponseRolesEnumEnumMap[e]!)
           .toList(),
-      'staffId': ?instance.staffId,
-      'userId': ?instance.userId,
-      'username': ?instance.username,
+      'staffId': instance.staffId,
+      'userId': instance.userId,
+      'username': instance.username,
     };
 
 const _$OfficerResponseRolesEnumEnumMap = {

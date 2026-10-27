@@ -20,158 +20,158 @@ class Installment {
   /// Returns a new [Installment] instance.
   Installment({
 
-     this.balanceAfter,
+    required  this.balanceAfter,
 
-     this.complete,
+    required  this.complete,
 
-     this.dueDate,
+    required  this.dueDate,
 
-     this.fees,
+    required  this.fees,
 
-     this.interest,
+    required  this.interest,
 
-     this.number,
+    required  this.number,
 
-     this.outstanding,
+    required  this.outstanding,
 
-     this.paid,
+    required  this.paid,
 
-     this.penalties,
+    required  this.penalties,
 
-     this.principal,
+    required  this.principal,
 
-     this.total,
+    required  this.total,
   });
 
   @JsonKey(
     
     name: r'balanceAfter',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? balanceAfter;
+  final num balanceAfter;
 
 
 
   @JsonKey(
     
     name: r'complete',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final bool? complete;
+  final bool complete;
 
 
 
   @JsonKey(
     
     name: r'dueDate',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? dueDate;
+  final DateTime dueDate;
 
 
 
   @JsonKey(
     
     name: r'fees',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? fees;
+  final num fees;
 
 
 
   @JsonKey(
     
     name: r'interest',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? interest;
+  final num interest;
 
 
 
   @JsonKey(
     
     name: r'number',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? number;
+  final int number;
 
 
 
   @JsonKey(
     
     name: r'outstanding',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? outstanding;
+  final num outstanding;
 
 
 
   @JsonKey(
     
     name: r'paid',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? paid;
+  final num paid;
 
 
 
   @JsonKey(
     
     name: r'penalties',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? penalties;
+  final num penalties;
 
 
 
   @JsonKey(
     
     name: r'principal',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principal;
+  final num principal;
 
 
 
   @JsonKey(
     
     name: r'total',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? total;
+  final num total;
 
 
 

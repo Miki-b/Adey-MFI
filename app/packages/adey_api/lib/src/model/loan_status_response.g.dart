@@ -9,9 +9,9 @@ part of 'loan_status_response.dart';
 abstract class _$LoanStatusResponseCWProxy {
   LoanStatusResponse accountNo(String? accountNo);
 
-  LoanStatusResponse loanId(int? loanId);
+  LoanStatusResponse loanId(int loanId);
 
-  LoanStatusResponse status(LoanStatusResponseStatusEnum? status);
+  LoanStatusResponse status(LoanStatusResponseStatusEnum status);
 
   LoanStatusResponse statusLabel(String? statusLabel);
 
@@ -23,8 +23,8 @@ abstract class _$LoanStatusResponseCWProxy {
   /// ````
   LoanStatusResponse call({
     String? accountNo,
-    int? loanId,
-    LoanStatusResponseStatusEnum? status,
+    int loanId,
+    LoanStatusResponseStatusEnum status,
     String? statusLabel,
   });
 }
@@ -39,10 +39,10 @@ class _$LoanStatusResponseCWProxyImpl implements _$LoanStatusResponseCWProxy {
   LoanStatusResponse accountNo(String? accountNo) => this(accountNo: accountNo);
 
   @override
-  LoanStatusResponse loanId(int? loanId) => this(loanId: loanId);
+  LoanStatusResponse loanId(int loanId) => this(loanId: loanId);
 
   @override
-  LoanStatusResponse status(LoanStatusResponseStatusEnum? status) =>
+  LoanStatusResponse status(LoanStatusResponseStatusEnum status) =>
       this(status: status);
 
   @override
@@ -70,11 +70,11 @@ class _$LoanStatusResponseCWProxyImpl implements _$LoanStatusResponseCWProxy {
       loanId: loanId == const $CopyWithPlaceholder()
           ? _value.loanId
           // ignore: cast_nullable_to_non_nullable
-          : loanId as int?,
+          : loanId as int,
       status: status == const $CopyWithPlaceholder()
           ? _value.status
           // ignore: cast_nullable_to_non_nullable
-          : status as LoanStatusResponseStatusEnum?,
+          : status as LoanStatusResponseStatusEnum,
       statusLabel: statusLabel == const $CopyWithPlaceholder()
           ? _value.statusLabel
           // ignore: cast_nullable_to_non_nullable
@@ -96,12 +96,13 @@ extension $LoanStatusResponseCopyWith on LoanStatusResponse {
 
 LoanStatusResponse _$LoanStatusResponseFromJson(Map<String, dynamic> json) =>
     $checkedCreate('LoanStatusResponse', json, ($checkedConvert) {
+      $checkKeys(json, requiredKeys: const ['loanId', 'status']);
       final val = LoanStatusResponse(
         accountNo: $checkedConvert('accountNo', (v) => v as String?),
-        loanId: $checkedConvert('loanId', (v) => (v as num?)?.toInt()),
+        loanId: $checkedConvert('loanId', (v) => (v as num).toInt()),
         status: $checkedConvert(
           'status',
-          (v) => $enumDecodeNullable(
+          (v) => $enumDecode(
             _$LoanStatusResponseStatusEnumEnumMap,
             v,
             unknownValue: LoanStatusResponseStatusEnum.unknownDefaultOpenApi,
@@ -115,8 +116,8 @@ LoanStatusResponse _$LoanStatusResponseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$LoanStatusResponseToJson(LoanStatusResponse instance) =>
     <String, dynamic>{
       'accountNo': ?instance.accountNo,
-      'loanId': ?instance.loanId,
-      'status': ?_$LoanStatusResponseStatusEnumEnumMap[instance.status],
+      'loanId': instance.loanId,
+      'status': _$LoanStatusResponseStatusEnumEnumMap[instance.status]!,
       'statusLabel': ?instance.statusLabel,
     };
 

@@ -10,6 +10,7 @@ import 'package:adey_api/src/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:adey_api/src/model/finding_response.dart';
+import 'package:adey_api/src/model/problem.dart';
 import 'package:adey_api/src/model/reconciliation_report.dart';
 import 'package:adey_api/src/model/resolve_request.dart';
 
@@ -33,7 +34,7 @@ class ReconciliationApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ReconciliationReport] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ReconciliationReport>> get1({ 
+  Future<Response<ReconciliationReport>> getReconciliation({ 
     required DateTime date,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -112,7 +113,7 @@ _responseData = rawData == null ? null : deserialize<ReconciliationReport, Recon
   ///
   /// Returns a [Future] containing a [Response] with a [FindingResponse] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<FindingResponse>> resolve({ 
+  Future<Response<FindingResponse>> resolveReconciliationFinding({ 
     required int id,
     ResolveRequest? resolveRequest,
     CancelToken? cancelToken,
@@ -210,7 +211,7 @@ _responseData = rawData == null ? null : deserialize<FindingResponse, FindingRes
   ///
   /// Returns a [Future] containing a [Response] with a [ReconciliationReport] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<ReconciliationReport>> run({ 
+  Future<Response<ReconciliationReport>> runReconciliation({ 
     DateTime? date,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,

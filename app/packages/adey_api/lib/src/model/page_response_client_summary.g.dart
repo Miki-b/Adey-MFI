@@ -7,15 +7,15 @@ part of 'page_response_client_summary.dart';
 // **************************************************************************
 
 abstract class _$PageResponseClientSummaryCWProxy {
-  PageResponseClientSummary content(List<ClientSummary>? content);
+  PageResponseClientSummary content(List<ClientSummary> content);
 
-  PageResponseClientSummary page(int? page);
+  PageResponseClientSummary page(int page);
 
-  PageResponseClientSummary size(int? size);
+  PageResponseClientSummary size(int size);
 
-  PageResponseClientSummary totalElements(int? totalElements);
+  PageResponseClientSummary totalElements(int totalElements);
 
-  PageResponseClientSummary totalPages(int? totalPages);
+  PageResponseClientSummary totalPages(int totalPages);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PageResponseClientSummary(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -24,11 +24,11 @@ abstract class _$PageResponseClientSummaryCWProxy {
   /// PageResponseClientSummary(...).copyWith(id: 12, name: "My name")
   /// ````
   PageResponseClientSummary call({
-    List<ClientSummary>? content,
-    int? page,
-    int? size,
-    int? totalElements,
-    int? totalPages,
+    List<ClientSummary> content,
+    int page,
+    int size,
+    int totalElements,
+    int totalPages,
   });
 }
 
@@ -40,21 +40,21 @@ class _$PageResponseClientSummaryCWProxyImpl
   final PageResponseClientSummary _value;
 
   @override
-  PageResponseClientSummary content(List<ClientSummary>? content) =>
+  PageResponseClientSummary content(List<ClientSummary> content) =>
       this(content: content);
 
   @override
-  PageResponseClientSummary page(int? page) => this(page: page);
+  PageResponseClientSummary page(int page) => this(page: page);
 
   @override
-  PageResponseClientSummary size(int? size) => this(size: size);
+  PageResponseClientSummary size(int size) => this(size: size);
 
   @override
-  PageResponseClientSummary totalElements(int? totalElements) =>
+  PageResponseClientSummary totalElements(int totalElements) =>
       this(totalElements: totalElements);
 
   @override
-  PageResponseClientSummary totalPages(int? totalPages) =>
+  PageResponseClientSummary totalPages(int totalPages) =>
       this(totalPages: totalPages);
 
   @override
@@ -75,23 +75,23 @@ class _$PageResponseClientSummaryCWProxyImpl
       content: content == const $CopyWithPlaceholder()
           ? _value.content
           // ignore: cast_nullable_to_non_nullable
-          : content as List<ClientSummary>?,
+          : content as List<ClientSummary>,
       page: page == const $CopyWithPlaceholder()
           ? _value.page
           // ignore: cast_nullable_to_non_nullable
-          : page as int?,
+          : page as int,
       size: size == const $CopyWithPlaceholder()
           ? _value.size
           // ignore: cast_nullable_to_non_nullable
-          : size as int?,
+          : size as int,
       totalElements: totalElements == const $CopyWithPlaceholder()
           ? _value.totalElements
           // ignore: cast_nullable_to_non_nullable
-          : totalElements as int?,
+          : totalElements as int,
       totalPages: totalPages == const $CopyWithPlaceholder()
           ? _value.totalPages
           // ignore: cast_nullable_to_non_nullable
-          : totalPages as int?,
+          : totalPages as int,
     );
   }
 }
@@ -110,20 +110,27 @@ extension $PageResponseClientSummaryCopyWith on PageResponseClientSummary {
 PageResponseClientSummary _$PageResponseClientSummaryFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('PageResponseClientSummary', json, ($checkedConvert) {
+  $checkKeys(
+    json,
+    requiredKeys: const [
+      'content',
+      'page',
+      'size',
+      'totalElements',
+      'totalPages',
+    ],
+  );
   final val = PageResponseClientSummary(
     content: $checkedConvert(
       'content',
-      (v) => (v as List<dynamic>?)
-          ?.map((e) => ClientSummary.fromJson(e as Map<String, dynamic>))
+      (v) => (v as List<dynamic>)
+          .map((e) => ClientSummary.fromJson(e as Map<String, dynamic>))
           .toList(),
     ),
-    page: $checkedConvert('page', (v) => (v as num?)?.toInt()),
-    size: $checkedConvert('size', (v) => (v as num?)?.toInt()),
-    totalElements: $checkedConvert(
-      'totalElements',
-      (v) => (v as num?)?.toInt(),
-    ),
-    totalPages: $checkedConvert('totalPages', (v) => (v as num?)?.toInt()),
+    page: $checkedConvert('page', (v) => (v as num).toInt()),
+    size: $checkedConvert('size', (v) => (v as num).toInt()),
+    totalElements: $checkedConvert('totalElements', (v) => (v as num).toInt()),
+    totalPages: $checkedConvert('totalPages', (v) => (v as num).toInt()),
   );
   return val;
 });
@@ -131,9 +138,9 @@ PageResponseClientSummary _$PageResponseClientSummaryFromJson(
 Map<String, dynamic> _$PageResponseClientSummaryToJson(
   PageResponseClientSummary instance,
 ) => <String, dynamic>{
-  'content': ?instance.content?.map((e) => e.toJson()).toList(),
-  'page': ?instance.page,
-  'size': ?instance.size,
-  'totalElements': ?instance.totalElements,
-  'totalPages': ?instance.totalPages,
+  'content': instance.content.map((e) => e.toJson()).toList(),
+  'page': instance.page,
+  'size': instance.size,
+  'totalElements': instance.totalElements,
+  'totalPages': instance.totalPages,
 };

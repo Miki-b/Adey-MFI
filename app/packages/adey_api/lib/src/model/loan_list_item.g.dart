@@ -7,19 +7,19 @@ part of 'loan_list_item.dart';
 // **************************************************************************
 
 abstract class _$LoanListItemCWProxy {
-  LoanListItem accountNo(String? accountNo);
+  LoanListItem accountNo(String accountNo);
 
-  LoanListItem clientId(int? clientId);
+  LoanListItem clientId(int clientId);
 
   LoanListItem clientMobileNo(String? clientMobileNo);
 
-  LoanListItem clientName(String? clientName);
+  LoanListItem clientName(String clientName);
 
-  LoanListItem daysOverdue(int? daysOverdue);
+  LoanListItem daysOverdue(int daysOverdue);
 
-  LoanListItem inArrears(bool? inArrears);
+  LoanListItem inArrears(bool inArrears);
 
-  LoanListItem loanId(int? loanId);
+  LoanListItem loanId(int loanId);
 
   LoanListItem loanOfficerName(String? loanOfficerName);
 
@@ -27,19 +27,19 @@ abstract class _$LoanListItemCWProxy {
 
   LoanListItem nextDueDate(DateTime? nextDueDate);
 
-  LoanListItem principal(num? principal);
+  LoanListItem principal(num principal);
 
-  LoanListItem principalOutstanding(num? principalOutstanding);
+  LoanListItem principalOutstanding(num principalOutstanding);
 
-  LoanListItem productName(String? productName);
+  LoanListItem productName(String productName);
 
-  LoanListItem status(LoanListItemStatusEnum? status);
+  LoanListItem status(LoanListItemStatusEnum status);
 
   LoanListItem statusLabel(String? statusLabel);
 
   LoanListItem submittedOn(DateTime? submittedOn);
 
-  LoanListItem totalOverdue(num? totalOverdue);
+  LoanListItem totalOverdue(num totalOverdue);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LoanListItem(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -48,23 +48,23 @@ abstract class _$LoanListItemCWProxy {
   /// LoanListItem(...).copyWith(id: 12, name: "My name")
   /// ````
   LoanListItem call({
-    String? accountNo,
-    int? clientId,
+    String accountNo,
+    int clientId,
     String? clientMobileNo,
-    String? clientName,
-    int? daysOverdue,
-    bool? inArrears,
-    int? loanId,
+    String clientName,
+    int daysOverdue,
+    bool inArrears,
+    int loanId,
     String? loanOfficerName,
     num? nextDueAmount,
     DateTime? nextDueDate,
-    num? principal,
-    num? principalOutstanding,
-    String? productName,
-    LoanListItemStatusEnum? status,
+    num principal,
+    num principalOutstanding,
+    String productName,
+    LoanListItemStatusEnum status,
     String? statusLabel,
     DateTime? submittedOn,
-    num? totalOverdue,
+    num totalOverdue,
   });
 }
 
@@ -75,26 +75,26 @@ class _$LoanListItemCWProxyImpl implements _$LoanListItemCWProxy {
   final LoanListItem _value;
 
   @override
-  LoanListItem accountNo(String? accountNo) => this(accountNo: accountNo);
+  LoanListItem accountNo(String accountNo) => this(accountNo: accountNo);
 
   @override
-  LoanListItem clientId(int? clientId) => this(clientId: clientId);
+  LoanListItem clientId(int clientId) => this(clientId: clientId);
 
   @override
   LoanListItem clientMobileNo(String? clientMobileNo) =>
       this(clientMobileNo: clientMobileNo);
 
   @override
-  LoanListItem clientName(String? clientName) => this(clientName: clientName);
+  LoanListItem clientName(String clientName) => this(clientName: clientName);
 
   @override
-  LoanListItem daysOverdue(int? daysOverdue) => this(daysOverdue: daysOverdue);
+  LoanListItem daysOverdue(int daysOverdue) => this(daysOverdue: daysOverdue);
 
   @override
-  LoanListItem inArrears(bool? inArrears) => this(inArrears: inArrears);
+  LoanListItem inArrears(bool inArrears) => this(inArrears: inArrears);
 
   @override
-  LoanListItem loanId(int? loanId) => this(loanId: loanId);
+  LoanListItem loanId(int loanId) => this(loanId: loanId);
 
   @override
   LoanListItem loanOfficerName(String? loanOfficerName) =>
@@ -109,18 +109,18 @@ class _$LoanListItemCWProxyImpl implements _$LoanListItemCWProxy {
       this(nextDueDate: nextDueDate);
 
   @override
-  LoanListItem principal(num? principal) => this(principal: principal);
+  LoanListItem principal(num principal) => this(principal: principal);
 
   @override
-  LoanListItem principalOutstanding(num? principalOutstanding) =>
+  LoanListItem principalOutstanding(num principalOutstanding) =>
       this(principalOutstanding: principalOutstanding);
 
   @override
-  LoanListItem productName(String? productName) =>
+  LoanListItem productName(String productName) =>
       this(productName: productName);
 
   @override
-  LoanListItem status(LoanListItemStatusEnum? status) => this(status: status);
+  LoanListItem status(LoanListItemStatusEnum status) => this(status: status);
 
   @override
   LoanListItem statusLabel(String? statusLabel) =>
@@ -131,7 +131,7 @@ class _$LoanListItemCWProxyImpl implements _$LoanListItemCWProxy {
       this(submittedOn: submittedOn);
 
   @override
-  LoanListItem totalOverdue(num? totalOverdue) =>
+  LoanListItem totalOverdue(num totalOverdue) =>
       this(totalOverdue: totalOverdue);
 
   @override
@@ -164,11 +164,11 @@ class _$LoanListItemCWProxyImpl implements _$LoanListItemCWProxy {
       accountNo: accountNo == const $CopyWithPlaceholder()
           ? _value.accountNo
           // ignore: cast_nullable_to_non_nullable
-          : accountNo as String?,
+          : accountNo as String,
       clientId: clientId == const $CopyWithPlaceholder()
           ? _value.clientId
           // ignore: cast_nullable_to_non_nullable
-          : clientId as int?,
+          : clientId as int,
       clientMobileNo: clientMobileNo == const $CopyWithPlaceholder()
           ? _value.clientMobileNo
           // ignore: cast_nullable_to_non_nullable
@@ -176,19 +176,19 @@ class _$LoanListItemCWProxyImpl implements _$LoanListItemCWProxy {
       clientName: clientName == const $CopyWithPlaceholder()
           ? _value.clientName
           // ignore: cast_nullable_to_non_nullable
-          : clientName as String?,
+          : clientName as String,
       daysOverdue: daysOverdue == const $CopyWithPlaceholder()
           ? _value.daysOverdue
           // ignore: cast_nullable_to_non_nullable
-          : daysOverdue as int?,
+          : daysOverdue as int,
       inArrears: inArrears == const $CopyWithPlaceholder()
           ? _value.inArrears
           // ignore: cast_nullable_to_non_nullable
-          : inArrears as bool?,
+          : inArrears as bool,
       loanId: loanId == const $CopyWithPlaceholder()
           ? _value.loanId
           // ignore: cast_nullable_to_non_nullable
-          : loanId as int?,
+          : loanId as int,
       loanOfficerName: loanOfficerName == const $CopyWithPlaceholder()
           ? _value.loanOfficerName
           // ignore: cast_nullable_to_non_nullable
@@ -204,19 +204,19 @@ class _$LoanListItemCWProxyImpl implements _$LoanListItemCWProxy {
       principal: principal == const $CopyWithPlaceholder()
           ? _value.principal
           // ignore: cast_nullable_to_non_nullable
-          : principal as num?,
+          : principal as num,
       principalOutstanding: principalOutstanding == const $CopyWithPlaceholder()
           ? _value.principalOutstanding
           // ignore: cast_nullable_to_non_nullable
-          : principalOutstanding as num?,
+          : principalOutstanding as num,
       productName: productName == const $CopyWithPlaceholder()
           ? _value.productName
           // ignore: cast_nullable_to_non_nullable
-          : productName as String?,
+          : productName as String,
       status: status == const $CopyWithPlaceholder()
           ? _value.status
           // ignore: cast_nullable_to_non_nullable
-          : status as LoanListItemStatusEnum?,
+          : status as LoanListItemStatusEnum,
       statusLabel: statusLabel == const $CopyWithPlaceholder()
           ? _value.statusLabel
           // ignore: cast_nullable_to_non_nullable
@@ -228,7 +228,7 @@ class _$LoanListItemCWProxyImpl implements _$LoanListItemCWProxy {
       totalOverdue: totalOverdue == const $CopyWithPlaceholder()
           ? _value.totalOverdue
           // ignore: cast_nullable_to_non_nullable
-          : totalOverdue as num?,
+          : totalOverdue as num,
     );
   }
 }
@@ -243,66 +243,84 @@ extension $LoanListItemCopyWith on LoanListItem {
 // JsonSerializableGenerator
 // **************************************************************************
 
-LoanListItem _$LoanListItemFromJson(
-  Map<String, dynamic> json,
-) => $checkedCreate('LoanListItem', json, ($checkedConvert) {
-  final val = LoanListItem(
-    accountNo: $checkedConvert('accountNo', (v) => v as String?),
-    clientId: $checkedConvert('clientId', (v) => (v as num?)?.toInt()),
-    clientMobileNo: $checkedConvert('clientMobileNo', (v) => v as String?),
-    clientName: $checkedConvert('clientName', (v) => v as String?),
-    daysOverdue: $checkedConvert('daysOverdue', (v) => (v as num?)?.toInt()),
-    inArrears: $checkedConvert('inArrears', (v) => v as bool?),
-    loanId: $checkedConvert('loanId', (v) => (v as num?)?.toInt()),
-    loanOfficerName: $checkedConvert('loanOfficerName', (v) => v as String?),
-    nextDueAmount: $checkedConvert('nextDueAmount', (v) => v as num?),
-    nextDueDate: $checkedConvert(
-      'nextDueDate',
-      (v) => v == null ? null : DateTime.parse(v as String),
-    ),
-    principal: $checkedConvert('principal', (v) => v as num?),
-    principalOutstanding: $checkedConvert(
-      'principalOutstanding',
-      (v) => v as num?,
-    ),
-    productName: $checkedConvert('productName', (v) => v as String?),
-    status: $checkedConvert(
-      'status',
-      (v) => $enumDecodeNullable(
-        _$LoanListItemStatusEnumEnumMap,
-        v,
-        unknownValue: LoanListItemStatusEnum.unknownDefaultOpenApi,
-      ),
-    ),
-    statusLabel: $checkedConvert('statusLabel', (v) => v as String?),
-    submittedOn: $checkedConvert(
-      'submittedOn',
-      (v) => v == null ? null : DateTime.parse(v as String),
-    ),
-    totalOverdue: $checkedConvert('totalOverdue', (v) => v as num?),
-  );
-  return val;
-});
+LoanListItem _$LoanListItemFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('LoanListItem', json, ($checkedConvert) {
+      $checkKeys(
+        json,
+        requiredKeys: const [
+          'accountNo',
+          'clientId',
+          'clientName',
+          'daysOverdue',
+          'inArrears',
+          'loanId',
+          'principal',
+          'principalOutstanding',
+          'productName',
+          'status',
+          'totalOverdue',
+        ],
+      );
+      final val = LoanListItem(
+        accountNo: $checkedConvert('accountNo', (v) => v as String),
+        clientId: $checkedConvert('clientId', (v) => (v as num).toInt()),
+        clientMobileNo: $checkedConvert('clientMobileNo', (v) => v as String?),
+        clientName: $checkedConvert('clientName', (v) => v as String),
+        daysOverdue: $checkedConvert('daysOverdue', (v) => (v as num).toInt()),
+        inArrears: $checkedConvert('inArrears', (v) => v as bool),
+        loanId: $checkedConvert('loanId', (v) => (v as num).toInt()),
+        loanOfficerName: $checkedConvert(
+          'loanOfficerName',
+          (v) => v as String?,
+        ),
+        nextDueAmount: $checkedConvert('nextDueAmount', (v) => v as num?),
+        nextDueDate: $checkedConvert(
+          'nextDueDate',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        principal: $checkedConvert('principal', (v) => v as num),
+        principalOutstanding: $checkedConvert(
+          'principalOutstanding',
+          (v) => v as num,
+        ),
+        productName: $checkedConvert('productName', (v) => v as String),
+        status: $checkedConvert(
+          'status',
+          (v) => $enumDecode(
+            _$LoanListItemStatusEnumEnumMap,
+            v,
+            unknownValue: LoanListItemStatusEnum.unknownDefaultOpenApi,
+          ),
+        ),
+        statusLabel: $checkedConvert('statusLabel', (v) => v as String?),
+        submittedOn: $checkedConvert(
+          'submittedOn',
+          (v) => v == null ? null : DateTime.parse(v as String),
+        ),
+        totalOverdue: $checkedConvert('totalOverdue', (v) => v as num),
+      );
+      return val;
+    });
 
 Map<String, dynamic> _$LoanListItemToJson(LoanListItem instance) =>
     <String, dynamic>{
-      'accountNo': ?instance.accountNo,
-      'clientId': ?instance.clientId,
+      'accountNo': instance.accountNo,
+      'clientId': instance.clientId,
       'clientMobileNo': ?instance.clientMobileNo,
-      'clientName': ?instance.clientName,
-      'daysOverdue': ?instance.daysOverdue,
-      'inArrears': ?instance.inArrears,
-      'loanId': ?instance.loanId,
+      'clientName': instance.clientName,
+      'daysOverdue': instance.daysOverdue,
+      'inArrears': instance.inArrears,
+      'loanId': instance.loanId,
       'loanOfficerName': ?instance.loanOfficerName,
       'nextDueAmount': ?instance.nextDueAmount,
       'nextDueDate': ?instance.nextDueDate?.toIso8601String(),
-      'principal': ?instance.principal,
-      'principalOutstanding': ?instance.principalOutstanding,
-      'productName': ?instance.productName,
-      'status': ?_$LoanListItemStatusEnumEnumMap[instance.status],
+      'principal': instance.principal,
+      'principalOutstanding': instance.principalOutstanding,
+      'productName': instance.productName,
+      'status': _$LoanListItemStatusEnumEnumMap[instance.status]!,
       'statusLabel': ?instance.statusLabel,
       'submittedOn': ?instance.submittedOn?.toIso8601String(),
-      'totalOverdue': ?instance.totalOverdue,
+      'totalOverdue': instance.totalOverdue,
     };
 
 const _$LoanListItemStatusEnumEnumMap = {

@@ -7,25 +7,25 @@ part of 'mobile_payment_response.dart';
 // **************************************************************************
 
 abstract class _$MobilePaymentResponseCWProxy {
-  MobilePaymentResponse amount(num? amount);
+  MobilePaymentResponse amount(num amount);
 
-  MobilePaymentResponse clientId(int? clientId);
+  MobilePaymentResponse clientId(int clientId);
 
-  MobilePaymentResponse createdAt(DateTime? createdAt);
+  MobilePaymentResponse createdAt(DateTime createdAt);
 
-  MobilePaymentResponse currency(String? currency);
+  MobilePaymentResponse currency(String currency);
 
-  MobilePaymentResponse finalState(bool? finalState);
+  MobilePaymentResponse finalState(bool finalState);
 
   MobilePaymentResponse fineractTransactionId(int? fineractTransactionId);
 
-  MobilePaymentResponse history(List<Transition>? history);
+  MobilePaymentResponse history(List<Transition> history);
 
-  MobilePaymentResponse id(int? id);
+  MobilePaymentResponse id(int id);
 
   MobilePaymentResponse lastError(String? lastError);
 
-  MobilePaymentResponse loanId(int? loanId);
+  MobilePaymentResponse loanId(int loanId);
 
   MobilePaymentResponse method(MobilePaymentResponseMethodEnum? method);
 
@@ -33,11 +33,11 @@ abstract class _$MobilePaymentResponseCWProxy {
 
   MobilePaymentResponse paidAt(DateTime? paidAt);
 
-  MobilePaymentResponse phone(String? phone);
+  MobilePaymentResponse phone(String phone);
 
-  MobilePaymentResponse postingAttempts(int? postingAttempts);
+  MobilePaymentResponse postingAttempts(int postingAttempts);
 
-  MobilePaymentResponse provider(String? provider);
+  MobilePaymentResponse provider(String provider);
 
   MobilePaymentResponse providerAmount(num? providerAmount);
 
@@ -45,13 +45,13 @@ abstract class _$MobilePaymentResponseCWProxy {
 
   MobilePaymentResponse providerTransactionId(String? providerTransactionId);
 
-  MobilePaymentResponse reference(String? reference);
+  MobilePaymentResponse reference(String reference);
 
-  MobilePaymentResponse requestedBy(String? requestedBy);
+  MobilePaymentResponse requestedBy(String requestedBy);
 
-  MobilePaymentResponse status(MobilePaymentResponseStatusEnum? status);
+  MobilePaymentResponse status(MobilePaymentResponseStatusEnum status);
 
-  MobilePaymentResponse updatedAt(DateTime? updatedAt);
+  MobilePaymentResponse updatedAt(DateTime updatedAt);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `MobilePaymentResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -60,29 +60,29 @@ abstract class _$MobilePaymentResponseCWProxy {
   /// MobilePaymentResponse(...).copyWith(id: 12, name: "My name")
   /// ````
   MobilePaymentResponse call({
-    num? amount,
-    int? clientId,
-    DateTime? createdAt,
-    String? currency,
-    bool? finalState,
+    num amount,
+    int clientId,
+    DateTime createdAt,
+    String currency,
+    bool finalState,
     int? fineractTransactionId,
-    List<Transition>? history,
-    int? id,
+    List<Transition> history,
+    int id,
     String? lastError,
-    int? loanId,
+    int loanId,
     MobilePaymentResponseMethodEnum? method,
     DateTime? nextAttemptAt,
     DateTime? paidAt,
-    String? phone,
-    int? postingAttempts,
-    String? provider,
+    String phone,
+    int postingAttempts,
+    String provider,
     num? providerAmount,
     String? providerChargeId,
     String? providerTransactionId,
-    String? reference,
-    String? requestedBy,
-    MobilePaymentResponseStatusEnum? status,
-    DateTime? updatedAt,
+    String reference,
+    String requestedBy,
+    MobilePaymentResponseStatusEnum status,
+    DateTime updatedAt,
   });
 }
 
@@ -94,20 +94,20 @@ class _$MobilePaymentResponseCWProxyImpl
   final MobilePaymentResponse _value;
 
   @override
-  MobilePaymentResponse amount(num? amount) => this(amount: amount);
+  MobilePaymentResponse amount(num amount) => this(amount: amount);
 
   @override
-  MobilePaymentResponse clientId(int? clientId) => this(clientId: clientId);
+  MobilePaymentResponse clientId(int clientId) => this(clientId: clientId);
 
   @override
-  MobilePaymentResponse createdAt(DateTime? createdAt) =>
+  MobilePaymentResponse createdAt(DateTime createdAt) =>
       this(createdAt: createdAt);
 
   @override
-  MobilePaymentResponse currency(String? currency) => this(currency: currency);
+  MobilePaymentResponse currency(String currency) => this(currency: currency);
 
   @override
-  MobilePaymentResponse finalState(bool? finalState) =>
+  MobilePaymentResponse finalState(bool finalState) =>
       this(finalState: finalState);
 
   @override
@@ -115,18 +115,18 @@ class _$MobilePaymentResponseCWProxyImpl
       this(fineractTransactionId: fineractTransactionId);
 
   @override
-  MobilePaymentResponse history(List<Transition>? history) =>
+  MobilePaymentResponse history(List<Transition> history) =>
       this(history: history);
 
   @override
-  MobilePaymentResponse id(int? id) => this(id: id);
+  MobilePaymentResponse id(int id) => this(id: id);
 
   @override
   MobilePaymentResponse lastError(String? lastError) =>
       this(lastError: lastError);
 
   @override
-  MobilePaymentResponse loanId(int? loanId) => this(loanId: loanId);
+  MobilePaymentResponse loanId(int loanId) => this(loanId: loanId);
 
   @override
   MobilePaymentResponse method(MobilePaymentResponseMethodEnum? method) =>
@@ -140,14 +140,14 @@ class _$MobilePaymentResponseCWProxyImpl
   MobilePaymentResponse paidAt(DateTime? paidAt) => this(paidAt: paidAt);
 
   @override
-  MobilePaymentResponse phone(String? phone) => this(phone: phone);
+  MobilePaymentResponse phone(String phone) => this(phone: phone);
 
   @override
-  MobilePaymentResponse postingAttempts(int? postingAttempts) =>
+  MobilePaymentResponse postingAttempts(int postingAttempts) =>
       this(postingAttempts: postingAttempts);
 
   @override
-  MobilePaymentResponse provider(String? provider) => this(provider: provider);
+  MobilePaymentResponse provider(String provider) => this(provider: provider);
 
   @override
   MobilePaymentResponse providerAmount(num? providerAmount) =>
@@ -162,19 +162,19 @@ class _$MobilePaymentResponseCWProxyImpl
       this(providerTransactionId: providerTransactionId);
 
   @override
-  MobilePaymentResponse reference(String? reference) =>
+  MobilePaymentResponse reference(String reference) =>
       this(reference: reference);
 
   @override
-  MobilePaymentResponse requestedBy(String? requestedBy) =>
+  MobilePaymentResponse requestedBy(String requestedBy) =>
       this(requestedBy: requestedBy);
 
   @override
-  MobilePaymentResponse status(MobilePaymentResponseStatusEnum? status) =>
+  MobilePaymentResponse status(MobilePaymentResponseStatusEnum status) =>
       this(status: status);
 
   @override
-  MobilePaymentResponse updatedAt(DateTime? updatedAt) =>
+  MobilePaymentResponse updatedAt(DateTime updatedAt) =>
       this(updatedAt: updatedAt);
 
   @override
@@ -213,23 +213,23 @@ class _$MobilePaymentResponseCWProxyImpl
       amount: amount == const $CopyWithPlaceholder()
           ? _value.amount
           // ignore: cast_nullable_to_non_nullable
-          : amount as num?,
+          : amount as num,
       clientId: clientId == const $CopyWithPlaceholder()
           ? _value.clientId
           // ignore: cast_nullable_to_non_nullable
-          : clientId as int?,
+          : clientId as int,
       createdAt: createdAt == const $CopyWithPlaceholder()
           ? _value.createdAt
           // ignore: cast_nullable_to_non_nullable
-          : createdAt as DateTime?,
+          : createdAt as DateTime,
       currency: currency == const $CopyWithPlaceholder()
           ? _value.currency
           // ignore: cast_nullable_to_non_nullable
-          : currency as String?,
+          : currency as String,
       finalState: finalState == const $CopyWithPlaceholder()
           ? _value.finalState
           // ignore: cast_nullable_to_non_nullable
-          : finalState as bool?,
+          : finalState as bool,
       fineractTransactionId:
           fineractTransactionId == const $CopyWithPlaceholder()
           ? _value.fineractTransactionId
@@ -238,11 +238,11 @@ class _$MobilePaymentResponseCWProxyImpl
       history: history == const $CopyWithPlaceholder()
           ? _value.history
           // ignore: cast_nullable_to_non_nullable
-          : history as List<Transition>?,
+          : history as List<Transition>,
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as int?,
+          : id as int,
       lastError: lastError == const $CopyWithPlaceholder()
           ? _value.lastError
           // ignore: cast_nullable_to_non_nullable
@@ -250,7 +250,7 @@ class _$MobilePaymentResponseCWProxyImpl
       loanId: loanId == const $CopyWithPlaceholder()
           ? _value.loanId
           // ignore: cast_nullable_to_non_nullable
-          : loanId as int?,
+          : loanId as int,
       method: method == const $CopyWithPlaceholder()
           ? _value.method
           // ignore: cast_nullable_to_non_nullable
@@ -266,15 +266,15 @@ class _$MobilePaymentResponseCWProxyImpl
       phone: phone == const $CopyWithPlaceholder()
           ? _value.phone
           // ignore: cast_nullable_to_non_nullable
-          : phone as String?,
+          : phone as String,
       postingAttempts: postingAttempts == const $CopyWithPlaceholder()
           ? _value.postingAttempts
           // ignore: cast_nullable_to_non_nullable
-          : postingAttempts as int?,
+          : postingAttempts as int,
       provider: provider == const $CopyWithPlaceholder()
           ? _value.provider
           // ignore: cast_nullable_to_non_nullable
-          : provider as String?,
+          : provider as String,
       providerAmount: providerAmount == const $CopyWithPlaceholder()
           ? _value.providerAmount
           // ignore: cast_nullable_to_non_nullable
@@ -291,19 +291,19 @@ class _$MobilePaymentResponseCWProxyImpl
       reference: reference == const $CopyWithPlaceholder()
           ? _value.reference
           // ignore: cast_nullable_to_non_nullable
-          : reference as String?,
+          : reference as String,
       requestedBy: requestedBy == const $CopyWithPlaceholder()
           ? _value.requestedBy
           // ignore: cast_nullable_to_non_nullable
-          : requestedBy as String?,
+          : requestedBy as String,
       status: status == const $CopyWithPlaceholder()
           ? _value.status
           // ignore: cast_nullable_to_non_nullable
-          : status as MobilePaymentResponseStatusEnum?,
+          : status as MobilePaymentResponseStatusEnum,
       updatedAt: updatedAt == const $CopyWithPlaceholder()
           ? _value.updatedAt
           // ignore: cast_nullable_to_non_nullable
-          : updatedAt as DateTime?,
+          : updatedAt as DateTime,
     );
   }
 }
@@ -322,28 +322,45 @@ extension $MobilePaymentResponseCopyWith on MobilePaymentResponse {
 MobilePaymentResponse _$MobilePaymentResponseFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('MobilePaymentResponse', json, ($checkedConvert) {
-  final val = MobilePaymentResponse(
-    amount: $checkedConvert('amount', (v) => v as num?),
-    clientId: $checkedConvert('clientId', (v) => (v as num?)?.toInt()),
-    createdAt: $checkedConvert(
+  $checkKeys(
+    json,
+    requiredKeys: const [
+      'amount',
+      'clientId',
       'createdAt',
-      (v) => v == null ? null : DateTime.parse(v as String),
-    ),
-    currency: $checkedConvert('currency', (v) => v as String?),
-    finalState: $checkedConvert('finalState', (v) => v as bool?),
+      'currency',
+      'finalState',
+      'history',
+      'id',
+      'loanId',
+      'phone',
+      'postingAttempts',
+      'provider',
+      'reference',
+      'requestedBy',
+      'status',
+      'updatedAt',
+    ],
+  );
+  final val = MobilePaymentResponse(
+    amount: $checkedConvert('amount', (v) => v as num),
+    clientId: $checkedConvert('clientId', (v) => (v as num).toInt()),
+    createdAt: $checkedConvert('createdAt', (v) => DateTime.parse(v as String)),
+    currency: $checkedConvert('currency', (v) => v as String),
+    finalState: $checkedConvert('finalState', (v) => v as bool),
     fineractTransactionId: $checkedConvert(
       'fineractTransactionId',
       (v) => (v as num?)?.toInt(),
     ),
     history: $checkedConvert(
       'history',
-      (v) => (v as List<dynamic>?)
-          ?.map((e) => Transition.fromJson(e as Map<String, dynamic>))
+      (v) => (v as List<dynamic>)
+          .map((e) => Transition.fromJson(e as Map<String, dynamic>))
           .toList(),
     ),
-    id: $checkedConvert('id', (v) => (v as num?)?.toInt()),
+    id: $checkedConvert('id', (v) => (v as num).toInt()),
     lastError: $checkedConvert('lastError', (v) => v as String?),
-    loanId: $checkedConvert('loanId', (v) => (v as num?)?.toInt()),
+    loanId: $checkedConvert('loanId', (v) => (v as num).toInt()),
     method: $checkedConvert(
       'method',
       (v) => $enumDecodeNullable(
@@ -360,32 +377,29 @@ MobilePaymentResponse _$MobilePaymentResponseFromJson(
       'paidAt',
       (v) => v == null ? null : DateTime.parse(v as String),
     ),
-    phone: $checkedConvert('phone', (v) => v as String?),
+    phone: $checkedConvert('phone', (v) => v as String),
     postingAttempts: $checkedConvert(
       'postingAttempts',
-      (v) => (v as num?)?.toInt(),
+      (v) => (v as num).toInt(),
     ),
-    provider: $checkedConvert('provider', (v) => v as String?),
+    provider: $checkedConvert('provider', (v) => v as String),
     providerAmount: $checkedConvert('providerAmount', (v) => v as num?),
     providerChargeId: $checkedConvert('providerChargeId', (v) => v as String?),
     providerTransactionId: $checkedConvert(
       'providerTransactionId',
       (v) => v as String?,
     ),
-    reference: $checkedConvert('reference', (v) => v as String?),
-    requestedBy: $checkedConvert('requestedBy', (v) => v as String?),
+    reference: $checkedConvert('reference', (v) => v as String),
+    requestedBy: $checkedConvert('requestedBy', (v) => v as String),
     status: $checkedConvert(
       'status',
-      (v) => $enumDecodeNullable(
+      (v) => $enumDecode(
         _$MobilePaymentResponseStatusEnumEnumMap,
         v,
         unknownValue: MobilePaymentResponseStatusEnum.unknownDefaultOpenApi,
       ),
     ),
-    updatedAt: $checkedConvert(
-      'updatedAt',
-      (v) => v == null ? null : DateTime.parse(v as String),
-    ),
+    updatedAt: $checkedConvert('updatedAt', (v) => DateTime.parse(v as String)),
   );
   return val;
 });
@@ -393,29 +407,29 @@ MobilePaymentResponse _$MobilePaymentResponseFromJson(
 Map<String, dynamic> _$MobilePaymentResponseToJson(
   MobilePaymentResponse instance,
 ) => <String, dynamic>{
-  'amount': ?instance.amount,
-  'clientId': ?instance.clientId,
-  'createdAt': ?instance.createdAt?.toIso8601String(),
-  'currency': ?instance.currency,
-  'finalState': ?instance.finalState,
+  'amount': instance.amount,
+  'clientId': instance.clientId,
+  'createdAt': instance.createdAt.toIso8601String(),
+  'currency': instance.currency,
+  'finalState': instance.finalState,
   'fineractTransactionId': ?instance.fineractTransactionId,
-  'history': ?instance.history?.map((e) => e.toJson()).toList(),
-  'id': ?instance.id,
+  'history': instance.history.map((e) => e.toJson()).toList(),
+  'id': instance.id,
   'lastError': ?instance.lastError,
-  'loanId': ?instance.loanId,
+  'loanId': instance.loanId,
   'method': ?_$MobilePaymentResponseMethodEnumEnumMap[instance.method],
   'nextAttemptAt': ?instance.nextAttemptAt?.toIso8601String(),
   'paidAt': ?instance.paidAt?.toIso8601String(),
-  'phone': ?instance.phone,
-  'postingAttempts': ?instance.postingAttempts,
-  'provider': ?instance.provider,
+  'phone': instance.phone,
+  'postingAttempts': instance.postingAttempts,
+  'provider': instance.provider,
   'providerAmount': ?instance.providerAmount,
   'providerChargeId': ?instance.providerChargeId,
   'providerTransactionId': ?instance.providerTransactionId,
-  'reference': ?instance.reference,
-  'requestedBy': ?instance.requestedBy,
-  'status': ?_$MobilePaymentResponseStatusEnumEnumMap[instance.status],
-  'updatedAt': ?instance.updatedAt?.toIso8601String(),
+  'reference': instance.reference,
+  'requestedBy': instance.requestedBy,
+  'status': _$MobilePaymentResponseStatusEnumEnumMap[instance.status]!,
+  'updatedAt': instance.updatedAt.toIso8601String(),
 };
 
 const _$MobilePaymentResponseMethodEnumEnumMap = {

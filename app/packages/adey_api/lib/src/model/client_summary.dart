@@ -20,17 +20,17 @@ class ClientSummary {
   /// Returns a new [ClientSummary] instance.
   ClientSummary({
 
-     this.accountNo,
+    required  this.accountNo,
 
      this.activationDate,
 
-     this.active,
+    required  this.active,
 
-     this.displayName,
+    required  this.displayName,
 
-     this.id,
+    required  this.id,
 
-     this.officeName,
+    required  this.officeName,
 
      this.staffName,
   });
@@ -38,12 +38,12 @@ class ClientSummary {
   @JsonKey(
     
     name: r'accountNo',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? accountNo;
+  final String accountNo;
 
 
 
@@ -62,48 +62,48 @@ class ClientSummary {
   @JsonKey(
     
     name: r'active',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final bool? active;
+  final bool active;
 
 
 
   @JsonKey(
     
     name: r'displayName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? displayName;
+  final String displayName;
 
 
 
   @JsonKey(
     
     name: r'id',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? id;
+  final int id;
 
 
 
   @JsonKey(
     
     name: r'officeName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? officeName;
+  final String officeName;
 
 
 

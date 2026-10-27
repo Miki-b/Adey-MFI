@@ -20,24 +20,24 @@ class Transition {
   /// Returns a new [Transition] instance.
   Transition({
 
-     this.at,
+    required  this.at,
 
      this.from,
 
      this.note,
 
-     this.to,
+    required  this.to,
   });
 
   @JsonKey(
     
     name: r'at',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? at;
+  final DateTime at;
 
 
 
@@ -69,13 +69,13 @@ class Transition {
   @JsonKey(
     
     name: r'to',
-    required: false,
+    required: true,
     includeIfNull: false,
   unknownEnumValue: TransitionToEnum.unknownDefaultOpenApi,
   )
 
 
-  final TransitionToEnum? to;
+  final TransitionToEnum to;
 
 
 

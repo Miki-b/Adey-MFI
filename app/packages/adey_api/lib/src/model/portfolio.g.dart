@@ -7,25 +7,25 @@ part of 'portfolio.dart';
 // **************************************************************************
 
 abstract class _$PortfolioCWProxy {
-  Portfolio amounts(Amounts? amounts);
+  Portfolio amounts(Amounts amounts);
 
-  Portfolio asOf(DateTime? asOf);
+  Portfolio asOf(DateTime asOf);
 
-  Portfolio counts(Counts? counts);
+  Portfolio counts(Counts counts);
 
-  Portfolio dueToday(List<CollectionItem>? dueToday);
+  Portfolio dueToday(List<CollectionItem> dueToday);
 
-  Portfolio dueTodayCount(int? dueTodayCount);
+  Portfolio dueTodayCount(int dueTodayCount);
 
   Portfolio officers(List<OfficerSummary>? officers);
 
-  Portfolio overdue(List<CollectionItem>? overdue);
+  Portfolio overdue(List<CollectionItem> overdue);
 
-  Portfolio overdueCount(int? overdueCount);
+  Portfolio overdueCount(int overdueCount);
 
-  Portfolio par(Par? par);
+  Portfolio par(Par par);
 
-  Portfolio scope(Scope? scope);
+  Portfolio scope(Scope scope);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Portfolio(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -34,16 +34,16 @@ abstract class _$PortfolioCWProxy {
   /// Portfolio(...).copyWith(id: 12, name: "My name")
   /// ````
   Portfolio call({
-    Amounts? amounts,
-    DateTime? asOf,
-    Counts? counts,
-    List<CollectionItem>? dueToday,
-    int? dueTodayCount,
+    Amounts amounts,
+    DateTime asOf,
+    Counts counts,
+    List<CollectionItem> dueToday,
+    int dueTodayCount,
     List<OfficerSummary>? officers,
-    List<CollectionItem>? overdue,
-    int? overdueCount,
-    Par? par,
-    Scope? scope,
+    List<CollectionItem> overdue,
+    int overdueCount,
+    Par par,
+    Scope scope,
   });
 }
 
@@ -54,20 +54,19 @@ class _$PortfolioCWProxyImpl implements _$PortfolioCWProxy {
   final Portfolio _value;
 
   @override
-  Portfolio amounts(Amounts? amounts) => this(amounts: amounts);
+  Portfolio amounts(Amounts amounts) => this(amounts: amounts);
 
   @override
-  Portfolio asOf(DateTime? asOf) => this(asOf: asOf);
+  Portfolio asOf(DateTime asOf) => this(asOf: asOf);
 
   @override
-  Portfolio counts(Counts? counts) => this(counts: counts);
+  Portfolio counts(Counts counts) => this(counts: counts);
 
   @override
-  Portfolio dueToday(List<CollectionItem>? dueToday) =>
-      this(dueToday: dueToday);
+  Portfolio dueToday(List<CollectionItem> dueToday) => this(dueToday: dueToday);
 
   @override
-  Portfolio dueTodayCount(int? dueTodayCount) =>
+  Portfolio dueTodayCount(int dueTodayCount) =>
       this(dueTodayCount: dueTodayCount);
 
   @override
@@ -75,16 +74,16 @@ class _$PortfolioCWProxyImpl implements _$PortfolioCWProxy {
       this(officers: officers);
 
   @override
-  Portfolio overdue(List<CollectionItem>? overdue) => this(overdue: overdue);
+  Portfolio overdue(List<CollectionItem> overdue) => this(overdue: overdue);
 
   @override
-  Portfolio overdueCount(int? overdueCount) => this(overdueCount: overdueCount);
+  Portfolio overdueCount(int overdueCount) => this(overdueCount: overdueCount);
 
   @override
-  Portfolio par(Par? par) => this(par: par);
+  Portfolio par(Par par) => this(par: par);
 
   @override
-  Portfolio scope(Scope? scope) => this(scope: scope);
+  Portfolio scope(Scope scope) => this(scope: scope);
 
   @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Portfolio(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -109,23 +108,23 @@ class _$PortfolioCWProxyImpl implements _$PortfolioCWProxy {
       amounts: amounts == const $CopyWithPlaceholder()
           ? _value.amounts
           // ignore: cast_nullable_to_non_nullable
-          : amounts as Amounts?,
+          : amounts as Amounts,
       asOf: asOf == const $CopyWithPlaceholder()
           ? _value.asOf
           // ignore: cast_nullable_to_non_nullable
-          : asOf as DateTime?,
+          : asOf as DateTime,
       counts: counts == const $CopyWithPlaceholder()
           ? _value.counts
           // ignore: cast_nullable_to_non_nullable
-          : counts as Counts?,
+          : counts as Counts,
       dueToday: dueToday == const $CopyWithPlaceholder()
           ? _value.dueToday
           // ignore: cast_nullable_to_non_nullable
-          : dueToday as List<CollectionItem>?,
+          : dueToday as List<CollectionItem>,
       dueTodayCount: dueTodayCount == const $CopyWithPlaceholder()
           ? _value.dueTodayCount
           // ignore: cast_nullable_to_non_nullable
-          : dueTodayCount as int?,
+          : dueTodayCount as int,
       officers: officers == const $CopyWithPlaceholder()
           ? _value.officers
           // ignore: cast_nullable_to_non_nullable
@@ -133,19 +132,19 @@ class _$PortfolioCWProxyImpl implements _$PortfolioCWProxy {
       overdue: overdue == const $CopyWithPlaceholder()
           ? _value.overdue
           // ignore: cast_nullable_to_non_nullable
-          : overdue as List<CollectionItem>?,
+          : overdue as List<CollectionItem>,
       overdueCount: overdueCount == const $CopyWithPlaceholder()
           ? _value.overdueCount
           // ignore: cast_nullable_to_non_nullable
-          : overdueCount as int?,
+          : overdueCount as int,
       par: par == const $CopyWithPlaceholder()
           ? _value.par
           // ignore: cast_nullable_to_non_nullable
-          : par as Par?,
+          : par as Par,
       scope: scope == const $CopyWithPlaceholder()
           ? _value.scope
           // ignore: cast_nullable_to_non_nullable
-          : scope as Scope?,
+          : scope as Scope,
     );
   }
 }
@@ -160,68 +159,71 @@ extension $PortfolioCopyWith on Portfolio {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Portfolio _$PortfolioFromJson(Map<String, dynamic> json) =>
-    $checkedCreate('Portfolio', json, ($checkedConvert) {
-      final val = Portfolio(
-        amounts: $checkedConvert(
-          'amounts',
-          (v) => v == null ? null : Amounts.fromJson(v as Map<String, dynamic>),
-        ),
-        asOf: $checkedConvert(
-          'asOf',
-          (v) => v == null ? null : DateTime.parse(v as String),
-        ),
-        counts: $checkedConvert(
-          'counts',
-          (v) => v == null ? null : Counts.fromJson(v as Map<String, dynamic>),
-        ),
-        dueToday: $checkedConvert(
-          'dueToday',
-          (v) => (v as List<dynamic>?)
-              ?.map((e) => CollectionItem.fromJson(e as Map<String, dynamic>))
-              .toList(),
-        ),
-        dueTodayCount: $checkedConvert(
-          'dueTodayCount',
-          (v) => (v as num?)?.toInt(),
-        ),
-        officers: $checkedConvert(
-          'officers',
-          (v) => (v as List<dynamic>?)
-              ?.map((e) => OfficerSummary.fromJson(e as Map<String, dynamic>))
-              .toList(),
-        ),
-        overdue: $checkedConvert(
-          'overdue',
-          (v) => (v as List<dynamic>?)
-              ?.map((e) => CollectionItem.fromJson(e as Map<String, dynamic>))
-              .toList(),
-        ),
-        overdueCount: $checkedConvert(
-          'overdueCount',
-          (v) => (v as num?)?.toInt(),
-        ),
-        par: $checkedConvert(
-          'par',
-          (v) => v == null ? null : Par.fromJson(v as Map<String, dynamic>),
-        ),
-        scope: $checkedConvert(
-          'scope',
-          (v) => v == null ? null : Scope.fromJson(v as Map<String, dynamic>),
-        ),
-      );
-      return val;
-    });
+Portfolio _$PortfolioFromJson(
+  Map<String, dynamic> json,
+) => $checkedCreate('Portfolio', json, ($checkedConvert) {
+  $checkKeys(
+    json,
+    requiredKeys: const [
+      'amounts',
+      'asOf',
+      'counts',
+      'dueToday',
+      'dueTodayCount',
+      'overdue',
+      'overdueCount',
+      'par',
+      'scope',
+    ],
+  );
+  final val = Portfolio(
+    amounts: $checkedConvert(
+      'amounts',
+      (v) => Amounts.fromJson(v as Map<String, dynamic>),
+    ),
+    asOf: $checkedConvert('asOf', (v) => DateTime.parse(v as String)),
+    counts: $checkedConvert(
+      'counts',
+      (v) => Counts.fromJson(v as Map<String, dynamic>),
+    ),
+    dueToday: $checkedConvert(
+      'dueToday',
+      (v) => (v as List<dynamic>)
+          .map((e) => CollectionItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    ),
+    dueTodayCount: $checkedConvert('dueTodayCount', (v) => (v as num).toInt()),
+    officers: $checkedConvert(
+      'officers',
+      (v) => (v as List<dynamic>?)
+          ?.map((e) => OfficerSummary.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    ),
+    overdue: $checkedConvert(
+      'overdue',
+      (v) => (v as List<dynamic>)
+          .map((e) => CollectionItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    ),
+    overdueCount: $checkedConvert('overdueCount', (v) => (v as num).toInt()),
+    par: $checkedConvert('par', (v) => Par.fromJson(v as Map<String, dynamic>)),
+    scope: $checkedConvert(
+      'scope',
+      (v) => Scope.fromJson(v as Map<String, dynamic>),
+    ),
+  );
+  return val;
+});
 
 Map<String, dynamic> _$PortfolioToJson(Portfolio instance) => <String, dynamic>{
-  'amounts': ?instance.amounts?.toJson(),
-  'asOf': ?instance.asOf?.toIso8601String(),
-  'counts': ?instance.counts?.toJson(),
-  'dueToday': ?instance.dueToday?.map((e) => e.toJson()).toList(),
-  'dueTodayCount': ?instance.dueTodayCount,
+  'amounts': instance.amounts.toJson(),
+  'asOf': instance.asOf.toIso8601String(),
+  'counts': instance.counts.toJson(),
+  'dueToday': instance.dueToday.map((e) => e.toJson()).toList(),
+  'dueTodayCount': instance.dueTodayCount,
   'officers': ?instance.officers?.map((e) => e.toJson()).toList(),
-  'overdue': ?instance.overdue?.map((e) => e.toJson()).toList(),
-  'overdueCount': ?instance.overdueCount,
-  'par': ?instance.par?.toJson(),
-  'scope': ?instance.scope?.toJson(),
+  'overdue': instance.overdue.map((e) => e.toJson()).toList(),
+  'overdueCount': instance.overdueCount,
+  'par': instance.par.toJson(),
+  'scope': instance.scope.toJson(),
 };

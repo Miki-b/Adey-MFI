@@ -20,46 +20,46 @@ class Amounts {
   /// Returns a new [Amounts] instance.
   Amounts({
 
-     this.currency,
+    required  this.currency,
 
-     this.principalOutstanding,
+    required  this.principalOutstanding,
 
-     this.totalOverdue,
+    required  this.totalOverdue,
   });
 
   @JsonKey(
     
     name: r'currency',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? currency;
+  final String currency;
 
 
 
   @JsonKey(
     
     name: r'principalOutstanding',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principalOutstanding;
+  final num principalOutstanding;
 
 
 
   @JsonKey(
     
     name: r'totalOverdue',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? totalOverdue;
+  final num totalOverdue;
 
 
 

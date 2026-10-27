@@ -20,58 +20,58 @@ class CollectionItem {
   /// Returns a new [CollectionItem] instance.
   CollectionItem({
 
-     this.accountNo,
+    required  this.accountNo,
 
-     this.amount,
+    required  this.amount,
 
-     this.clientId,
+    required  this.clientId,
 
      this.clientMobileNo,
 
-     this.clientName,
+    required  this.clientName,
 
-     this.daysOverdue,
+    required  this.daysOverdue,
 
-     this.dueDate,
+    required  this.dueDate,
 
-     this.installment,
+    required  this.installment,
 
-     this.loanId,
+    required  this.loanId,
   });
 
   @JsonKey(
     
     name: r'accountNo',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? accountNo;
+  final String accountNo;
 
 
 
   @JsonKey(
     
     name: r'amount',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? amount;
+  final num amount;
 
 
 
   @JsonKey(
     
     name: r'clientId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? clientId;
+  final int clientId;
 
 
 
@@ -90,60 +90,60 @@ class CollectionItem {
   @JsonKey(
     
     name: r'clientName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? clientName;
+  final String clientName;
 
 
 
   @JsonKey(
     
     name: r'daysOverdue',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? daysOverdue;
+  final int daysOverdue;
 
 
 
   @JsonKey(
     
     name: r'dueDate',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? dueDate;
+  final DateTime dueDate;
 
 
 
   @JsonKey(
     
     name: r'installment',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? installment;
+  final int installment;
 
 
 
   @JsonKey(
     
     name: r'loanId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? loanId;
+  final int loanId;
 
 
 

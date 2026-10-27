@@ -32,7 +32,7 @@ class Dates {
 
      this.rejectedOn,
 
-     this.submittedOn,
+    required  this.submittedOn,
   });
 
   @JsonKey(
@@ -110,12 +110,12 @@ class Dates {
   @JsonKey(
     
     name: r'submittedOn',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? submittedOn;
+  final DateTime submittedOn;
 
 
 

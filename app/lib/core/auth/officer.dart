@@ -15,14 +15,14 @@ class Officer {
   });
 
   factory Officer.fromApi(OfficerResponse r) => Officer(
-        userId: r.userId ?? 0,
-        username: r.username ?? '',
-        displayName: r.displayName ?? r.username ?? '',
+        userId: r.userId,
+        username: r.username,
+        displayName: r.displayName.isEmpty ? r.username : r.displayName,
         staffId: r.staffId,
-        officeId: r.officeId ?? 0,
-        officeName: r.officeName ?? '',
+        officeId: r.officeId,
+        officeName: r.officeName,
         roles: {
-          for (final role in r.roles ?? const <OfficerResponseRolesEnum>[])
+          for (final role in r.roles)
             if (role == OfficerResponseRolesEnum.MANAGER)
               Role.manager
             else if (role == OfficerResponseRolesEnum.OFFICER)

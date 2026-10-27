@@ -39,11 +39,12 @@ void main() {
     expect(p.asOf, DateTime(2026, 10, 26));
   });
 
-  test('missing fields become zeros/empties, never crashes', () {
-    final p = PortfolioView.fromApi(Portfolio.fromJson(const {}));
-    expect(p.par30, Decimal.zero);
-    expect(p.dueToday, isEmpty);
-    expect(p.officers, isEmpty);
+  test('officers is optional (officers get none); everything else is required by the spec', () {
+    final json = jsonDecode(adamaJson) as Map<String, dynamic>..remove('officers');
+    expect(PortfolioView.fromApi(Portfolio.fromJson(json)).officers, isEmpty);
+
+    final broken = jsonDecode(adamaJson) as Map<String, dynamic>..remove('par');
+    expect(() => Portfolio.fromJson(broken), throwsA(anything)); // a backend bug would surface here
   });
 
   test('PAR colour bands: green < 5 %, amber 5–10 %, red > 10 %', () {

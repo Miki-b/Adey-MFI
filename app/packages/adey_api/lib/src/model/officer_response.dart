@@ -20,103 +20,103 @@ class OfficerResponse {
   /// Returns a new [OfficerResponse] instance.
   OfficerResponse({
 
-     this.displayName,
+    required  this.displayName,
 
-     this.officeId,
+    required  this.officeId,
 
-     this.officeName,
+    required  this.officeName,
 
-     this.roles,
+    required  this.roles,
 
-     this.staffId,
+    required  this.staffId,
 
-     this.userId,
+    required  this.userId,
 
-     this.username,
+    required  this.username,
   });
 
   @JsonKey(
     
     name: r'displayName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? displayName;
+  final String displayName;
 
 
 
   @JsonKey(
     
     name: r'officeId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? officeId;
+  final int officeId;
 
 
 
   @JsonKey(
     
     name: r'officeName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? officeName;
+  final String officeName;
 
 
 
   @JsonKey(
     
     name: r'roles',
-    required: false,
+    required: true,
     includeIfNull: false,
   unknownEnumValue: OfficerResponseRolesEnum.unknownDefaultOpenApi,
   )
 
 
-  final List<OfficerResponseRolesEnum>? roles;
+  final List<OfficerResponseRolesEnum> roles;
 
 
 
   @JsonKey(
     
     name: r'staffId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? staffId;
+  final int staffId;
 
 
 
   @JsonKey(
     
     name: r'userId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? userId;
+  final int userId;
 
 
 
   @JsonKey(
     
     name: r'username',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? username;
+  final String username;
 
 
 

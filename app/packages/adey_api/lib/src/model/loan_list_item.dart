@@ -20,19 +20,19 @@ class LoanListItem {
   /// Returns a new [LoanListItem] instance.
   LoanListItem({
 
-     this.accountNo,
+    required  this.accountNo,
 
-     this.clientId,
+    required  this.clientId,
 
      this.clientMobileNo,
 
-     this.clientName,
+    required  this.clientName,
 
-     this.daysOverdue,
+    required  this.daysOverdue,
 
-     this.inArrears,
+    required  this.inArrears,
 
-     this.loanId,
+    required  this.loanId,
 
      this.loanOfficerName,
 
@@ -40,42 +40,42 @@ class LoanListItem {
 
      this.nextDueDate,
 
-     this.principal,
+    required  this.principal,
 
-     this.principalOutstanding,
+    required  this.principalOutstanding,
 
-     this.productName,
+    required  this.productName,
 
-     this.status,
+    required  this.status,
 
      this.statusLabel,
 
      this.submittedOn,
 
-     this.totalOverdue,
+    required  this.totalOverdue,
   });
 
   @JsonKey(
     
     name: r'accountNo',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? accountNo;
+  final String accountNo;
 
 
 
   @JsonKey(
     
     name: r'clientId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? clientId;
+  final int clientId;
 
 
 
@@ -94,48 +94,48 @@ class LoanListItem {
   @JsonKey(
     
     name: r'clientName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? clientName;
+  final String clientName;
 
 
 
   @JsonKey(
     
     name: r'daysOverdue',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? daysOverdue;
+  final int daysOverdue;
 
 
 
   @JsonKey(
     
     name: r'inArrears',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final bool? inArrears;
+  final bool inArrears;
 
 
 
   @JsonKey(
     
     name: r'loanId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? loanId;
+  final int loanId;
 
 
 
@@ -178,49 +178,49 @@ class LoanListItem {
   @JsonKey(
     
     name: r'principal',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principal;
+  final num principal;
 
 
 
   @JsonKey(
     
     name: r'principalOutstanding',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principalOutstanding;
+  final num principalOutstanding;
 
 
 
   @JsonKey(
     
     name: r'productName',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final String? productName;
+  final String productName;
 
 
 
   @JsonKey(
     
     name: r'status',
-    required: false,
+    required: true,
     includeIfNull: false,
   unknownEnumValue: LoanListItemStatusEnum.unknownDefaultOpenApi,
   )
 
 
-  final LoanListItemStatusEnum? status;
+  final LoanListItemStatusEnum status;
 
 
 
@@ -251,12 +251,12 @@ class LoanListItem {
   @JsonKey(
     
     name: r'totalOverdue',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? totalOverdue;
+  final num totalOverdue;
 
 
 

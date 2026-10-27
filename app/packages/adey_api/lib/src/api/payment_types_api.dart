@@ -10,6 +10,7 @@ import 'package:adey_api/src/deserialize.dart';
 import 'package:dio/dio.dart';
 
 import 'package:adey_api/src/model/payment_type_response.dart';
+import 'package:adey_api/src/model/problem.dart';
 
 class PaymentTypesApi {
 
@@ -30,7 +31,7 @@ class PaymentTypesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [List<PaymentTypeResponse>] as data
   /// Throws [DioException] if API call or serialization fails
-  Future<Response<List<PaymentTypeResponse>>> list2({ 
+  Future<Response<List<PaymentTypeResponse>>> listPaymentTypes({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,

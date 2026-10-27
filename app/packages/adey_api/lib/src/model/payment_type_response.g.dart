@@ -7,13 +7,13 @@ part of 'payment_type_response.dart';
 // **************************************************************************
 
 abstract class _$PaymentTypeResponseCWProxy {
-  PaymentTypeResponse cash(bool? cash);
+  PaymentTypeResponse cash(bool cash);
 
   PaymentTypeResponse description(String? description);
 
-  PaymentTypeResponse id(int? id);
+  PaymentTypeResponse id(int id);
 
-  PaymentTypeResponse name(String? name);
+  PaymentTypeResponse name(String name);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PaymentTypeResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -22,10 +22,10 @@ abstract class _$PaymentTypeResponseCWProxy {
   /// PaymentTypeResponse(...).copyWith(id: 12, name: "My name")
   /// ````
   PaymentTypeResponse call({
-    bool? cash,
+    bool cash,
     String? description,
-    int? id,
-    String? name,
+    int id,
+    String name,
   });
 }
 
@@ -36,17 +36,17 @@ class _$PaymentTypeResponseCWProxyImpl implements _$PaymentTypeResponseCWProxy {
   final PaymentTypeResponse _value;
 
   @override
-  PaymentTypeResponse cash(bool? cash) => this(cash: cash);
+  PaymentTypeResponse cash(bool cash) => this(cash: cash);
 
   @override
   PaymentTypeResponse description(String? description) =>
       this(description: description);
 
   @override
-  PaymentTypeResponse id(int? id) => this(id: id);
+  PaymentTypeResponse id(int id) => this(id: id);
 
   @override
-  PaymentTypeResponse name(String? name) => this(name: name);
+  PaymentTypeResponse name(String name) => this(name: name);
 
   @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `PaymentTypeResponse(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -65,7 +65,7 @@ class _$PaymentTypeResponseCWProxyImpl implements _$PaymentTypeResponseCWProxy {
       cash: cash == const $CopyWithPlaceholder()
           ? _value.cash
           // ignore: cast_nullable_to_non_nullable
-          : cash as bool?,
+          : cash as bool,
       description: description == const $CopyWithPlaceholder()
           ? _value.description
           // ignore: cast_nullable_to_non_nullable
@@ -73,11 +73,11 @@ class _$PaymentTypeResponseCWProxyImpl implements _$PaymentTypeResponseCWProxy {
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as int?,
+          : id as int,
       name: name == const $CopyWithPlaceholder()
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
-          : name as String?,
+          : name as String,
     );
   }
 }
@@ -95,11 +95,12 @@ extension $PaymentTypeResponseCopyWith on PaymentTypeResponse {
 
 PaymentTypeResponse _$PaymentTypeResponseFromJson(Map<String, dynamic> json) =>
     $checkedCreate('PaymentTypeResponse', json, ($checkedConvert) {
+      $checkKeys(json, requiredKeys: const ['cash', 'id', 'name']);
       final val = PaymentTypeResponse(
-        cash: $checkedConvert('cash', (v) => v as bool?),
+        cash: $checkedConvert('cash', (v) => v as bool),
         description: $checkedConvert('description', (v) => v as String?),
-        id: $checkedConvert('id', (v) => (v as num?)?.toInt()),
-        name: $checkedConvert('name', (v) => v as String?),
+        id: $checkedConvert('id', (v) => (v as num).toInt()),
+        name: $checkedConvert('name', (v) => v as String),
       );
       return val;
     });
@@ -107,8 +108,8 @@ PaymentTypeResponse _$PaymentTypeResponseFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PaymentTypeResponseToJson(
   PaymentTypeResponse instance,
 ) => <String, dynamic>{
-  'cash': ?instance.cash,
+  'cash': instance.cash,
   'description': ?instance.description,
-  'id': ?instance.id,
-  'name': ?instance.name,
+  'id': instance.id,
+  'name': instance.name,
 };

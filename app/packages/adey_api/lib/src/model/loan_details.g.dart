@@ -7,43 +7,43 @@ part of 'loan_details.dart';
 // **************************************************************************
 
 abstract class _$LoanDetailsCWProxy {
-  LoanDetails accountNo(String? accountNo);
+  LoanDetails accountNo(String accountNo);
 
   LoanDetails annualInterestRate(num? annualInterestRate);
 
   LoanDetails approvedPrincipal(num? approvedPrincipal);
 
-  LoanDetails clientId(int? clientId);
+  LoanDetails clientId(int clientId);
 
-  LoanDetails clientName(String? clientName);
+  LoanDetails clientName(String clientName);
 
   LoanDetails currency(String? currency);
 
   LoanDetails dates(Dates? dates);
 
-  LoanDetails loanId(int? loanId);
+  LoanDetails loanId(int loanId);
 
   LoanDetails loanOfficerId(int? loanOfficerId);
 
   LoanDetails loanOfficerName(String? loanOfficerName);
 
-  LoanDetails numberOfRepayments(int? numberOfRepayments);
+  LoanDetails numberOfRepayments(int numberOfRepayments);
 
-  LoanDetails principal(num? principal);
+  LoanDetails principal(num principal);
 
-  LoanDetails productId(int? productId);
+  LoanDetails productId(int productId);
 
-  LoanDetails productName(String? productName);
+  LoanDetails productName(String productName);
 
-  LoanDetails schedule(List<Installment>? schedule);
+  LoanDetails schedule(List<Installment> schedule);
 
-  LoanDetails status(LoanDetailsStatusEnum? status);
+  LoanDetails status(LoanDetailsStatusEnum status);
 
   LoanDetails statusLabel(String? statusLabel);
 
-  LoanDetails summary(Summary? summary);
+  LoanDetails summary(LoanTotals summary);
 
-  LoanDetails transactions(List<LoanTransactionResponse>? transactions);
+  LoanDetails transactions(List<LoanTransactionResponse> transactions);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `LoanDetails(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -52,25 +52,25 @@ abstract class _$LoanDetailsCWProxy {
   /// LoanDetails(...).copyWith(id: 12, name: "My name")
   /// ````
   LoanDetails call({
-    String? accountNo,
+    String accountNo,
     num? annualInterestRate,
     num? approvedPrincipal,
-    int? clientId,
-    String? clientName,
+    int clientId,
+    String clientName,
     String? currency,
     Dates? dates,
-    int? loanId,
+    int loanId,
     int? loanOfficerId,
     String? loanOfficerName,
-    int? numberOfRepayments,
-    num? principal,
-    int? productId,
-    String? productName,
-    List<Installment>? schedule,
-    LoanDetailsStatusEnum? status,
+    int numberOfRepayments,
+    num principal,
+    int productId,
+    String productName,
+    List<Installment> schedule,
+    LoanDetailsStatusEnum status,
     String? statusLabel,
-    Summary? summary,
-    List<LoanTransactionResponse>? transactions,
+    LoanTotals summary,
+    List<LoanTransactionResponse> transactions,
   });
 }
 
@@ -81,7 +81,7 @@ class _$LoanDetailsCWProxyImpl implements _$LoanDetailsCWProxy {
   final LoanDetails _value;
 
   @override
-  LoanDetails accountNo(String? accountNo) => this(accountNo: accountNo);
+  LoanDetails accountNo(String accountNo) => this(accountNo: accountNo);
 
   @override
   LoanDetails annualInterestRate(num? annualInterestRate) =>
@@ -92,10 +92,10 @@ class _$LoanDetailsCWProxyImpl implements _$LoanDetailsCWProxy {
       this(approvedPrincipal: approvedPrincipal);
 
   @override
-  LoanDetails clientId(int? clientId) => this(clientId: clientId);
+  LoanDetails clientId(int clientId) => this(clientId: clientId);
 
   @override
-  LoanDetails clientName(String? clientName) => this(clientName: clientName);
+  LoanDetails clientName(String clientName) => this(clientName: clientName);
 
   @override
   LoanDetails currency(String? currency) => this(currency: currency);
@@ -104,7 +104,7 @@ class _$LoanDetailsCWProxyImpl implements _$LoanDetailsCWProxy {
   LoanDetails dates(Dates? dates) => this(dates: dates);
 
   @override
-  LoanDetails loanId(int? loanId) => this(loanId: loanId);
+  LoanDetails loanId(int loanId) => this(loanId: loanId);
 
   @override
   LoanDetails loanOfficerId(int? loanOfficerId) =>
@@ -115,34 +115,33 @@ class _$LoanDetailsCWProxyImpl implements _$LoanDetailsCWProxy {
       this(loanOfficerName: loanOfficerName);
 
   @override
-  LoanDetails numberOfRepayments(int? numberOfRepayments) =>
+  LoanDetails numberOfRepayments(int numberOfRepayments) =>
       this(numberOfRepayments: numberOfRepayments);
 
   @override
-  LoanDetails principal(num? principal) => this(principal: principal);
+  LoanDetails principal(num principal) => this(principal: principal);
 
   @override
-  LoanDetails productId(int? productId) => this(productId: productId);
+  LoanDetails productId(int productId) => this(productId: productId);
 
   @override
-  LoanDetails productName(String? productName) =>
-      this(productName: productName);
+  LoanDetails productName(String productName) => this(productName: productName);
 
   @override
-  LoanDetails schedule(List<Installment>? schedule) => this(schedule: schedule);
+  LoanDetails schedule(List<Installment> schedule) => this(schedule: schedule);
 
   @override
-  LoanDetails status(LoanDetailsStatusEnum? status) => this(status: status);
+  LoanDetails status(LoanDetailsStatusEnum status) => this(status: status);
 
   @override
   LoanDetails statusLabel(String? statusLabel) =>
       this(statusLabel: statusLabel);
 
   @override
-  LoanDetails summary(Summary? summary) => this(summary: summary);
+  LoanDetails summary(LoanTotals summary) => this(summary: summary);
 
   @override
-  LoanDetails transactions(List<LoanTransactionResponse>? transactions) =>
+  LoanDetails transactions(List<LoanTransactionResponse> transactions) =>
       this(transactions: transactions);
 
   @override
@@ -177,7 +176,7 @@ class _$LoanDetailsCWProxyImpl implements _$LoanDetailsCWProxy {
       accountNo: accountNo == const $CopyWithPlaceholder()
           ? _value.accountNo
           // ignore: cast_nullable_to_non_nullable
-          : accountNo as String?,
+          : accountNo as String,
       annualInterestRate: annualInterestRate == const $CopyWithPlaceholder()
           ? _value.annualInterestRate
           // ignore: cast_nullable_to_non_nullable
@@ -189,11 +188,11 @@ class _$LoanDetailsCWProxyImpl implements _$LoanDetailsCWProxy {
       clientId: clientId == const $CopyWithPlaceholder()
           ? _value.clientId
           // ignore: cast_nullable_to_non_nullable
-          : clientId as int?,
+          : clientId as int,
       clientName: clientName == const $CopyWithPlaceholder()
           ? _value.clientName
           // ignore: cast_nullable_to_non_nullable
-          : clientName as String?,
+          : clientName as String,
       currency: currency == const $CopyWithPlaceholder()
           ? _value.currency
           // ignore: cast_nullable_to_non_nullable
@@ -205,7 +204,7 @@ class _$LoanDetailsCWProxyImpl implements _$LoanDetailsCWProxy {
       loanId: loanId == const $CopyWithPlaceholder()
           ? _value.loanId
           // ignore: cast_nullable_to_non_nullable
-          : loanId as int?,
+          : loanId as int,
       loanOfficerId: loanOfficerId == const $CopyWithPlaceholder()
           ? _value.loanOfficerId
           // ignore: cast_nullable_to_non_nullable
@@ -217,27 +216,27 @@ class _$LoanDetailsCWProxyImpl implements _$LoanDetailsCWProxy {
       numberOfRepayments: numberOfRepayments == const $CopyWithPlaceholder()
           ? _value.numberOfRepayments
           // ignore: cast_nullable_to_non_nullable
-          : numberOfRepayments as int?,
+          : numberOfRepayments as int,
       principal: principal == const $CopyWithPlaceholder()
           ? _value.principal
           // ignore: cast_nullable_to_non_nullable
-          : principal as num?,
+          : principal as num,
       productId: productId == const $CopyWithPlaceholder()
           ? _value.productId
           // ignore: cast_nullable_to_non_nullable
-          : productId as int?,
+          : productId as int,
       productName: productName == const $CopyWithPlaceholder()
           ? _value.productName
           // ignore: cast_nullable_to_non_nullable
-          : productName as String?,
+          : productName as String,
       schedule: schedule == const $CopyWithPlaceholder()
           ? _value.schedule
           // ignore: cast_nullable_to_non_nullable
-          : schedule as List<Installment>?,
+          : schedule as List<Installment>,
       status: status == const $CopyWithPlaceholder()
           ? _value.status
           // ignore: cast_nullable_to_non_nullable
-          : status as LoanDetailsStatusEnum?,
+          : status as LoanDetailsStatusEnum,
       statusLabel: statusLabel == const $CopyWithPlaceholder()
           ? _value.statusLabel
           // ignore: cast_nullable_to_non_nullable
@@ -245,11 +244,11 @@ class _$LoanDetailsCWProxyImpl implements _$LoanDetailsCWProxy {
       summary: summary == const $CopyWithPlaceholder()
           ? _value.summary
           // ignore: cast_nullable_to_non_nullable
-          : summary as Summary?,
+          : summary as LoanTotals,
       transactions: transactions == const $CopyWithPlaceholder()
           ? _value.transactions
           // ignore: cast_nullable_to_non_nullable
-          : transactions as List<LoanTransactionResponse>?,
+          : transactions as List<LoanTransactionResponse>,
     );
   }
 }
@@ -267,18 +266,35 @@ extension $LoanDetailsCopyWith on LoanDetails {
 LoanDetails _$LoanDetailsFromJson(
   Map<String, dynamic> json,
 ) => $checkedCreate('LoanDetails', json, ($checkedConvert) {
+  $checkKeys(
+    json,
+    requiredKeys: const [
+      'accountNo',
+      'clientId',
+      'clientName',
+      'loanId',
+      'numberOfRepayments',
+      'principal',
+      'productId',
+      'productName',
+      'schedule',
+      'status',
+      'summary',
+      'transactions',
+    ],
+  );
   final val = LoanDetails(
-    accountNo: $checkedConvert('accountNo', (v) => v as String?),
+    accountNo: $checkedConvert('accountNo', (v) => v as String),
     annualInterestRate: $checkedConvert('annualInterestRate', (v) => v as num?),
     approvedPrincipal: $checkedConvert('approvedPrincipal', (v) => v as num?),
-    clientId: $checkedConvert('clientId', (v) => (v as num?)?.toInt()),
-    clientName: $checkedConvert('clientName', (v) => v as String?),
+    clientId: $checkedConvert('clientId', (v) => (v as num).toInt()),
+    clientName: $checkedConvert('clientName', (v) => v as String),
     currency: $checkedConvert('currency', (v) => v as String?),
     dates: $checkedConvert(
       'dates',
       (v) => v == null ? null : Dates.fromJson(v as Map<String, dynamic>),
     ),
-    loanId: $checkedConvert('loanId', (v) => (v as num?)?.toInt()),
+    loanId: $checkedConvert('loanId', (v) => (v as num).toInt()),
     loanOfficerId: $checkedConvert(
       'loanOfficerId',
       (v) => (v as num?)?.toInt(),
@@ -286,20 +302,20 @@ LoanDetails _$LoanDetailsFromJson(
     loanOfficerName: $checkedConvert('loanOfficerName', (v) => v as String?),
     numberOfRepayments: $checkedConvert(
       'numberOfRepayments',
-      (v) => (v as num?)?.toInt(),
+      (v) => (v as num).toInt(),
     ),
-    principal: $checkedConvert('principal', (v) => v as num?),
-    productId: $checkedConvert('productId', (v) => (v as num?)?.toInt()),
-    productName: $checkedConvert('productName', (v) => v as String?),
+    principal: $checkedConvert('principal', (v) => v as num),
+    productId: $checkedConvert('productId', (v) => (v as num).toInt()),
+    productName: $checkedConvert('productName', (v) => v as String),
     schedule: $checkedConvert(
       'schedule',
-      (v) => (v as List<dynamic>?)
-          ?.map((e) => Installment.fromJson(e as Map<String, dynamic>))
+      (v) => (v as List<dynamic>)
+          .map((e) => Installment.fromJson(e as Map<String, dynamic>))
           .toList(),
     ),
     status: $checkedConvert(
       'status',
-      (v) => $enumDecodeNullable(
+      (v) => $enumDecode(
         _$LoanDetailsStatusEnumEnumMap,
         v,
         unknownValue: LoanDetailsStatusEnum.unknownDefaultOpenApi,
@@ -308,12 +324,12 @@ LoanDetails _$LoanDetailsFromJson(
     statusLabel: $checkedConvert('statusLabel', (v) => v as String?),
     summary: $checkedConvert(
       'summary',
-      (v) => v == null ? null : Summary.fromJson(v as Map<String, dynamic>),
+      (v) => LoanTotals.fromJson(v as Map<String, dynamic>),
     ),
     transactions: $checkedConvert(
       'transactions',
-      (v) => (v as List<dynamic>?)
-          ?.map(
+      (v) => (v as List<dynamic>)
+          .map(
             (e) => LoanTransactionResponse.fromJson(e as Map<String, dynamic>),
           )
           .toList(),
@@ -324,25 +340,25 @@ LoanDetails _$LoanDetailsFromJson(
 
 Map<String, dynamic> _$LoanDetailsToJson(LoanDetails instance) =>
     <String, dynamic>{
-      'accountNo': ?instance.accountNo,
+      'accountNo': instance.accountNo,
       'annualInterestRate': ?instance.annualInterestRate,
       'approvedPrincipal': ?instance.approvedPrincipal,
-      'clientId': ?instance.clientId,
-      'clientName': ?instance.clientName,
+      'clientId': instance.clientId,
+      'clientName': instance.clientName,
       'currency': ?instance.currency,
       'dates': ?instance.dates?.toJson(),
-      'loanId': ?instance.loanId,
+      'loanId': instance.loanId,
       'loanOfficerId': ?instance.loanOfficerId,
       'loanOfficerName': ?instance.loanOfficerName,
-      'numberOfRepayments': ?instance.numberOfRepayments,
-      'principal': ?instance.principal,
-      'productId': ?instance.productId,
-      'productName': ?instance.productName,
-      'schedule': ?instance.schedule?.map((e) => e.toJson()).toList(),
-      'status': ?_$LoanDetailsStatusEnumEnumMap[instance.status],
+      'numberOfRepayments': instance.numberOfRepayments,
+      'principal': instance.principal,
+      'productId': instance.productId,
+      'productName': instance.productName,
+      'schedule': instance.schedule.map((e) => e.toJson()).toList(),
+      'status': _$LoanDetailsStatusEnumEnumMap[instance.status]!,
       'statusLabel': ?instance.statusLabel,
-      'summary': ?instance.summary?.toJson(),
-      'transactions': ?instance.transactions?.map((e) => e.toJson()).toList(),
+      'summary': instance.summary.toJson(),
+      'transactions': instance.transactions.map((e) => e.toJson()).toList(),
     };
 
 const _$LoanDetailsStatusEnumEnumMap = {

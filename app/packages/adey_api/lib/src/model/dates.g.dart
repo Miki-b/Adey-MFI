@@ -19,7 +19,7 @@ abstract class _$DatesCWProxy {
 
   Dates rejectedOn(DateTime? rejectedOn);
 
-  Dates submittedOn(DateTime? submittedOn);
+  Dates submittedOn(DateTime submittedOn);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Dates(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -34,7 +34,7 @@ abstract class _$DatesCWProxy {
     DateTime? expectedDisbursement,
     DateTime? expectedMaturity,
     DateTime? rejectedOn,
-    DateTime? submittedOn,
+    DateTime submittedOn,
   });
 }
 
@@ -65,7 +65,7 @@ class _$DatesCWProxyImpl implements _$DatesCWProxy {
   Dates rejectedOn(DateTime? rejectedOn) => this(rejectedOn: rejectedOn);
 
   @override
-  Dates submittedOn(DateTime? submittedOn) => this(submittedOn: submittedOn);
+  Dates submittedOn(DateTime submittedOn) => this(submittedOn: submittedOn);
 
   @override
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Dates(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
@@ -111,7 +111,7 @@ class _$DatesCWProxyImpl implements _$DatesCWProxy {
       submittedOn: submittedOn == const $CopyWithPlaceholder()
           ? _value.submittedOn
           // ignore: cast_nullable_to_non_nullable
-          : submittedOn as DateTime?,
+          : submittedOn as DateTime,
     );
   }
 }
@@ -128,6 +128,7 @@ extension $DatesCopyWith on Dates {
 
 Dates _$DatesFromJson(Map<String, dynamic> json) =>
     $checkedCreate('Dates', json, ($checkedConvert) {
+      $checkKeys(json, requiredKeys: const ['submittedOn']);
       final val = Dates(
         approvedOn: $checkedConvert(
           'approvedOn',
@@ -155,7 +156,7 @@ Dates _$DatesFromJson(Map<String, dynamic> json) =>
         ),
         submittedOn: $checkedConvert(
           'submittedOn',
-          (v) => v == null ? null : DateTime.parse(v as String),
+          (v) => DateTime.parse(v as String),
         ),
       );
       return val;
@@ -168,5 +169,5 @@ Map<String, dynamic> _$DatesToJson(Dates instance) => <String, dynamic>{
   'expectedDisbursement': ?instance.expectedDisbursement?.toIso8601String(),
   'expectedMaturity': ?instance.expectedMaturity?.toIso8601String(),
   'rejectedOn': ?instance.rejectedOn?.toIso8601String(),
-  'submittedOn': ?instance.submittedOn?.toIso8601String(),
+  'submittedOn': instance.submittedOn.toIso8601String(),
 };

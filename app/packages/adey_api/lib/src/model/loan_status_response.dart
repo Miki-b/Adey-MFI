@@ -22,9 +22,9 @@ class LoanStatusResponse {
 
      this.accountNo,
 
-     this.loanId,
+    required  this.loanId,
 
-     this.status,
+    required  this.status,
 
      this.statusLabel,
   });
@@ -44,25 +44,25 @@ class LoanStatusResponse {
   @JsonKey(
     
     name: r'loanId',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? loanId;
+  final int loanId;
 
 
 
   @JsonKey(
     
     name: r'status',
-    required: false,
+    required: true,
     includeIfNull: false,
   unknownEnumValue: LoanStatusResponseStatusEnum.unknownDefaultOpenApi,
   )
 
 
-  final LoanStatusResponseStatusEnum? status;
+  final LoanStatusResponseStatusEnum status;
 
 
 

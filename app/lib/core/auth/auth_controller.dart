@@ -43,7 +43,7 @@ class AuthController extends _$AuthController {
         extra: _noAuth,
       );
       final body = response.data!;
-      await ref.read(tokenStoreProvider).save(TokenPair(accessToken: body.accessToken!, refreshToken: body.refreshToken!));
+      await ref.read(tokenStoreProvider).save(TokenPair(accessToken: body.accessToken, refreshToken: body.refreshToken));
       ref.read(sessionNoticeProvider.notifier).clear();
       // The login answer already contains the officer, but /me is the source of truth for the
       // signed-in user (and proves the new token works end to end).
@@ -81,7 +81,7 @@ class AuthController extends _$AuthController {
 
   Future<Officer> _loadMe() async {
     try {
-      final me = await ref.read(adeyApiProvider).getAuthApi().me();
+      final me = await ref.read(adeyApiProvider).getAuthApi().getCurrentOfficer();
       return Officer.fromApi(me.data!);
     } catch (e) {
       throw ApiError.from(e);

@@ -20,88 +20,88 @@ class SchedulePeriod {
   /// Returns a new [SchedulePeriod] instance.
   SchedulePeriod({
 
-     this.balanceAfter,
+    required  this.balanceAfter,
 
-     this.dueDate,
+    required  this.dueDate,
 
-     this.interest,
+    required  this.interest,
 
-     this.number,
+    required  this.number,
 
-     this.principal,
+    required  this.principal,
 
-     this.total,
+    required  this.total,
   });
 
   @JsonKey(
     
     name: r'balanceAfter',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? balanceAfter;
+  final num balanceAfter;
 
 
 
   @JsonKey(
     
     name: r'dueDate',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final DateTime? dueDate;
+  final DateTime dueDate;
 
 
 
   @JsonKey(
     
     name: r'interest',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? interest;
+  final num interest;
 
 
 
   @JsonKey(
     
     name: r'number',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final int? number;
+  final int number;
 
 
 
   @JsonKey(
     
     name: r'principal',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? principal;
+  final num principal;
 
 
 
   @JsonKey(
     
     name: r'total',
-    required: false,
+    required: true,
     includeIfNull: false,
   )
 
 
-  final num? total;
+  final num total;
 
 
 

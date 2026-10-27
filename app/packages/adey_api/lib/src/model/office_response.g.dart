@@ -7,9 +7,9 @@ part of 'office_response.dart';
 // **************************************************************************
 
 abstract class _$OfficeResponseCWProxy {
-  OfficeResponse id(int? id);
+  OfficeResponse id(int id);
 
-  OfficeResponse name(String? name);
+  OfficeResponse name(String name);
 
   OfficeResponse openingDate(DateTime? openingDate);
 
@@ -22,8 +22,8 @@ abstract class _$OfficeResponseCWProxy {
   /// OfficeResponse(...).copyWith(id: 12, name: "My name")
   /// ````
   OfficeResponse call({
-    int? id,
-    String? name,
+    int id,
+    String name,
     DateTime? openingDate,
     int? parentId,
   });
@@ -36,10 +36,10 @@ class _$OfficeResponseCWProxyImpl implements _$OfficeResponseCWProxy {
   final OfficeResponse _value;
 
   @override
-  OfficeResponse id(int? id) => this(id: id);
+  OfficeResponse id(int id) => this(id: id);
 
   @override
-  OfficeResponse name(String? name) => this(name: name);
+  OfficeResponse name(String name) => this(name: name);
 
   @override
   OfficeResponse openingDate(DateTime? openingDate) =>
@@ -65,11 +65,11 @@ class _$OfficeResponseCWProxyImpl implements _$OfficeResponseCWProxy {
       id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
-          : id as int?,
+          : id as int,
       name: name == const $CopyWithPlaceholder()
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
-          : name as String?,
+          : name as String,
       openingDate: openingDate == const $CopyWithPlaceholder()
           ? _value.openingDate
           // ignore: cast_nullable_to_non_nullable
@@ -94,9 +94,10 @@ extension $OfficeResponseCopyWith on OfficeResponse {
 
 OfficeResponse _$OfficeResponseFromJson(Map<String, dynamic> json) =>
     $checkedCreate('OfficeResponse', json, ($checkedConvert) {
+      $checkKeys(json, requiredKeys: const ['id', 'name']);
       final val = OfficeResponse(
-        id: $checkedConvert('id', (v) => (v as num?)?.toInt()),
-        name: $checkedConvert('name', (v) => v as String?),
+        id: $checkedConvert('id', (v) => (v as num).toInt()),
+        name: $checkedConvert('name', (v) => v as String),
         openingDate: $checkedConvert(
           'openingDate',
           (v) => v == null ? null : DateTime.parse(v as String),
@@ -108,8 +109,8 @@ OfficeResponse _$OfficeResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$OfficeResponseToJson(OfficeResponse instance) =>
     <String, dynamic>{
-      'id': ?instance.id,
-      'name': ?instance.name,
+      'id': instance.id,
+      'name': instance.name,
       'openingDate': ?instance.openingDate?.toIso8601String(),
       'parentId': ?instance.parentId,
     };

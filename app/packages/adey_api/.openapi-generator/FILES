@@ -37,6 +37,7 @@ lib/src/model/loan_list_item.dart
 lib/src/model/loan_product_response.dart
 lib/src/model/loan_status_response.dart
 lib/src/model/loan_summary.dart
+lib/src/model/loan_totals.dart
 lib/src/model/loan_transaction_response.dart
 lib/src/model/login_request.dart
 lib/src/model/mobile_payment_request.dart
@@ -48,7 +49,10 @@ lib/src/model/page_response_client_summary.dart
 lib/src/model/par.dart
 lib/src/model/payment_type_response.dart
 lib/src/model/portfolio.dart
+lib/src/model/problem.dart
+lib/src/model/problem_errors_inner.dart
 lib/src/model/reconciliation_report.dart
+lib/src/model/reconciliation_summary.dart
 lib/src/model/refresh_request.dart
 lib/src/model/reject_loan_request.dart
 lib/src/model/repayment_request.dart
@@ -57,7 +61,6 @@ lib/src/model/schedule_period.dart
 lib/src/model/schedule_preview_request.dart
 lib/src/model/schedule_preview_response.dart
 lib/src/model/scope.dart
-lib/src/model/summary.dart
 lib/src/model/token_response.dart
 lib/src/model/transition.dart
 lib/src/model/undo_approval_request.dart

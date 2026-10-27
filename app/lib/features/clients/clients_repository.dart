@@ -117,35 +117,38 @@ class ClientsRepository {
   static const pageSize = 20;
   final AdeyApi _api;
 
-  /// [query] is matched as a case-sensitive substring of the display name (Fineract behaviour).
+  /// [query] matches part of the display name, ignoring case (the backend filters it).
   Future<ClientPage> search({String? query, int page = 0}) => _call(() async {
         final q = query?.trim();
-        final r = (await _api.getClientsApi().search(search: q == null || q.isEmpty ? null : q, page: page, size: pageSize)).data!;
+        final r = (await _api
+                .getClientsApi()
+                .listClients(search: q == null || q.isEmpty ? null : q, page: page, size: pageSize))
+            .data!;
         return ClientPage(
           items: [
-            for (final c in r.content ?? const <ClientSummary>[])
+            for (final c in r.content)
               ClientListItem(
-                id: c.id ?? 0,
-                displayName: c.displayName ?? '',
-                accountNo: c.accountNo ?? '',
-                active: c.active ?? true,
+                id: c.id,
+                displayName: c.displayName,
+                accountNo: c.accountNo,
+                active: c.active,
                 officeName: c.officeName,
                 staffName: c.staffName,
               ),
           ],
-          page: r.page ?? page,
-          totalPages: r.totalPages ?? 0,
-          totalElements: r.totalElements ?? 0,
+          page: r.page,
+          totalPages: r.totalPages,
+          totalElements: r.totalElements,
         );
       });
 
   Future<ClientProfile> get(int clientId) => _call(() async {
-        final c = (await _api.getClientsApi().callGet(clientId: clientId)).data!;
+        final c = (await _api.getClientsApi().getClient(clientId: clientId)).data!;
         return ClientProfile(
-          id: c.id ?? clientId,
-          displayName: c.displayName ?? '',
-          accountNo: c.accountNo ?? '',
-          active: c.active ?? true,
+          id: c.id,
+          displayName: c.displayName,
+          accountNo: c.accountNo,
+          active: c.active,
           mobileNo: c.mobileNo,
           gender: c.gender,
           dateOfBirth: c.dateOfBirth,
@@ -157,19 +160,19 @@ class ClientsRepository {
       });
 
   Future<List<ClientLoan>> loans(int clientId) => _call(() async {
-        final list = (await _api.getLoansApi().clientLoans(clientId: clientId)).data ?? const <LoanSummary>[];
+        final list = (await _api.getLoansApi().getClientLoans(clientId: clientId)).data!;
         return [
           for (final l in list)
             ClientLoan(
-              loanId: l.loanId ?? 0,
-              accountNo: l.accountNo ?? '',
-              productName: l.productName ?? '',
+              loanId: l.loanId,
+              accountNo: l.accountNo,
+              productName: l.productName,
               state: loanStateFromApi(l.status),
-              principal: toDecimal(l.principal) ?? Decimal.zero,
-              totalOutstanding: toDecimal(l.totalOutstanding),
-              installmentsPaid: l.installmentsPaid ?? 0,
-              installmentsTotal: l.installmentsTotal ?? 0,
-              inArrears: l.inArrears ?? false,
+              principal: decimalOf(l.principal),
+              totalOutstanding: decimalOf(l.totalOutstanding),
+              installmentsPaid: l.installmentsPaid,
+              installmentsTotal: l.installmentsTotal,
+              inArrears: l.inArrears,
               nextDueDate: l.nextDueDate,
               nextDueAmount: toDecimal(l.nextDueAmount),
             ),

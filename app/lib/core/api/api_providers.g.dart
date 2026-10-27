@@ -138,7 +138,7 @@ final class DioProvider extends $FunctionalProvider<Dio, Dio, Dio>
   }
 }
 
-String _$dioHash() => r'73bc84f0a53a065b2487cfafff79098b9ff84d3f';
+String _$dioHash() => r'14834f67dcfba354bbcdfcfa3f28f9962ab9ccd4';
 
 /// The generated client, on our Dio (its own auth interceptors are not installed).
 

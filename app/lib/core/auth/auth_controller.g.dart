@@ -42,7 +42,7 @@ final class AuthControllerProvider
   AuthController create() => AuthController();
 }
 
-String _$authControllerHash() => r'e531649887829d1dcaa207a884c16316c0908392';
+String _$authControllerHash() => r'75bf87cdb5daa283923f6fc81ad41a2ca72bd0a3';
 
 /// Who is signed in. `AsyncData(null)` = signed out, `AsyncData(officer)` = signed in,
 /// loading = restoring the session at app start, error = couldn't check (e.g. no network);

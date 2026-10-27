@@ -71,7 +71,7 @@ class ComingSoonView extends StatelessWidget {
       appBar: AppBar(title: Text(feature)),
       body: _CenteredMessage(
         icon: icon,
-        iconColor: Theme.of(context).colorScheme.secondary,
+        iconColor: Theme.of(context).colorScheme.primary,
         title: l10n.comingSoonTitle,
         message: l10n.comingSoonBody(feature),
       ),

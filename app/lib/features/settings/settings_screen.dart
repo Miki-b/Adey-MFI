@@ -7,6 +7,8 @@ import '../../core/auth/auth_controller.dart';
 import '../../core/config/server_config.dart';
 import '../../core/errors/api_error.dart';
 import '../../core/errors/error_messages.dart';
+import '../../core/widgets/brand.dart';
+import '../../core/theme/theme_mode.dart';
 import '../../l10n/app_localizations.dart';
 
 const appVersion = String.fromEnvironment('APP_VERSION', defaultValue: '0.1.0 (Session A)');
@@ -76,7 +78,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final theme = Theme.of(context);
     final user = ref.watch(authControllerProvider).value;
     final presets = <(String, String)>[
       (l10n.serverPresetCodespace, ServerConfig.codespaceUrl),
@@ -89,7 +90,20 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(l10n.serverSection, style: theme.textTheme.titleMedium),
+          SectionHeader(l10n.themeSection),
+          const SizedBox(height: 12),
+          SegmentedButton<ThemeMode>(
+            key: const Key('themeMode'),
+            segments: [
+              ButtonSegment(value: ThemeMode.system, icon: const Icon(Icons.brightness_auto), label: Text(l10n.themeSystem)),
+              ButtonSegment(value: ThemeMode.light, icon: const Icon(Icons.light_mode), label: Text(l10n.themeLight)),
+              ButtonSegment(value: ThemeMode.dark, icon: const Icon(Icons.dark_mode), label: Text(l10n.themeDark)),
+            ],
+            selected: {ref.watch(themeModeSettingProvider)},
+            onSelectionChanged: (s) => ref.read(themeModeSettingProvider.notifier).set(s.first),
+          ),
+          const Divider(height: 40),
+          SectionHeader(l10n.serverSection),
           const SizedBox(height: 12),
           TextField(
             key: const Key('serverUrl'),
@@ -117,7 +131,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
+                child: FilledButton.tonal(
                   onPressed: _testing ? null : _test,
                   child: _testing
                       ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
@@ -138,7 +152,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ],
           const Divider(height: 40),
-          Text(l10n.aboutSection, style: theme.textTheme.titleMedium),
+          SectionHeader(l10n.aboutSection),
           const SizedBox(height: 8),
           Text(l10n.appVersion(appVersion)),
         ],

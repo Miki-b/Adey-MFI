@@ -8,6 +8,7 @@ import '../../core/formatting/dates.dart';
 import '../../core/formatting/money.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/state_views.dart';
+import '../../core/widgets/brand.dart';
 import '../../l10n/app_localizations.dart';
 import 'portfolio_repository.dart';
 
@@ -156,17 +157,22 @@ class _ParCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(l10n.par30, style: theme.textTheme.titleMedium),
-                const SizedBox(width: 8),
-                Chip(
-                  label: Text(label),
-                  labelStyle: TextStyle(color: color, fontWeight: FontWeight.w600),
-                  side: BorderSide(color: color),
-                  visualDensity: VisualDensity.compact,
+                Text(
+                  l10n.par30,
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
                 ),
+                const SizedBox(width: 8),
+                StatusChip(label: label, color: color),
                 const Spacer(),
-                TextButton.icon(
+                // A secondary action: tonal (yellow), compact.
+                FilledButton.tonalIcon(
                   onPressed: () => _showParExplanation(context),
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(0, 36),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    textStyle: theme.textTheme.labelLarge,
+                  ),
                   icon: const Icon(Icons.help_outline, size: 18),
                   label: Text(l10n.whatIsPar30),
                 ),
@@ -314,12 +320,9 @@ class _CollectionSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(title, style: theme.textTheme.titleMedium),
-            const Spacer(),
-            if (total > 0) Text(l10n.sectionCount(entries.length, total), style: theme.textTheme.bodySmall),
-          ],
+        SectionHeader(
+          title,
+          trailing: total > 0 ? Text(l10n.sectionCount(entries.length, total), style: theme.textTheme.bodySmall) : null,
         ),
         const SizedBox(height: 8),
         if (entries.isEmpty)
@@ -367,7 +370,7 @@ class _OfficersSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(l10n.officersTitle, style: theme.textTheme.titleMedium),
+        SectionHeader(l10n.officersTitle),
         const SizedBox(height: 8),
         Card(
           child: Column(

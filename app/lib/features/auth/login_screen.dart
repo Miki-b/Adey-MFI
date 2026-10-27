@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/auth/auth_controller.dart';
 import '../../core/config/server_config.dart';
 import '../../core/errors/error_messages.dart';
+import '../../core/widgets/brand.dart';
 import '../../l10n/app_localizations.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -68,9 +69,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Icon(Icons.local_florist, size: 56, color: theme.colorScheme.secondary),
+                      const Center(child: BrandMark()),
                       const SizedBox(height: 8),
-                      Text(l10n.appTitle, textAlign: TextAlign.center, style: theme.textTheme.headlineMedium),
+                      Text(
+                        l10n.appTitle,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.headlineMedium
+                            ?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
+                      ),
                       const SizedBox(height: 4),
                       Text(l10n.loginSubtitle, textAlign: TextAlign.center, style: theme.textTheme.bodyLarge),
                       const SizedBox(height: 32),

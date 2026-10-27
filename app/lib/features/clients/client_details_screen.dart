@@ -5,6 +5,7 @@ import '../../core/formatting/dates.dart';
 import '../../core/formatting/money.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/widgets/state_views.dart';
+import '../../core/widgets/brand.dart';
 import '../../l10n/app_localizations.dart';
 import 'clients_repository.dart';
 
@@ -34,7 +35,7 @@ class ClientDetailsScreen extends ConsumerWidget {
             children: [
               _ProfileCard(profile: p),
               const SizedBox(height: 24),
-              Text(l10n.loansTitle, style: Theme.of(context).textTheme.titleMedium),
+              SectionHeader(l10n.loansTitle),
               const SizedBox(height: 8),
               _Loans(clientId: clientId),
             ],
@@ -142,21 +143,10 @@ class _LoanCard extends StatelessWidget {
                   ),
                 ),
                 if (loan.inArrears) ...[
-                  Chip(
-                    avatar: Icon(Icons.warning_amber, size: 16, color: status.danger),
-                    label: Text(l10n.loanInArrears),
-                    labelStyle: TextStyle(color: status.danger, fontWeight: FontWeight.w600),
-                    side: BorderSide(color: status.danger),
-                    visualDensity: VisualDensity.compact,
-                  ),
+                  StatusChip(label: l10n.loanInArrears, color: status.danger, icon: Icons.warning_amber),
                   const SizedBox(width: 6),
                 ],
-                Chip(
-                  label: Text(label),
-                  labelStyle: TextStyle(color: color, fontWeight: FontWeight.w600),
-                  side: BorderSide(color: color),
-                  visualDensity: VisualDensity.compact,
-                ),
+                StatusChip(label: label, color: color),
               ],
             ),
             const SizedBox(height: 12),
@@ -193,17 +183,17 @@ class _LoanCard extends StatelessWidget {
     );
   }
 
-  static (String, Color) _status(AppLocalizations l10n, ThemeData theme, StatusColors s, LoanState state) =>
+  static (String, Color?) _status(AppLocalizations l10n, ThemeData theme, StatusColors s, LoanState state) =>
       switch (state) {
         LoanState.pending => (l10n.loanStatusPending, s.warning),
-        LoanState.approved => (l10n.loanStatusApproved, theme.colorScheme.secondary),
+        LoanState.approved => (l10n.loanStatusApproved, null),
         LoanState.active => (l10n.loanStatusActive, s.good),
         LoanState.closed => (l10n.loanStatusClosed, theme.colorScheme.outline),
         LoanState.rejected => (l10n.loanStatusRejected, s.danger),
         LoanState.withdrawn => (l10n.loanStatusWithdrawn, theme.colorScheme.outline),
         LoanState.writtenOff => (l10n.loanStatusWrittenOff, s.danger),
         LoanState.rescheduled => (l10n.loanStatusRescheduled, theme.colorScheme.outline),
-        LoanState.overpaid => (l10n.loanStatusOverpaid, theme.colorScheme.secondary),
+        LoanState.overpaid => (l10n.loanStatusOverpaid, null),
         LoanState.unknown => (l10n.loanStatusUnknown, theme.colorScheme.outline),
       };
 }

@@ -117,13 +117,22 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   Flutter 3.41.6, generated client (app/tool/generate_api.ps1), auth with refresh-once interceptor, dashboard
   (PAR30), clients + details, server URL setting, error mapper, Decimal money, idempotency helper. Notes:
   notes/09-flutter-foundation.md.
+- API contract + theme (2026-10-27): operationIds on all endpoints, required = non-null from JSpecify `@Nullable`
+  on response records (`config/OpenApiConfig`), money `format: decimal`, `Problem` on 4XX/5XX, `ErrorCodes.ALL` +
+  `ErrorCodeCatalogTest`, NOT_AN_OFFICER, case-insensitive client search, seed genders, provider-neutral inbox
+  wording, Chapa webhook secret rotated. 169 backend tests. App: client regenerated, brand theme (green/yellow,
+  WCAG AA tested), Theme setting; 72 app tests. Notes: notes/10-api-contract-and-theme.md.
 - Next: Flutter Session B (R4–R7: new client, loan application, cash repayment, mobile money).
 
 ## Backend facts
 
 - Spring Boot 4.1.2 + springdoc 3.1.1 (upgraded from 3.5 on 2026-10-23, see notes/02-backend.md).
+- New response fields: annotate `@Nullable` (org.jspecify) if they can ever be null; otherwise the spec marks them
+  required and the generated Dart client fails to parse a null. New error codes: add to `common/ErrorCodes.java`
+  and the README table (ErrorCodeCatalogTest checks both).
   Jackson 3: `tools.jackson.databind.*` (annotations still `com.fasterxml.jackson.annotation`).
-- Fineract client search (`displayName`) is a case-sensitive substring match.
+- Fineract client search (`displayName`) is a case-sensitive substring match; our `/api/clients?search=` filters
+  the scoped list itself, ignoring case (max 2,000 clients scanned).
 - Fineract OpenAPI says dates are strings; real responses send `[y, m, d]` arrays.
 - Fineract reports `inArrears` at the loan's top level (summary.inArrears is null in this build).
 - Wrong-state loan commands come back as 400; recognise them by `userMessageGlobalisationCode`
@@ -178,6 +187,9 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   riverpod_generator needs Dart 3.12). FVM's "Can't load Kernel binary" warning is harmless.
 - Never edit app/packages/adey_api; regenerate with `app\tool\generate_api.ps1` after backend/openapi.json changes.
   Generated fields are all nullable, money is `num` -> repositories convert with `toDecimal` (num.toString()).
+- After regenerating the client, if build_runner fails with InvalidOutputException: `fvm dart run build_runner clean`.
+- Theme: green = primary actions / active tab / headers, yellow = chips / tonal buttons / accents, never yellow text on
+  light backgrounds; PAR colours teal/orange/red. test/core/theme/theme_contrast_test.dart guards WCAG AA.
 - Riverpod/l10n outputs (*.g.dart, lib/l10n/app_localizations*.dart) are committed; regenerate with
   `fvm dart run build_runner build --delete-conflicting-outputs` and `fvm flutter gen-l10n`.
 - Don't edit UTF-8 source files with Windows PowerShell 5.1 Get-Content/Set-Content (it mangles "–" etc.); use Python or the editor.
@@ -186,4 +198,5 @@ Flutter app (app/)  →  Spring Boot backend (backend/)  →  Apache Fineract (D
   Best route keeps 8080 private: `gh codespace ports forward 8080:18080` + `adb reverse tcp:8080 tcp:18080`,
   app preset "USB cable" (http://127.0.0.1:8080, debug builds). The public-port route was flaky (relay 404s). A private port answers 401 `WWW-Authenticate: tunnel`
   or 302 to github.dev sign-in; the app shows "Codespace port is private".
+- The Codespace's python3 is Debian python3-minimal (no json module): run checks from the PC via a private port forward.
 - In the Codespace's seed: Bishoftu = office 2 (samuel, hana, tadesse), Adama = office 3 (meron, dawit, selamawit).

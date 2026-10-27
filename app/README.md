@@ -44,6 +44,11 @@ link FVM creates; git-ignored).
 Demo accounts (backend/README.md): officer `samuel` / `Adey#Loan2026`, managers `tadesse` (Bishoftu) and
 `selamawit` (Adama) / `Adey#Lead2026`.
 
+## Theme
+
+More → Settings → **Theme**: System (default), Light or Dark, stored on the phone. Brand colours and the
+contrast rules are in `lib/core/theme/app_theme.dart` and [notes/10](../notes/10-api-contract-and-theme.md).
+
 ## Server URL
 
 Set at runtime: **More → Settings → Server** (also reachable from the login screen via "Change"), stored
